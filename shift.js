@@ -10,18 +10,21 @@ class Shift {
      * @param { string } type 
      * @param { string } category 
      */
-    constructor(start, end, type, category) {
+    constructor(start, type, category, end) {
         this.start = start;
-        this.end = end;
         this.type = type;
         this.category = category;
+        if (end) {
+            this.end = end;
+        }
     }
 
     /**
      * returns the duration in Milliseconds
      */
     duration() {
-        return this.end.getTime() - this.start.getTime();
+        if (this.end) return this.end.getTime() - this.start.getTime();
+        else return new Date().getTime() - this.start.getTime();
     }
     /**
      * returns the hours as a decimal that the shift took to complete
