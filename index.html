@@ -10,17 +10,29 @@
 </head>
 
 <body>
+
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg bg-black">
-            <input type="submit" id="submit" class="btn" value="Clock In">
-            <input type="text" id="type" placeholder="Coding">
-            <input type="text" id="category" placeholder="Work">
-
-        </div>
-        <div class="col-lg bg-success"></div>
+        <form id="new-shift" class="col-xl bg-info text-white">
+            <div class="row">
+        
+                <div class="col mb-3">
+                    <label for="type" class="form-label">Work-Type</label>
+                    <input type="text" class="form-control" id="type" placeholder="Coding">
+                </div>
+                <div class="col mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" class="form-control" id="category" placeholder="Fun">
+                </div>
+                <button type="submit" class="col btn btn-primary">Clock In</button>
+                
+                </div>
+            </form>
+            
+            <div class="col bg-success"></div>
     </div>
 </div>
+
 
     <script src="shift.js"></script>
     <script src="app.js"></script>
