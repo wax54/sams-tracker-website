@@ -10,7 +10,7 @@ add = addRecord.bind(records);
 retrieve();
 
 //add an updator for the progress bars
-const updater = setInterval(updateProgressBars, 3000);
+const updater = setInterval(updateProgressBars, 1000);
 
 
 //setup listeners
@@ -48,6 +48,7 @@ function addProgressBar(category, hoursSpent, percetage) {
     row.append(col);
     progressBarSection.append(row);
 }
+
 function updateProgressBars() {
     clearProgressBars();
     const hours = getHours();
@@ -56,9 +57,12 @@ function updateProgressBars() {
         if (category == 'total') continue;
         const catHours = round(hours[category].total);
         const percent = round(catHours / total);
-        addProgressBar(category, catHours + 'Hrs', percent * 100);
+        const formattedHours = catHours >= 1 ? catHours + ' Hrs' : round(catHours * 60, 0) + ' Mins';
+
+        addProgressBar(category, formattedHours, percent * 100);
     }
 }
+
 function clearProgressBars() {
     const progressBarSection = document.getElementById('hours-spent-dashboard');
     progressBarSection.innerHTML = '';
