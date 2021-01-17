@@ -132,8 +132,9 @@ function clockOut(evt) {
     if (evt.target.nodeName !== "BUTTON") return;
 
     const li = evt.target.parentElement;
-    const currType = li.querySelector('.type').innerText;
-    const currCategory = li.querySelector('.category').innerText;
+
+    const currType = li.querySelector('.type').innerText.toLowerCase();
+    const currCategory = li.querySelector('.category').innerText.toLowerCase();
 
     const shiftIndex = currShifts.findIndex(({ type, category }) => {
         return type === currType && category === currCategory;
