@@ -10,7 +10,7 @@ add = addRecord.bind(records);
 retrieve();
 
 //add an updator for the progress bars
-//const updater = setInterval(updateProgressBars, 3000);
+const updater = setInterval(updateProgressBars, 3000);
 
 
 //setup listeners
