@@ -12,37 +12,39 @@
 <body>
 
 <div class="container-fluid">
-    <div class="row border bg-info text-white">
+    <div class="row mb-4 ">
         <form id="new-shift" class="col-xl">
             <div class="row">
-                <span class="display-3 text-center border-bottom">New Shift!</span>
+                <span class="display-3 text-center">New Shift!</span>
                 </div>
             <div class="row">
-        
-                <div class="col mb-3">
+                <button type="submit" class="col-md m1 btn btn-primary">Clock In</button>
+                <div class="col-md m2 mb3">
                     <label for="type" class="form-label">Work-Type</label>
-                    <input type="text" class="form-control" id="type" placeholder="Coding">
+                    <input type="text" class="form-control" id="type" value="Coding">
                 </div>
-                <div class="col mb-3">
+                <div class="col-md m2 mb3">
                     <label for="category" class="form-label">Category</label>
-                    <input type="text" class="form-control" id="category" placeholder="Fun">
+                    <input type="text" class="form-control" id="category" value="Fun">
                 </div>
-                <button type="submit" class="col btn btn-primary">Clock In</button>
             </div>
         </form>
             
-        <div id="current-shifts" class="col col-xl-5">
+        <div class="col col-xl-5">
             <div class="row">
-                <span class="display-3 text-center border-bottom">Current Shifts</span>
+                <span class="display-3 text-center">Current Shifts</span>
             </div>
-            <div class="row text-end">
-                <div class="col display-6">
-                    <span>Coding</span> for <span>Fun</span>
-                </div>
-                <button class="col-3 btn btn-primary">Clock Out Now</button>
-            </div>
+            <ul id="current-shifts">
+                <!-- <li class="row text-end">
+                    <div class="col display-6">
+                        <span class="type">Coding</span> for <span class="category">Fun</span>
+                    </div>
+                    <button class="col-3 btn btn-primary">Clock Out</button>
+                    </li> -->
+                    </ul>
         </div>
         </div>
+    <div id="hours-spent-dashboard" class="container">
         <div class="row">
             <div class="col mb-3">
                 <div class="display-6">House Work - 6.45Hrs</div>
@@ -58,6 +60,7 @@
                     <div class="progress-bar bg-light" style="width:20%"></div>
                     <div class="progress-bar bg-info" style="width:25%"></div>
                 </div>
+            </div>
             </div>
     </div>
 </div>
