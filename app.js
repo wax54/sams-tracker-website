@@ -56,7 +56,7 @@ function updateProgressBars() {
         if (category == 'total') continue;
         const catHours = round(hours[category].total);
         const percent = round(catHours / total);
-        addProgressBar(category, catHours + 'Hrs', percent);
+        addProgressBar(category, catHours + 'Hrs', percent * 100);
     }
 }
 function clearProgressBars() {
