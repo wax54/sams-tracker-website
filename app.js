@@ -13,14 +13,16 @@ retrieve();
 const updater = setInterval(updateProgressBars, 1000);
 
 
+
 //setup listeners
 document.getElementById('new-shift')
     .addEventListener('submit', (e) => {
         e.preventDefault();
         submitNewShift();
     });
+
 document.getElementById('current-shifts')
-    .addEventListener('click', clockOut);
+    .addEventListener('click', handleClockOutClick);
 
 function addProgressBar(category, hoursSpent, percetage) {
 
@@ -120,6 +122,8 @@ function submitNewShift() {
         inputAlert('category', 'Current Shift of Type/Category already exists!');
         return;
     }
+    resetDOMValue('type');
+    resetDOMValue('category');
     const newShift = new Shift(new Date(), type, category);
 
     add(newShift);
@@ -127,11 +131,12 @@ function submitNewShift() {
 
 }
 
-function clockOut(evt) {
+function handleClockOutClick(evt) {
+    console.log('init', evt);
     //unWanted click, return
-    if (evt.target.nodeName !== "BUTTON") return;
-
-    const li = evt.target.parentElement;
+    if (!evt.target.dataset.reference) return;
+    const ref = evt.target.dataset.reference;
+    const li = evt.target.parentElement.parentElement.parentElement;
 
     const currType = li.querySelector('.type').innerText.toLowerCase();
     const currCategory = li.querySelector('.category').innerText.toLowerCase();
@@ -139,8 +144,19 @@ function clockOut(evt) {
     const shiftIndex = currShifts.findIndex(({ type, category }) => {
         return type === currType && category === currCategory;
     });
+
+    console.log('ref', ref);
+
     if (shiftIndex !== -1) {
-        currShifts[shiftIndex].clockOut();
+        if (ref === 'now') {
+            console.log('now');
+            currShifts[shiftIndex].clockOut();
+        } else if (ref === '-15') {
+            const clockOut = new Date(new Date().getTime() - 600000);
+
+            console.log('then', clockOut);
+            currShifts[shiftIndex].clockOut(clockOut);
+        }
         currShifts.splice(shiftIndex, 1);
         li.remove();
         store();
@@ -188,10 +204,10 @@ function addCurrShift({ type, category }) {
     const currShiftList = document.getElementById('current-shifts');
 
     const li = document.createElement('li');
-    li.className = "row text-end";
+    li.className = "row p-3 align-items-start justify-content-center";
 
     const div = document.createElement('div');
-    div.className = "col display-6";
+    div.className = "col-7 text-center h2";
 
     const typeSpan = document.createElement('span');
     typeSpan.className = 'type';
@@ -203,15 +219,44 @@ function addCurrShift({ type, category }) {
 
     div.append(typeSpan, ' for ', categorySpan);
 
-    const btn = document.createElement('button');
-    btn.className = "col-3 btn btn-primary";
-    btn.innerText = 'Clock Out';
+    const btn = makeClockOutDropDown();
 
     li.append(div, btn);
 
     currShiftList.append(li);
 
+
 }
+
+function makeClockOutDropDown() {
+    const container = document.createElement('div');
+    container.className = 'col-4 dropdown clockout';
+
+    const mainButton = document.createElement('button');
+    mainButton.className = 'btn btn-secondary dropdown-toggle text-center';
+    mainButton.setAttribute('data-bs-toggle', 'dropdown');
+    mainButton.innerText = 'Clock Out';
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'dropdown-menu clock-out';
+
+    const nowBtn = createBtn('Now', 'now');
+    const pastBtn = createBtn('15 Mins Ago', '-15');
+
+    dropdown.append(nowBtn, pastBtn);
+    container.append(mainButton, dropdown);
+
+    return container;
+}
+
+function createBtn(str, dataValue) {
+    const btn = document.createElement('button');
+    btn.className = "btn";
+    btn.innerText = str;
+    btn.dataset.reference = dataValue;
+    return btn;
+}
+
 function round(num, decimals = 2) {
     if (decimals < 1) {
         decimals = decimals * -1;
@@ -238,7 +283,6 @@ function inputAlert(inputId, msg = 'Input Must Be Filled') {
 
 function clearInputAlerts() {
     const alerts = document.querySelectorAll('#new-shift .row .col .alert');
-
     //if there are alerts, remove them
     if (alerts.length) {
         for (let element of alerts.values()) {
@@ -246,7 +290,9 @@ function clearInputAlerts() {
         }
     }
 }
-
+function resetDOMValue(DOMId) {
+    const value = document.getElementById(DOMId).value = '';
+}
 function getFromDOM(DOMId) {
     const value = document.getElementById(DOMId).value.toLowerCase();
     if (value == '') return false;
