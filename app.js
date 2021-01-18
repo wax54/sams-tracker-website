@@ -57,10 +57,10 @@ function updateProgressBars() {
     const total = hours.total;
     for (category in hours) {
         if (category == 'total') continue;
+
         const catHours = round(hours[category].total);
         const percent = round(catHours / total);
-        const formattedHours = catHours >= 1 ? catHours + ' Hrs' : round(catHours * 60, 0) + ' Mins';
-
+        const formattedHours = timeFormatFromHours(catHours, 1);
         addProgressBar(category, formattedHours, percent * 100);
     }
 }
@@ -98,6 +98,7 @@ function getHours() {
                     const shiftLength = shift.getHours();
                     currSection[0] += shiftLength;
                     currSection[i] = shiftLength;
+                    i++;
                 }
                 hours[category].total += currSection[0];
             }
@@ -268,21 +269,22 @@ function round(num, decimals = 2) {
 }
 
 function inputAlert(inputId, msg = 'Input Must Be Filled') {
-    const parent = document.getElementById(inputId).parentElement;
+    const parent = document.getElementById(inputId).parentElement.parentElement;
     const alert = document.createElement('div');
-    alertId = Math.random() + '-alert';
+    const alertId = Math.random() + '-alert';
     alert.id = alertId;
     alert.className = 'alert bg-warning';
     alert.innerText = msg;
     parent.append(alert);
+    console.log(alertId);
     setTimeout(() => {
         document.getElementById(alertId).remove();
-    }, 3000);
+    }, 2500);
 }
 
 
 function clearInputAlerts() {
-    const alerts = document.querySelectorAll('#new-shift .row .col .alert');
+    const alerts = document.querySelectorAll('.alert');
     //if there are alerts, remove them
     if (alerts.length) {
         for (let element of alerts.values()) {
