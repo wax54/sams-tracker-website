@@ -58,9 +58,9 @@ function updateProgressBars() {
     for (category in hours) {
         if (category == 'total') continue;
 
-        const catHours = round(hours[category].total);
+        const catHours = hours[category].total;
         const percent = round(catHours / total);
-        const formattedHours = timeFormatFromHours(catHours, 1);
+        const formattedHours = timeFormatFromHours(catHours, 2);
         addProgressBar(category, formattedHours, percent * 100);
     }
 }
