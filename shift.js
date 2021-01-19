@@ -1,3 +1,5 @@
+
+
 /**
  * A shift class, representing time spent at a certain date on a thing for a reason
  * 
@@ -81,7 +83,6 @@ class ShiftCollection{
         }
     }
 
-
     remove(removedShift){
         const shiftIndex = this.shifts.findIndex((shift)=>{
             if(shift.category === removedShift.category)
@@ -97,6 +98,14 @@ class ShiftCollection{
         else return false;
     }
     
+    getCategories() {
+        const categories = new Set();
+        for (let shift of this.shifts) {
+            categories.add(shift.category);
+        }
+        return [...categories];
+    }
+
     getCurrShifts(){
         return new ShiftCollection(...(this.shifts.filter((shift)=> !shift.end)));
     }
@@ -111,7 +120,7 @@ class ShiftCollection{
         const matched = this.shifts.filter((shift) => shift[field] == query);
         return new ShiftCollection(...matched);
     }
-
+    length() { return this.shifts.length };
 }
 
 
@@ -214,3 +223,6 @@ function timeFormatFromHours(hrs, specificity) {
     const ms = hrs * 3600000;
     return timeFormat(ms, specificity);
 }
+
+//testing purposes #cleanUp
+const deli = new ShiftCollection(...JSON.parse(localStorage.records));
