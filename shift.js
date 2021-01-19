@@ -56,6 +56,65 @@ class Shift {
 }
 
 
+class ShiftCollection{
+    constructor(...newShifs){
+        this.shifts = [];
+        for(shift of newShifs){
+            this.add(shift);
+        }
+    }
+
+    add(shift) {
+        if (!(shift instanceof Shift)) {
+            shift = new Shift(shift.start, shift.type, shift.category, shift.end);
+        }
+        type = shift.type;
+        category = shift.category;
+    
+    
+        this.shifts.push(shift);
+
+        //shift doesn't have a clock out, add to current shifts
+        if (!shift.end) {
+            currShifts.push(shift)
+            addCurrShift(shift);
+        }
+    }
+
+
+    remove(removedShift){
+        const shiftIndex = this.shifts.findIndex((shift)=>{
+            if(shift.category === removedShift.category)
+                if(shift.type === removedShift.type)
+                    if(shift.start === removedShift.start) return true;
+            return false;
+        });
+        
+        if(shiftIndex !== -1){
+            this.shifts.splice(shiftIndex,1);
+            return true;   
+        }
+        else return false;
+    }
+    
+    getCurrShifts(){
+        return new ShiftCollection(...(this.shifts.filter((shift)=> !shift.end)));
+    }
+
+    category(queryString){
+        return this.filter('category',queryString);
+    }
+    type(queryString){
+        return this.filter('type',queryString);
+    }
+    filter(field, query){
+        const matched = this.shifts.filter((shift) => shift[field] == query);
+        return new ShiftCollection(...matched);
+    }
+
+}
+
+
 /**
  *
  * @param { number } ms A duration represented in Milliseconds negative values are returned as positive durations
