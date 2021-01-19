@@ -236,15 +236,15 @@ function addCurrShift({ type, category }) {
 
 function makeClockOutDropDown() {
     const container = document.createElement('div');
-    container.className = 'col-4 dropdown clockout';
+        container.className = 'col-4 dropdown clockout';
 
     const mainButton = document.createElement('button');
-    mainButton.className = 'btn btn-secondary dropdown-toggle text-center';
-    mainButton.setAttribute('data-bs-toggle', 'dropdown');
-    mainButton.innerText = 'Clock Out';
+        mainButton.className = 'btn btn-secondary dropdown-toggle text-center';
+        mainButton.setAttribute('data-bs-toggle', 'dropdown');
+        mainButton.innerText = 'Clock Out';
 
     const dropdown = document.createElement('div');
-    dropdown.className = 'dropdown-menu clock-out';
+        dropdown.className = 'dropdown-menu clock-out';
 
     const nowBtn = createBtn('Now', BUTTONNOW);
     const pastBtn = createBtn('15 Mins Ago', BUTTON15AGO);
