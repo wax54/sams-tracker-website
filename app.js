@@ -1,3 +1,7 @@
+const BUTTONNOW = 'NOW';
+const BUTTON15AGO = '-15';
+
+
 
 const currShifts = [];
 const records = {
@@ -72,7 +76,7 @@ function clearProgressBars() {
 
 function getHours() {
     //     let Hours = {
-    //         total:0,
+    //         total: 0,
     //         fun: {
     //             total:0,
     //             coding: [
@@ -119,6 +123,7 @@ function submitNewShift() {
         if (!category) inputAlert('category');
         return;
     }
+
     if (currShiftExists(type, category)) {
         inputAlert('category', 'Current Shift of Type/Category already exists!');
         return;
@@ -149,10 +154,10 @@ function handleClockOutClick(evt) {
     console.log('ref', ref);
 
     if (shiftIndex !== -1) {
-        if (ref === 'now') {
+        if (ref === BUTTONNOW) {
             console.log('now');
             currShifts[shiftIndex].clockOut();
-        } else if (ref === '-15') {
+        } else if (ref === BUTTON15AGO) {
             const clockOut = new Date(new Date().getTime() - 600000);
 
             console.log('then', clockOut);
@@ -241,8 +246,8 @@ function makeClockOutDropDown() {
     const dropdown = document.createElement('div');
     dropdown.className = 'dropdown-menu clock-out';
 
-    const nowBtn = createBtn('Now', 'now');
-    const pastBtn = createBtn('15 Mins Ago', '-15');
+    const nowBtn = createBtn('Now', BUTTONNOW);
+    const pastBtn = createBtn('15 Mins Ago', BUTTON15AGO);
 
     dropdown.append(nowBtn, pastBtn);
     container.append(mainButton, dropdown);
