@@ -61,7 +61,7 @@ class Shift {
 class ShiftCollection{
     constructor(...newShifs){
         this.shifts = [];
-        for(shift of newShifs){
+        for (let shift of newShifs) {
             this.add(shift);
         }
     }
@@ -70,16 +70,14 @@ class ShiftCollection{
         if (!(shift instanceof Shift)) {
             shift = new Shift(shift.start, shift.type, shift.category, shift.end);
         }
-        type = shift.type;
-        category = shift.category;
+        const type = shift.type;
+        const category = shift.category;
     
     
         this.shifts.push(shift);
 
         //shift doesn't have a clock out, add to current shifts
         if (!shift.end) {
-            currShifts.push(shift)
-            addCurrShift(shift);
         }
     }
 
@@ -104,6 +102,22 @@ class ShiftCollection{
             categories.add(shift.category);
         }
         return [...categories];
+    }
+    getTypes() {
+        const types = new Set();
+        for (let shift of this.shifts) {
+            types.add(shift.type);
+        }
+        return [...types];
+    }
+
+    getShiftsAfter(dateTime) {
+        return this.shifts
+            .filter(({ start }) => dateTime.getTime() < start.getTime());
+    }
+    getShiftsBefore(dateTime) {
+        return this.shifts
+            .filter(({ start }) => dateTime.getTime() < start.getTime());
     }
 
     getCurrShifts(){
