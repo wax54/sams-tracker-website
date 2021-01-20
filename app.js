@@ -24,7 +24,8 @@ const retrieveRecords = () => {
 retrieveRecords();
 
 //add an updator for the progress bars
-const updater = setInterval(updateProgressBars, 1000);
+updateProgressBars();
+const updaterRef = setInterval(updateProgressBars, 10000);
 
 //setup listeners
 document.getElementById('new-shift')

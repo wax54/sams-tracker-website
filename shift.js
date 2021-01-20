@@ -101,8 +101,24 @@ class ShiftCollection{
         }
         else return false;
     }
+
     contains(someShift, strict = false) {
         if (this.find(someShift, strict)) return true;
+        return false;
+    }
+    /**
+     * 
+     * @param {string} initialCategory the initial category name to select the shifts
+     * @param {string} newCategory the name all shifts selected should be changed to
+     * @returns {boolean} true on success, false if no shifts of category initialCategory are found
+     */
+    changeCategory(initialCategory, newCategory) {
+        const shifts = this.category(initialCategory).shifts; //shift collection is returned, get the array out of it
+
+        if (shifts.length) {
+            shifts.forEach(shift => { shift.category = newCategory });
+            return true;
+        }
         return false;
     }
 
