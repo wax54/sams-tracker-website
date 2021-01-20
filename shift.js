@@ -59,33 +59,39 @@ class Shift {
 
 
 class ShiftCollection{
-    constructor(...newShifs){
+    constructor(...newShifts) {
         this.shifts = [];
-        for (let shift of newShifs) {
-            this.add(shift);
-        }
+        this.add(...newShifts);
     }
 
-    add(shift) {
-        if (!(shift instanceof Shift)) {
-            shift = new Shift(shift.start, shift.type, shift.category, shift.end);
-        }
-        const type = shift.type;
-        const category = shift.category;
-    
-    
-        this.shifts.push(shift);
+    toString() {
+        return 'A ShiftCollection of length ' + this.length() + ' ' + this.shifts;
+    }
 
-        //shift doesn't have a clock out, add to current shifts
-        if (!shift.end) {
+    add(...newShifts) {
+        for (let shift of newShifts) {
+            if (!(shift instanceof Shift)) {
+                shift = new Shift(shift.start, shift.type, shift.category, shift.end);
+            }
+            const type = shift.type;
+            const category = shift.category;
+        
+        
+            this.shifts.push(shift);
+
         }
+    }
+    getTotalHours() {
+        return this.shifts.reduce((totalHours, shift) => {
+            return totalHours + shift.getHours();
+        }, 0);
     }
 
     remove(removedShift){
-        const shiftIndex = this.shifts.findIndex((shift)=>{
-            if(shift.category === removedShift.category)
-                if(shift.type === removedShift.type)
-                    if(shift.start === removedShift.start) return true;
+        const shiftIndex = this.shifts.findIndex((shift) => {
+            if (shift.category === removedShift.category)
+                if (shift.type === removedShift.type)
+                    if (shift.start === removedShift.start) return true;
             return false;
         });
         
@@ -95,7 +101,23 @@ class ShiftCollection{
         }
         else return false;
     }
-    
+    contains(someShift, strict = false) {
+        if (this.find(someShift, strict)) return true;
+        return false;
+    }
+
+    find(someShift, strict = false) {
+        for (let shift of this.shifts) {
+            if (shift.category === someShift.category) {
+                if (shift.type === someShift.type) {
+                    if (shift.start === someShift.start) return shift;
+                    if (!strict) return shift;
+                }
+            }
+        }
+        return false;
+    }
+
     getCategories() {
         const categories = new Set();
         for (let shift of this.shifts) {
@@ -103,6 +125,7 @@ class ShiftCollection{
         }
         return [...categories];
     }
+
     getTypes() {
         const types = new Set();
         for (let shift of this.shifts) {
@@ -127,13 +150,16 @@ class ShiftCollection{
     category(queryString){
         return this.filter('category',queryString);
     }
+
     type(queryString){
         return this.filter('type',queryString);
     }
+
     filter(field, query){
         const matched = this.shifts.filter((shift) => shift[field] == query);
         return new ShiftCollection(...matched);
     }
+
     length() { return this.shifts.length };
 }
 

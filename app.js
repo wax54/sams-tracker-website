@@ -3,20 +3,28 @@ const BUTTON15AGO = '-15';
 
 
 
-const currShifts = [];
-const records = {
-};
-store = updateStorage.bind(records, 'records');
-retrieve = updateFromStorage.bind(records, 'records');
-add = addRecord.bind(records);
+const records = new ShiftCollection();
+const updateStorage = () => {
+    localStorage.records = JSON.stringify(records.shifts);
+ };
+const retrieveRecords = () => {
+    if (localStorage.records) {
+        const recordsArray = JSON.parse(localStorage.records);
+        records.add(...recordsArray);
+        for (shift of records.getCurrShifts().shifts) {
+            addCurrShiftToDOM(shift);
+        }
+        return true;
+    }
+    return false;
+}
+
 
 //retrieve from localStorage
-retrieve();
+retrieveRecords();
 
 //add an updator for the progress bars
 const updater = setInterval(updateProgressBars, 1000);
-
-
 
 //setup listeners
 document.getElementById('new-shift')
@@ -27,6 +35,7 @@ document.getElementById('new-shift')
 
 document.getElementById('current-shifts')
     .addEventListener('click', handleClockOutClick);
+
 
 function addProgressBar(category, hoursSpent, percetage) {
 
@@ -57,14 +66,14 @@ function addProgressBar(category, hoursSpent, percetage) {
 
 function updateProgressBars() {
     clearProgressBars();
-    const hours = getHours();
-    const total = hours.total;
-    for (category in hours) {
-        if (category == 'total') continue;
 
-        const catHours = hours[category].total;
-        const percent = round(catHours / total);
-        const formattedHours = timeFormatFromHours(catHours, 2);
+    const total = records.getTotalHours();
+    for (category of records.getCategories()) {
+
+        const categoryHours = records.category(category).getTotalHours();
+
+        const percent = round(categoryHours / total);
+        const formattedHours = timeFormatFromHours(categoryHours, 2);
         addProgressBar(category, formattedHours, percent * 100);
     }
 }
@@ -132,81 +141,50 @@ function submitNewShift() {
     resetDOMValue('category');
     const newShift = new Shift(new Date(), type, category);
 
-    add(newShift);
-    store();
+    addCurrShiftToDOM(newShift);
+    records.add(newShift);
+    updateStorage();
 
 }
 
 function handleClockOutClick(evt) {
-    console.log('init', evt);
+
     //unWanted click, return
     if (!evt.target.dataset.reference) return;
+
     const ref = evt.target.dataset.reference;
     const li = evt.target.parentElement.parentElement.parentElement;
 
     const currType = li.querySelector('.type').innerText.toLowerCase();
     const currCategory = li.querySelector('.category').innerText.toLowerCase();
 
-    const shiftIndex = currShifts.findIndex(({ type, category }) => {
-        return type === currType && category === currCategory;
-    });
+    const shift = records.getCurrShifts().find({ type: currType, category: currCategory });
 
-    console.log('ref', ref);
-
-    if (shiftIndex !== -1) {
+    if (shift) {
         if (ref === BUTTONNOW) {
             console.log('now');
-            currShifts[shiftIndex].clockOut();
+            shift.clockOut();
         } else if (ref === BUTTON15AGO) {
             const clockOut = new Date(new Date().getTime() - 600000);
 
             console.log('then', clockOut);
-            currShifts[shiftIndex].clockOut(clockOut);
+            shift.clockOut(clockOut);
         }
-        currShifts.splice(shiftIndex, 1);
         li.remove();
-        store();
+        updateStorage();
     } else {
-        throw new Error('shift not found in currShifts');
+        throw new Error('shift not found in records.currShifts()');
     }
 }
 
-function currShiftExists(newType, newCategory) {
-    for ({ type, category } of currShifts) {
-        if (type === newType) {
-            if (category === newCategory) {
-                return true;
-            }
-        }
-    }
-    return false;
+function currShiftExists(type, category) {
+    const currShifts = records.getCurrShifts();
+    return currShifts.contains({ type, category });
+
 }
 
 
-function addRecord(shift) {
-    if (!(shift instanceof Shift)) {
-        shift = new Shift(shift.start, shift.type, shift.category, shift.end);
-    }
-    type = shift.type;
-    category = shift.category;
-
-    if (!this[category]) {
-        this[category] = {};
-    }
-    if (!this[category][type]) {
-        this[category][type] = [];
-    }
-
-    records[category][type].push(shift);
-    //shift doesn't have a clock out, add to current shifts
-
-    if (!shift.end) {
-        currShifts.push(shift)
-        addCurrShift(shift);
-    }
-}
-
-function addCurrShift({ type, category }) {
+function addCurrShiftToDOM({ type, category }) {
     const currShiftList = document.getElementById('current-shifts');
 
     const li = document.createElement('li');
@@ -307,27 +285,54 @@ function getFromDOM(DOMId) {
 }
 
 
-function updateStorage() {
-    const shifts = [];
-    for (let category in this) {
-        for (let type in this[category]) {
-            for (let shift of this[category][type]) {
-                shifts.push(shift);
-            }
-        }
-    }
 
-    localStorage.records = JSON.stringify(shifts);
-}
-function updateFromStorage(variable) {
-    if (localStorage[variable]) {
-        let temp = JSON.parse(localStorage[variable]);
-        if (temp[0]) {
-            for (shift of temp) {
-                add(shift);
-            }
-        }
-        return true;
-    }
-    return false;
-}
+// function addRecord(shift) {
+//     if (!(shift instanceof Shift)) {
+//         shift = new Shift(shift.start, shift.type, shift.category, shift.end);
+//     }
+//     type = shift.type;
+//     category = shift.category;
+
+//     if (!this[category]) {
+//         this[category] = {};
+//     }
+//     if (!this[category][type]) {
+//         this[category][type] = [];
+//     }
+
+//     records[category][type].push(shift);
+//     //shift doesn't have a clock out, add to current shifts
+
+//     if (!shift.end) {
+//         currShifts.push(shift)
+//         addCurrShift(shift);
+//     }
+// }
+
+
+
+// function updateStorage() {
+//     const shifts = [];
+//     for (let category in this) {
+//         for (let type in this[category]) {
+//             for (let shift of this[category][type]) {
+//                 shifts.push(shift);
+//             }
+//         }
+//     }
+
+//     localStorage.records = JSON.stringify(shifts);
+// }
+
+// function updateFromStorage(variable) {
+//     if (localStorage[variable]) {
+//         let temp = JSON.parse(localStorage[variable]);
+//         if (temp[0]) {
+//             for (shift of temp) {
+//                 add(shift);
+//             }
+//         }
+//         return true;
+//     }
+//     return false;
+// }
