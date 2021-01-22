@@ -151,12 +151,12 @@ class ShiftCollection{
     }
 
     getShiftsAfter(dateTime) {
-        return this.shifts
-            .filter(({ start }) => dateTime.getTime() < start.getTime());
+        return new ShiftCollection(...this.shifts
+            .filter(({ start }) => dateTime.getTime() < start.getTime()));
     }
     getShiftsBefore(dateTime) {
-        return this.shifts
-            .filter(({ start }) => dateTime.getTime() < start.getTime());
+        return new ShiftCollection(...this.shifts
+            .filter(({ start }) => dateTime.getTime() < start.getTime()));
     }
 
     getCurrShifts(){
