@@ -25,7 +25,7 @@ retrieveRecords();
 
 //add an updator for the progress bars
 updateProgressBars();
-const updaterRef = setInterval(updateProgressBars, 10000);
+const updaterRef = setInterval(updateProgressBars, 30000);//every 30seconds*1000ms update the progress bars
 
 //setup listeners
 document.getElementById('new-shift')
@@ -163,12 +163,9 @@ function handleClockOutClick(evt) {
 
     if (shift) {
         if (ref === BUTTONNOW) {
-            console.log('now');
             shift.clockOut();
         } else if (ref === BUTTON15AGO) {
             const clockOut = new Date(new Date().getTime() - 600000);
-
-            console.log('then', clockOut);
             shift.clockOut(clockOut);
         }
         li.remove();
