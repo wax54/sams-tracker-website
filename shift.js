@@ -122,6 +122,17 @@ class ShiftCollection{
         return false;
     }
 
+    changeType(initialtype, newType) {
+        const shifts = this.type(initialtype).shifts; //shift collection is returned, get the array out of it
+        //if it's not empty
+        if (shifts.length) {
+            shifts.forEach(shift => { shift.type = newType });
+            return true;
+        }
+        //emtpy, ogType doesn't exist
+        return false;
+    }
+
     find(someShift, strict = false) {
         for (let shift of this.shifts) {
             if (shift.category === someShift.category) {
