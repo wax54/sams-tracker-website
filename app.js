@@ -165,8 +165,9 @@ function handleClockOutClick(evt) {
         if (ref === BUTTONNOW) {
             shift.clockOut();
         } else if (ref === BUTTON15AGO) {
-            const clockOut = new Date(new Date().getTime() - 600000);
+            const clockOut = minsFrom(-15); //-15 minutes from now
             shift.clockOut(clockOut);
+
         }
         li.remove();
         updateStorage();
