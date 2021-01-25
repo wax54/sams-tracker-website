@@ -55,6 +55,21 @@ class Shift {
         this.end = end;
     }
 
+    /**
+     * ends the currents shift at splitDateTime and starts a new shift 
+     *      at the same moment of the specified type and category
+     * 
+     * @param { Date } splitDateTime the time to clock out the original shift
+     * @param { String } type the type that the newshift should take on 
+     * @param { String } category the category the newshift take on, the same category if none specified
+     * @returns { Shift } returns the newly created shift 
+     */
+    splitShift(splitDateTime, type, category = this.category) {
+        const newShift = new Shift(splitDateTime, type, category, this.end)
+        this.clockOut(splitDateTime);
+        return newShift;
+    }
+
 }
 
 
@@ -190,6 +205,27 @@ class ShiftCollection{
     length() { return this.shifts.length };
 }
 
+/**
+ * returns a day representing x hours away from dateTime 
+ * 
+ * @param {number} hours the number of hours from dateTime you want
+ * @param {Date} dateTime the dateTime you want to have a reference from(defaults to now)
+ * @returns {Date} a new Date that is x hours from dateTime
+ */
+function hoursFrom(hours, dateTime = new Date()) {
+    return new Date(dateTime.getTime() + (1000 * 60 * 60 * hours)); //1000ms * 60s * 60m * X hours
+}
+
+/**
+ * returns a day representing x mins away from dateTime 
+ * 
+ * @param {number} mins the number of mins from dateTime you want
+ * @param {Date} dateTime the dateTime you want to have a reference from(defaults to now)
+ * @returns {Date} the Date that is x mins from dateTime
+ */
+function minsFrom(mins, dateTime = new Date()) {
+    return new Date(dateTime.getTime() + (1000 * 60 * mins)); //1000ms * 60s * X mins
+}
 
 /**
  *
