@@ -68,9 +68,12 @@ function addProgressBar(category, hoursSpent, percetage) {
 function updateProgressBars() {
     clearProgressBars();
 
+    //const total = records.getShiftsAfter(hoursFrom(-24)).getTotalHours();
+
     const total = records.getTotalHours();
     for (category of records.getCategories()) {
 
+        //const categoryHours = records.getShiftsAfter(hoursFrom(-24)).category(category).getTotalHours();
         const categoryHours = records.category(category).getTotalHours();
 
         const percent = round(categoryHours / total);
