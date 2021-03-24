@@ -38,9 +38,10 @@ document.getElementById('current-shifts')
     .addEventListener('click', handleClockOutClick);
 
 
-function addProgressBar(category, hoursSpent, percetage) {
+function addProgressBar(container_id, label, hoursSpent, percetage) {
 
-    const progressBarSection = document.getElementById('hours-spent-dashboard');
+    const categoryContainer = document.getElementById(container_id);
+
 
     const row = document.createElement('div');
     row.className = "row";
@@ -50,7 +51,7 @@ function addProgressBar(category, hoursSpent, percetage) {
 
     const title = document.createElement('div');
     title.className = "display-6";
-    title.innerText = category + ' ' + hoursSpent;
+    title.innerText = label + ' ' + hoursSpent;
 
     const barContainer = document.createElement('div');
     barContainer.className = "progress";
@@ -62,23 +63,41 @@ function addProgressBar(category, hoursSpent, percetage) {
     barContainer.append(bar);
     col.append(title, barContainer);
     row.append(col);
-    progressBarSection.append(row);
+    categoryContainer.append(row);
 }
+function addBarContainer(label) {
+    const progressBarSection = document.getElementById('hours-spent-dashboard');
 
+    const title = document.createElement('div');
+    title.className = "display-4";
+    title.innerText = label;
+
+    const barContainer = document.createElement('div');
+    barContainer.className = "container-fluid";
+    barContainer.id = label
+
+    progressBarSection.append(title, barContainer);
+}
 function updateProgressBars() {
     clearProgressBars();
+    recordCutOff = hoursFrom(-24 * 7) //24hrs * 7days = 1 Week
 
-    //const total = records.getShiftsAfter(hoursFrom(-24)).getTotalHours();
+    const total = records.getShiftsAfter(recordCutOff).getTotalHours();
 
-    const total = records.getTotalHours();
+    //const total = records.getTotalHours();
     for (category of records.getCategories()) {
 
-        //const categoryHours = records.getShiftsAfter(hoursFrom(-24)).category(category).getTotalHours();
-        const categoryHours = records.category(category).getTotalHours();
+        const categoryShifts = records.getShiftsAfter(recordCutOff).category(category);
+        //const categoryHours = records.category(category).getTotalHours();
 
-        const percent = round(categoryHours / total);
-        const formattedHours = timeFormatFromHours(categoryHours, 2);
-        addProgressBar(category, formattedHours, percent * 100);
+        addBarContainer(category)
+
+        for (type of categoryShifts.getTypes()) {
+            const catTypeHours = categoryShifts.type(type).getTotalHours()
+            const percent = round(catTypeHours / total);
+            const formattedHours = timeFormatFromHours(catTypeHours, 2);
+            addProgressBar(category, type, formattedHours, percent * 100);
+        }
     }
 }
 
@@ -86,7 +105,7 @@ function clearProgressBars() {
     const progressBarSection = document.getElementById('hours-spent-dashboard');
     progressBarSection.innerHTML = '';
 }
-
+//old implementation
 function getHours() {
     //     let Hours = {
     //         total: 0,
