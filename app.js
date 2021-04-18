@@ -25,7 +25,7 @@ retrieveRecords();
 
 //add an updator for the progress bars
 updateProgressBars();
-const updaterRef = setInterval(updateProgressBars, 30000);//every 30seconds*1000ms update the progress bars
+const updaterRef = setInterval(updateProgressBars, 6000);//every 30seconds*1000ms update the progress bars
 
 //setup listeners
 document.getElementById('new-shift')
@@ -65,12 +65,12 @@ function addProgressBar(container_id, label, hoursSpent, percetage) {
     row.append(col);
     categoryContainer.append(row);
 }
-function addBarContainer(label) {
+function addBarContainer(label, hours) {
     const progressBarSection = document.getElementById('hours-spent-dashboard');
 
     const title = document.createElement('div');
     title.className = "display-4";
-    title.innerText = label;
+    title.innerText = `${label} - ${hours}`;
 
     const barContainer = document.createElement('div');
     barContainer.className = "container-fluid";
@@ -79,18 +79,21 @@ function addBarContainer(label) {
     progressBarSection.append(title, barContainer);
 }
 function updateProgressBars() {
-    clearProgressBars();
-    recordCutOff = hoursFrom(-24 * 7) //24hrs * 7days = 1 Week
+    updateCurrShiftLength()
 
-    const total = records.getShiftsAfter(recordCutOff).getTotalHours();
+    clearProgressBars();
+    const recordCutOff = hoursFrom(-24 * 7) //24hrs * 7days = 1 Week
+    const shifts = records.getShiftsAfter(recordCutOff)
+    const total = shifts.getTotalHours();
 
     //const total = records.getTotalHours();
-    for (category of records.getCategories()) {
+    for (category of shifts.getCategories()) {
 
-        const categoryShifts = records.getShiftsAfter(recordCutOff).category(category);
-        //const categoryHours = records.category(category).getTotalHours();
+        const categoryShifts = shifts.category(category);
+        const categoryHours = categoryShifts.getTotalHours();
+        const formattedCatHours = timeFormatFromHours(categoryHours, 2);
 
-        addBarContainer(category)
+        addBarContainer(category, formattedCatHours)
 
         for (type of categoryShifts.getTypes()) {
             const catTypeHours = categoryShifts.type(type).getTotalHours()
@@ -98,6 +101,14 @@ function updateProgressBars() {
             const formattedHours = timeFormatFromHours(catTypeHours, 2);
             addProgressBar(category, type, formattedHours, percent * 100);
         }
+    }
+}
+
+function updateCurrShiftLength() {
+    currShifts = records.getCurrShifts()
+    for (let shift of currShifts.shifts) {
+        const el = document.getElementById(shift.category + '-' + shift.type)
+        el.innerText = timeFormatFromHours(shift.getHours(), 2)
     }
 }
 
@@ -222,7 +233,13 @@ function addCurrShiftToDOM({ type, category }) {
     categorySpan.className = 'category';
     categorySpan.innerText = category;
 
-    div.append(typeSpan, ' for ', categorySpan);
+    const shiftLengthSpan = document.createElement('span');
+    shiftLengthSpan.className = 'shift-length';
+    shiftLengthSpan.innerText = '0 Seconds';
+    shiftLengthSpan.id = category + '-' + type;
+
+
+    div.append(typeSpan, ' for ', categorySpan, ' ', shiftLengthSpan);
 
     const btn = makeClockOutDropDown();
 
