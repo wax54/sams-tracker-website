@@ -1,6 +1,6 @@
 const BUTTONNOW = 'NOW';
 const BUTTON15AGO = '-15';
-
+const REFRESH_INTERVAL_MS = 1000;
 
 
 const records = new ShiftCollection();
@@ -25,7 +25,7 @@ retrieveRecords();
 
 //add an updator for the progress bars
 updateProgressBars();
-const updaterRef = setInterval(updateProgressBars, 6000);//every 30seconds*1000ms update the progress bars
+const updaterRef = setInterval(updateProgressBars, REFRESH_INTERVAL_MS);//every REFRESH_INTERVAL_MS ms update the progress bars
 
 //setup listeners
 document.getElementById('new-shift')
