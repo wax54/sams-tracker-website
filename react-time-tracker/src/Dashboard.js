@@ -1,8 +1,8 @@
 import React from 'react';
 const Dashboard = () => {
     return (
-    <div id = "hours-spent-dashboard" class= "jumbotron bg-light border m-3 p-4 rounded shadow  d-none d-md-block" >
-        <h1 class="display-4 text-center col-12 col-md-3 col-xl-12">
+    <div id="hours-spent-dashboard" className="jumbotron bg-light border m-3 p-4 rounded shadow  d-none d-md-block" >
+        <h1 className="display-4 text-center col-12 col-md-3 col-xl-12">
             Hours Spent In Last Week
         </h1>
     {/* <!-- < div class="row " >

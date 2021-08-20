@@ -1,3 +1,5 @@
+import { combineReducers } from "redux";
+import {Shift} from "../ShiftCollection";
 // EX
 // import { combineReducers } from "redux";
 // function planets(state = INITIAL_STATE, action) {
@@ -22,49 +24,30 @@
 //     planets,
 //     people,
 // });
-const INITIAL_STATE = {};
+const INITIAL_STATE = [];
 
-function shifts(state = INITIAL_STATE, action) {
-    let tempState;
-    let category;
-    let type;
-
+function shifts(shifts = INITIAL_STATE, action) {
+    let newShift;
     switch (action.type) {
         case "START_SHIFT":
-            tempState = {...state};
-            category = action.payload.category;
-            type = action.payload.type;
-            if(tempState[category]) {
-                if(tempState[category][type]) {
-                    temp = tempState[category][type];
-                    tempState[category][type] = [...temp, action.payload];
-                } else {
-                    tempState[category][type] = [action.payload];
-                }
-            } else {
-                tempState[category] = { [type]: [action.payload] };
-            }
-            return tempState;
+            newShift = new Shift(action.payload);
+            return [...shifts, newShift ];
 
         case "UPDATE_SHIFT":
-            tempState = {...state};
-            category = action.payload.category;
-            type = action.payload.type;
-            if (tempState[category][type]) {
-                const shiftIdx = tempState[category][type].findIndex(shift => shift.start.getTime() == action.payload.start.getTime());
-                if (shiftIdx === -1) {
-                    console.error("MAjoR ERRRO UPDATED A SHIFT THAT DOENS'T EXIST ( OR DATE COMPARE IS WEIRD")
-                    return null;
-                }
-                tempState[category][type][shiftIdx] = action.payload;
-            } else {
-                console.error("MAjoR ERRRO UPDATED A SHIFT THAT CAT AND TYPE DOENS'T EXIST")
-                return null;
-            }
-            return tempState;
+            newShift = new Shift(action.payload);
+            return shifts.map(shift => {
+                shift = new Shift(shift);
+                console.log('1', shift);
+                console.log('2', newShift);
+                return shift.equals(newShift, true) ?
+                    action.payload :
+                    shift
+            });
 
         default:
-            return state;
+            return shifts;
     }
 }
-export default shifts
+export default combineReducers({
+    shifts
+});
