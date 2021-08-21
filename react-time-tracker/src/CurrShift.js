@@ -11,16 +11,14 @@ const CurrShift = ({ shift }) => {
     const dispatch = useDispatch();
     const [duration, setDuration] = useState(shift.getFormattedDuration());
     useEffect(() => {
-        const intervalId = setInterval(() =>(
+        const intervalId = setInterval(() => (
             setDuration(shift.getFormattedDuration())
-        ), 1000 );
+        ), 1000);
         return () => clearInterval(intervalId);
-    } , [shift, setDuration]);
+    }, [shift, setDuration]);
 
     function clockOut(evt) {
-        console.log('clocking out!');
         const clockoutDuration = evt.target.dataset.reference;
-        console.log(clockoutDuration);
 
         if(clockoutDuration === NOW) {
             dispatch(endShift(shift));

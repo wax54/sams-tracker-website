@@ -37,8 +37,6 @@ function shifts(shifts = INITIAL_STATE, action) {
             newShift = new Shift(action.payload);
             return shifts.map(shift => {
                 shift = new Shift(shift);
-                console.log('1', shift);
-                console.log('2', newShift);
                 return shift.equals(newShift, true) ?
                     action.payload :
                     shift
