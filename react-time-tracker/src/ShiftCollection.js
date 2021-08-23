@@ -44,6 +44,7 @@ class Shift {
     }
 
     equals(test, strict=true) {
+        if(typeof test !== 'object') return false;
         if (this.category === test.category) {
             if (this.type === test.type) {
                 if (this.start.getTime() === test.start.getTime()) return true;

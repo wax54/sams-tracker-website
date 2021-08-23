@@ -18,17 +18,9 @@ const Dashboard = () => {
     }));
 
     const [currShifts, setCurrShifts] = useState(allShifts.getCurrShifts().shifts);
+
     
     useEffect(() => {
-        const newCurrShifts = allShifts.getCurrShifts().shifts;
-        const shiftsUpToDate = currShifts.every((shift, idx) => {
-            return shift.equals(newCurrShifts[idx])
-        })
-        if(!shiftsUpToDate) {
-            setCurrShifts(newCurrShifts);
-            return;
-        }
-
         const intervalIdArray = currShifts.map(shift => {
             return setInterval(() => {
                 setSeries(series => {
@@ -46,7 +38,17 @@ const Dashboard = () => {
         return () => 
             intervalIdArray.forEach(id => clearInterval(id));
     }, [currShifts, setSeries]);
-
+    
+    const newCurrShifts = allShifts.getCurrShifts().shifts;
+    const shiftsUpToDate = newCurrShifts.every((shift, idx) => {
+        return shift.equals(currShifts[idx]);
+    });
+    console.log(shiftsUpToDate);
+    if (!shiftsUpToDate) {
+        console.log("curr", currShifts, 'new', newCurrShifts);
+        setCurrShifts(newCurrShifts);
+        return;
+    }
     console.log(series);
     return (
     <div id="hours-spent-dashboard" className="jumbotron bg-light border m-3 p-4 rounded shadow  d-none d-md-block" >
