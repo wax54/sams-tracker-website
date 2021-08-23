@@ -2,8 +2,13 @@ const express = require("express");
 const ExpressError = require("./expressError");
 const path = require("path");
 
+const api = require("./api/Shifts");
+
 const app = express();
 // app.use(express.json());
+
+//handles react app homepage load 
+app.use('/api', api);
 
 //handles react app homepage load 
 app.use('/',express.static(path.join(__dirname, "..", "build")));

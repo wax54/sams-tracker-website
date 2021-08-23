@@ -13,10 +13,11 @@ const Dashboard = () => {
     const [series, setSeries] = useState(categories.map(category => {
         return {
             data: [allShifts.category(category).getTotalHours()],
-            name: category,
+            name: category
         }
     }));
 
+    
     const [currShifts, setCurrShifts] = useState(allShifts.getCurrShifts().shifts);
 
     
@@ -26,7 +27,7 @@ const Dashboard = () => {
                 setSeries(series => {
                     return series.map(data => {
                         if(data.name === shift.category) {
-                            data.data[0] += 4/60/60 //1 second / 60 secs in min / 60 mins in hour
+                            data.data[0] += 4/60/60 //4 second / 60 secs in min / 60 mins in hour
                             return {...data};
                         } else {
                             return data;
@@ -43,13 +44,21 @@ const Dashboard = () => {
     const shiftsUpToDate = newCurrShifts.every((shift, idx) => {
         return shift.equals(currShifts[idx]);
     });
-    console.log(shiftsUpToDate);
+    
     if (!shiftsUpToDate) {
-        console.log("curr", currShifts, 'new', newCurrShifts);
         setCurrShifts(newCurrShifts);
         return;
     }
-    console.log(series);
+
+    const displayCategory = (evt) => {
+        const pieSlice = evt.target.parentElement.parentElement;
+        console.log(pieSlice.classList);
+        const i = pieSlice.classList[1].replace("category-pie-chart-series-", "");
+        console.log(pieSlice.classList);
+
+        console.log(i);
+        console.log(series[+i])
+    }
     return (
     <div id="hours-spent-dashboard" className="jumbotron bg-light border m-3 p-4 rounded shadow  d-none d-md-block" >
         <h1 className="display-4 text-center col-12 col-md-3 col-xl-12">
@@ -58,15 +67,17 @@ const Dashboard = () => {
             <Chart width={600} height={250} series={series}>
                 <Transform method={['stackNormalized']}>
                     <Pies
+                        className='category-pie-chart'
                         colors='category10'
                         combined={true}
-                        innerRadius='10%'
-                        padAngle={0.025}
+                        innerRadius='20%'
+                        padAngle={0.015}
                         cornerRadius={5}
                         innerPadding={2}
                         pieAttributes={{
                             onMouseMove: (e) => e.target.style.opacity = 1,
-                            onMouseLeave: (e) => e.target.style.opacity = 0.5
+                            onMouseLeave: (e) => e.target.style.opacity = 0.5,
+                            onMouseUp: displayCategory
                         }}
                         pieStyle={{ opacity: 0.5 }}
                     />

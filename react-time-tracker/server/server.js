@@ -1,4 +1,4 @@
-/** Server startup for BizTime. */
+/** Server startup for TimeTracker. */
 
 
 const app = require("./app");
