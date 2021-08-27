@@ -11,65 +11,63 @@ const router = new express.Router();
 
 /** GET / => {shifts: [shift, ...]}  */
 
-router.get("/shifts", async function (req, res, next) {
+router.get("/", async function (req, res, next) {
     try {
-        const shifts = await Shift.findAll();
+        const page = req.body.page || 0; 
+        const shifts = await Shift.findAll(25, page);
         return res.json({ shifts });
     } catch (err) {
         return next(err);
     }
 });
 
-/** GET /[id]  => {book: book} */
+/** GET /[id]  => {shift: shift} */
 
 router.get("/:id", async function (req, res, next) {
     try {
-        const book = await Book.findOne(req.params.id);
-        return res.json({ book });
+        const shift = await Shift.findOne(req.params.id);
+        return res.json({ shift });
     } catch (err) {
         return next(err);
     }
 });
 
-/** POST /   bookData => {book: newBook}  */
+/** POST /   shiftData => {shift: newShift}  */
 
 router.post("/", async function (req, res, next) {
     try {
-        const bookData = req.body;
-        validateInput(bookData, newBookSchema);
+        const shiftData = req.body;
+        // validateInput(bookData, newBookSchema);
 
-        const book = await Book.create(bookData);
-        return res.status(201).json({ book });
-
-    } catch (err) {
-        if (err.code === "23505") {
-            err = new ExpressError("BOOK ALREADY EXISTS!", 400);
-        }
-        return next(err);
-    }
-});
-
-/** PUT /[isbn]   bookData => {book: updatedBook}  */
-
-router.put("/:isbn", async function (req, res, next) {
-    try {
-        const bookData = req.body;
-        validateInput(bookData, editBookSchema);
-
-        const book = await Book.update(req.params.isbn, req.body);
-        return res.json({ book });
+        const shift = await Shift.create(shiftData);
+        return res.status(201).json({ shift });
 
     } catch (err) {
         return next(err);
     }
 });
 
-/** DELETE /[isbn]   => {message: "Book deleted"} */
+/** PATCH /[id]   shiftData => {shift: updatedShift}  */
 
-router.delete("/:isbn", async function (req, res, next) {
+router.patch("/:id", async function (req, res, next) {
     try {
-        await Book.remove(req.params.isbn);
-        return res.json({ message: "Book deleted" });
+        const id = req.params.id;
+        const shiftData = req.body;
+        // validateInput(bookData, editBookSchema);
+        const shift = await Shift.update(id, shiftData);
+        return res.json({ shift });
+
+    } catch (err) {
+        return next(err);
+    }
+});
+
+/** DELETE /[id]   => {message: "Shift deleted"} */
+
+router.delete("/:id", async function (req, res, next) {
+    try {
+        await Shift.remove(req.params.id);
+        return res.json({ message: "Shift deleted" });
     } catch (err) {
         return next(err);
     }
