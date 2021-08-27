@@ -5,8 +5,8 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username TEXT,
-    password TEXT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
     join_at timestamp with time zone,
     last_login_at timestamp with time zone
 );

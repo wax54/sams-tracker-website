@@ -7,9 +7,10 @@ const SimpleForm = ( {className, INITIAL_STATE, onSubmit, submitText="Submit", e
     const handleChange = evt => setFormData(data => {
         return {...data, [evt.target.name] : evt.target.value}
     });
+    const resetForm = () => setFormData(INITIAL_STATE);
     const handleSubmit = evt => {
         evt.preventDefault(); 
-        onSubmit(formData);
+        onSubmit(formData, resetForm);
     };
     return (
         <form className={className} onSubmit={handleSubmit}>

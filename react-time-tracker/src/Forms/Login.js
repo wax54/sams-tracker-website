@@ -1,27 +1,28 @@
 import './Login.css';
 
-import React, { useContext, useState } from "react";
-import { useHistory } from "react-router";
-import UserContext from "../UserContext";
+import React, {useState} from "react";
+import {useDispatch} from 'react-redux';
+// import { useHistory } from "react-router";
+// import UserContext from "../UserContext";
+import { authorizeUser} from "../redux/actionCreators";
 import SimpleForm from "./SimpleForm";
 
 const LoginForm = () => {
-    const { loginUser } = useContext(UserContext);
-    const [ errors, setErrors] = useState([]);
-
-    const history = useHistory();
+    const dispatch = useDispatch(); 
+    const [errors, setErrors] = useState([]);
 
     const loginInputs = {
         username: "",
         password: ""
     }
 
-    const login = async ({ username, password }) => {
-        const res = await loginUser({ username, password });
-        if (res.status) {
-            history.push('/');
+    const login = async ({ username, password }, reset) => {
+        const result = await dispatch(authorizeUser({ username, password }));
+        if (result.status) {
+            reset();
+            alert(`logged In ${result.user.id}`);
         } else {
-            setErrors(res.errors);
+            setErrors([result.errors]);
         }
     }
 

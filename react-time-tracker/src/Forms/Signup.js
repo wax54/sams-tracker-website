@@ -1,34 +1,32 @@
 import './Signup.css';
 
-import React, { useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
-import UserContext from "../UserContext";
+import { useDispatch} from 'react-redux';
+import { registerUser } from "../redux/actionCreators";
+
+import React, { useState } from "react";
 import SimpleForm from "./SimpleForm";
 
-const SignupForm  = () => {
-    const [ errors, setErrors ] = useState([]);
-    const history = useHistory();
+const SignupForm = () => {
+    const dispatch = useDispatch();
+    const [errors, setErrors] = useState([]);
+
     
-    const { registerUser } = useContext(UserContext);
     const signupInputs = {
-        username : "",
-        password : "", 
-        firstName : "", 
-        lastName : "", 
-        email : ""
+        username: "",
+        password: ""
     }
 
-    const signup = async userData => {
-
-        
-        const res = await registerUser(userData);
-
-        if (res.status) {
-            history.push('/');
+    const signup = async ({ username, password }, reset) => {
+        const result = await dispatch(registerUser({ username, password }));
+        if(result.status) {
+            reset();
+            alert(`Registered ${result.user.id}`);
         } else {
-            setErrors(res.errors);
+            setErrors([result.errors]);
         }
+        
     }
+
 
     return <SimpleForm 
         className="Signup"

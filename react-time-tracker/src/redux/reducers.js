@@ -57,7 +57,11 @@ function errors(errors = ERRORS_INITIAL_STATE, action) {
 
         case "REMOVE_ERROR":
             //to be improved
-            return errors.filter(e => e.message !== payload.message)
+            return errors.filter(e => e.message !== action.payload.message);
+        
+        case "RESET_ERROR":
+        //to be improved
+        return ERRORS_INITIAL_STATE;
 
         default:
             return errors;

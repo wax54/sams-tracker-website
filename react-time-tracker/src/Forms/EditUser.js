@@ -14,9 +14,6 @@ const EditUserForm = () => {
     const history = useHistory();
 
     const updateUserInputs = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
         passwordVerification: ''
 
     }

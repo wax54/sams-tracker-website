@@ -15,7 +15,7 @@ const noSuchUserError = username => new ExpressError(`no such user: ${username}`
 class User {
 
   /** register new user -- returns
-   *    {username, password, first_name, last_name, phone}
+   *    {id, username, password, first_name, last_name, phone}
    */
 
   static async register({username, password}) { 
@@ -23,16 +23,15 @@ class User {
       const result = await db.query(
           `INSERT INTO 
           users(username, password, join_at, last_login_at)
-          VALUES($1, $2, $3, $4, $5, current_timestamp, current_timestamp)
-          RETURNING u_id, username, join_at`,
+          VALUES($1, $2, current_timestamp, current_timestamp)
+          RETURNING id, username, join_at`,
           [username, hashed]);
-
       return result.rows[0];
   }
 
   /** Authenticate: is this username/password valid? Returns boolean. */
 
-  static async authenticate(username, password) { 
+  static async authenticate({username, password}) { 
       const result = await db.query(`
         SELECT password FROM users 
         WHERE username=$1`, 
@@ -67,14 +66,14 @@ class User {
 
   /** Get: get user by username
    *
-   * returns {u_id,
+   * returns {id,
    *          username,
    *          join_at,
    *          last_login_at } */
 
   static async get(username) {
       const result = await db.query(`
-      SELECT u_id, username, join_at, last_login_at 
+      SELECT id, username, join_at, last_login_at 
       FROM users
       WHERE username=$1`,
       [username]);
@@ -84,8 +83,7 @@ class User {
 
   static async addShift(u_id, shift) {
     shift.u_id = u_id;
-    const shift = await Shift.create(shift);
-    return shift;
+    return await Shift.create(shift);
   }
 
   static async getAllShifts(u_id) {
