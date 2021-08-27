@@ -25,24 +25,19 @@ import {Shift} from "../ShiftCollection";
 //     planets,
 //     people,
 // });
-const SHIFTS_INITIAL_STATE = [];
+const SHIFTS_INITIAL_STATE = {};
 
 function shifts(shifts = SHIFTS_INITIAL_STATE, action) {
-    let newShift;
+    
     switch (action.type) {
         case "START_SHIFT":
-            newShift = new Shift(action.payload);
-            return [...shifts, newShift ];
+            const newShift = new Shift(action.payload);
+            return {...shifts, [newShift.id]: newShift };
 
         case "UPDATE_SHIFT":
-            newShift = new Shift(action.payload);
-            return shifts.map(shift => {
-                shift = new Shift(shift);
-                return shift.equals(newShift, true) ?
-                    action.payload :
-                    shift
-            });
-
+            const updatedShift = new Shift(action.payload);
+            return { ...shifts, [updatedShift.id]: updatedShift };
+            
         default:
             return shifts;
     }

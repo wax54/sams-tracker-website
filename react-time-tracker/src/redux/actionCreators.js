@@ -5,23 +5,37 @@ export function startShift(type, category) {
     return async function (dispatch) {
         const newShift = {start: new Date(), type, category};
         const resp = await UserApi.addShift(newShift);
-
-        dispatch({ type: "START_SHIFT", payload: newShift });
+        if (resp.status === true) {
+            dispatch({ type: "START_SHIFT", payload: resp.shift });
+            return true;
+        }
         if (resp.status === false) {
-            dispatch({ type: "ADD_SHIFT_TO_UPLOAD_QUEUE", payload: newShift })
+            console.error(resp.errors);
+            return false;
+            //TODO make a queue for failed shift uploads to be merged later
+            //dispatch({ type: "ADD_SHIFT_TO_UPLOAD_QUEUE", payload: newShift })
         }
     }
 
 }
 
 export function endShift(id) {
-    const end = new Date();
-    return clockOutAt(id, end);
+    const stop = new Date();
+    return clockOutAt(id, stop);
 }
 
-export function clockOutAt(id, end) {
-
-    return { type: "UPDATE_SHIFT", payload: {start, type, category, u_id, end} };
+export function clockOutAt(shiftId, stop) {
+    return async function(dispatch) {
+        const resp = await UserApi.clockOutShift(shiftId, stop);
+        if (resp.status === true) {
+            dispatch({ type: "UPDATE_SHIFT", payload: resp.shift });
+            return true;
+        }
+        if (resp.status === false) {
+            console.error(resp.errors);
+            return false;
+        }
+    }
 }
 
 export function resetErrors() {
@@ -30,7 +44,7 @@ export function resetErrors() {
 
 export function authorizeUser({ username, password }) {
     return async function (dispatch) {
-        const resp = UserApi.login({username, password});
+        const resp = await UserApi.login({username, password});
         if(resp.status === true)
             dispatch({ type: "SET_USER", payload: resp.user });
         return resp;
@@ -39,7 +53,7 @@ export function authorizeUser({ username, password }) {
 
 export function registerUser({ username, password }) {
     return async function (dispatch) {
-        const resp = UserApi.register({ username, password });
+        const resp = await UserApi.register({ username, password });
         if (resp.status === true)
             dispatch({ type: "SET_USER", payload: resp.user });
         return resp;

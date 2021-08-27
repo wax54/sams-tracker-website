@@ -9,6 +9,7 @@ const editShiftSchema = { ...newShiftSchema, "required": [] };
 const Shift = require('../models/Shift');
 const User = require('../models/User');
 const { ensureLoggedIn } = require("../middleware/auth");
+const { ForbiddenError, UnauthorizedError } = require("../defaultErrors");
 
 const router = new express.Router();
 
@@ -51,13 +52,16 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 
 /** PATCH /[id]   shiftData => {shift: updatedShift}  */
 
-router.patch("/:id", async function (req, res, next) {
+router.patch("/:id", ensureLoggedIn, async function (req, res, next) {
     try {
-        const id = req.params.id;
-        const shiftData = req.body;
-        validateInput(shiftData, editShiftSchema);
-        const shift = await Shift.update(id, shiftData);
-        return res.json({ shift });
+        const shiftId = +req.params.id;
+        const shift = await Shift.findOne(shiftId);
+        //not Authorized to edit this shift
+        if(shift['u_id'] !== res.locals.user.id) throw new UnauthorizedError();
+        const updatedShiftData = req.body.shift;
+        validateInput(updatedShiftData, editShiftSchema);
+        const updatedShift = await Shift.update(shiftId, updatedShiftData);
+        return res.json({ shift: updatedShift });
 
     } catch (err) {
         return next(err);
@@ -68,8 +72,12 @@ router.patch("/:id", async function (req, res, next) {
 
 router.delete("/:id", async function (req, res, next) {
     try {
-        await Shift.remove(req.params.id);
-        return res.json({ message: "Shift deleted" });
+        const id = req.params.id;
+        const shift = await Shift.findOne(id);
+        //not Authorized to edit this shift
+        if (shift['u_id'] !== res.locals.user.id) throw new UnauthorizedError();
+        await Shift.remove(id);
+        return res.json({ message: "Shift Deleted" });
     } catch (err) {
         return next(err);
     }

@@ -20,6 +20,7 @@ const LoginForm = () => {
         const result = await dispatch(authorizeUser({ username, password }));
         if (result.status) {
             reset();
+            setErrors([]);
             alert(`logged In ${result.user.id}`);
         } else {
             setErrors([result.errors]);

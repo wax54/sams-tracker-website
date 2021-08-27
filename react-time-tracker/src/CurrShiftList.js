@@ -5,7 +5,11 @@ import { Shift, ShiftCollection } from './ShiftCollection';
 
 const CurrShiftList = () => {
     let currShifts = useSelector(({ shifts }) => {
-        return shifts.filter((shift) => !shift.end)
+        const currShifts = [];
+        for(let key in shifts){
+            if(!shifts[key].stop) currShifts.push(shifts[key]);
+        }
+        return currShifts;
     });
     currShifts = currShifts.map(shift => new Shift(shift));
     return (

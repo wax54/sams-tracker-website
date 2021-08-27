@@ -8,17 +8,19 @@ class Shift {
      * @param { Date } start 
      * @param { string } type 
      * @param { string } category  
-     * @param { Date } end
+     * @param { Date } stop
      */
-    constructor({ start, type, category, end }) {
+    constructor({ start, type, category, stop, id, u_id }) {
+        this.id = id;
+        this["u_id"] = u_id;
         if (start instanceof Date) this.start = start;
         else this.start = new Date(start);
 
         this.type = type;
         this.category = category;
-        if (end) {
-            if (end instanceof Date) this.end = end;
-            else this.end = new Date(end);
+        if (stop) {
+            if (stop instanceof Date) this.stop = stop;
+            else this.stop = new Date(stop);
         }
     }
 
@@ -26,7 +28,7 @@ class Shift {
      * returns the duration in Milliseconds
      */
     duration() {
-        if (this.end) return this.end.getTime() - this.start.getTime();
+        if (this.stop) return this.stop.getTime() - this.start.getTime();
         else return new Date().getTime() - this.start.getTime();
     }
 
@@ -45,27 +47,32 @@ class Shift {
 
     equals(test, strict=true) {
         if(typeof test !== 'object') return false;
-        if (this.category === test.category) {
-            if (this.type === test.type) {
-                if (this.start.getTime() === test.start.getTime()) return true;
-                if (!strict) return true;
+        else if (this.id && test.id && strict) {
+            if(this.id === test.id) return true;
+            else return false; 
+        } else {
+            if (this.category === test.category) {
+                if (this.type === test.type) {
+                    if (this.start.getTime() === test.start.getTime()) return true;
+                    if (!strict) return true;
+                }
             }
+            return false;
         }
-        return false;
     }
 
     /**
-     * sets the end of the shift
+     * sets the stop of the shift
      *
-     * @param { Date } end the end Date/Time that this shift should end, if none
+     * @param { Date } stop the stop Date/Time that this shift should stop, if none
      *          specified it defaults to now.
      */
-    clockOut(end = new Date()) {
-        this.end = end;
+    clockOut(stop = new Date()) {
+        this.stop = stop;
     }
 
     /**
-     * ends the currents shift at splitDateTime and starts a new shift 
+     * stops the currents shift at splitDateTime and starts a new shift 
      *      at the same moment of the specified type and category
      * 
      * @param { Date } splitDateTime the time to clock out the original shift
@@ -74,7 +81,7 @@ class Shift {
      * @returns { Shift } returns the newly created shift 
      */
     splitShift(splitDateTime, type, category = this.category) {
-        const newShift = new Shift({start: splitDateTime, type, category, end: this.end})
+        const newShift = new Shift({start: splitDateTime, type, category, stop: this.stop})
         this.clockOut(splitDateTime);
         return newShift;
     }
@@ -197,7 +204,7 @@ class ShiftCollection {
     }
 
     getCurrShifts() {
-        return new ShiftCollection(...(this.shifts.filter((shift) => !shift.end)));
+        return new ShiftCollection(...(this.shifts.filter((shift) => !shift.stop)));
     }
 
     category(queryString) {

@@ -9,7 +9,7 @@
             "type": "coding",
             "category": "school",
             "start": "2021-08-23T17:37:29.178Z",
-            "end": "2021-08-23T20:37:29.178Z",
+            "stop": "2021-08-23T20:37:29.178Z",
             "u_id": 1
         }
     ],
@@ -55,10 +55,10 @@
                 "2021-08-23T20:37:29.178Z"
             ]
         },
-        "end": {
-            "$id": "#/properties/end",
+        "stop": {
+            "$id": "#/properties/stop",
             "type": "string",
-            "title": "The end schema",
+            "title": "The stop schema",
             "description": "The end date-time of the shift",
             "default": "",
             "format": "date-time",

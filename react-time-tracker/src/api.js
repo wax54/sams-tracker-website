@@ -1,3 +1,4 @@
+import axios from "axios";
 class UserApi {
     static token = "";
 
@@ -30,6 +31,15 @@ class UserApi {
             return { status: false, errors };
         }
     }
+    static async clockOutShift(id, time) {
+        try {
+            const resp = await axios.patch(`/api/shifts/${id}`, { shift:{stop: time}, token: this.token });
+            return { status: true, shift: resp.data.shift };
+        } catch (e) {
+            const errors = getMessagesFromErrorRes(e);
+            return { status: false, errors };
+        }
+    }
 }
 
 function getMessagesFromErrorRes(e) {
@@ -40,4 +50,4 @@ function getMessagesFromErrorRes(e) {
     } else return ["DB CONNECTION ERROR"];
 }
 
-module.exports = UserApi;
+export default UserApi;

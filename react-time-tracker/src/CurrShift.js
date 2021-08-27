@@ -21,13 +21,13 @@ const CurrShift = ({ shift }) => {
         const clockoutDuration = evt.target.dataset.reference;
 
         if(clockoutDuration === NOW) {
-            dispatch(endShift(shift));
+            dispatch(endShift(shift.id));
         } else if (clockoutDuration === FIFTEEN_AGO) {
             const clockOut = minsFrom(-15); //-15 minutes from now
-            dispatch(clockOutAt(shift, clockOut));
+            dispatch(clockOutAt(shift.id, clockOut));
         }else {
             console.error("ERROR ", clockoutDuration);
-            dispatch(endShift(shift));
+            dispatch(endShift(shift.id));
         }
     }
     return (

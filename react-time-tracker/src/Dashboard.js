@@ -1,25 +1,32 @@
 import React, {useState, useEffect, useRef} from 'react'; 
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { Chart, Pies, Transform } from 'rumble-charts';
-import { ShiftCollection } from './ShiftCollection';
+import { Shift, ShiftCollection } from './ShiftCollection';
 
 const Dashboard = () => {
-    const allShifts = useSelector(({ shifts }) => {
-        return new ShiftCollection(...shifts);
-    });
+    const allShifts = useSelector(({ shifts }) => shifts, shallowEqual);
+    const shiftsByCategory = {};
+    const currShifts = [];
+    for(let key in allShifts) {
 
-    const categories = allShifts.getCategories();
+        const shift = new Shift(allShifts[key]);
+        if(!shift.stop) currShifts.push(shift);
+        if(shiftsByCategory[shift.category]){
+            shiftsByCategory[shift.category].add(shift);
+        } else {
+            shiftsByCategory[shift.category] = new ShiftCollection(shift);
+        }
+    }
 
-    const [series, setSeries] = useState(categories.map(category => {
+
+    const [series, setSeries] = useState(Object.keys(shiftsByCategory).map(category => {
         return {
-            data: [allShifts.category(category).getTotalHours()],
+            data: [shiftsByCategory[category].getTotalHours()],
             name: category
         }
     }));
 
     
-    const [currShifts, setCurrShifts] = useState(allShifts.getCurrShifts().shifts);
-
     
     useEffect(() => {
         const intervalIdArray = currShifts.map(shift => {
@@ -38,17 +45,8 @@ const Dashboard = () => {
         });
         return () => 
             intervalIdArray.forEach(id => clearInterval(id));
-    }, [currShifts, setSeries]);
+    }, [allShifts, setSeries]);
     
-    const newCurrShifts = allShifts.getCurrShifts().shifts;
-    const shiftsUpToDate = newCurrShifts.every((shift, idx) => {
-        return shift.equals(currShifts[idx]);
-    });
-    
-    if (!shiftsUpToDate) {
-        setCurrShifts(newCurrShifts);
-        return;
-    }
 
     const displayCategory = (evt) => {
         const pieSlice = evt.target.parentElement.parentElement;

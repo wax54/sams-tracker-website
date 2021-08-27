@@ -11,7 +11,10 @@ function App() {
   const user = useSelector(({user})=> user);
   return (
     <div className="App">
-      <h1>{Object.keys(user).map(key => user[key])}</h1>
+      {user ? 
+        <h1> HELLO {user.username} </h1> :
+        <h1>PLEASE LOGIN</h1>
+      }
       <LoginForm />
       <SignupForm />
       <NavBar />

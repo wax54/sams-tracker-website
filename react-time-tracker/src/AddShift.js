@@ -4,8 +4,12 @@ import { startShift } from "./redux/actionCreators";
 import InputAlert from "./InputAlert";
 
 const AddShift = () => {
-    const currShifts = useSelector(({ shifts }) => {
-        return shifts.filter((shift) => !shift.end);
+    let currShifts = useSelector(({ shifts }) => {
+        const currShifts = [];
+        for (let key in shifts) {
+            if (!shifts[key].stop) currShifts.push(shifts[key]);
+        }
+        return currShifts;
     });
     
     const INIT = {type: "", category: ""};
