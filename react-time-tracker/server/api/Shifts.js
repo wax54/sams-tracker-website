@@ -5,15 +5,16 @@ const ExpressError = require("../expressError");
 // const newShiftSchema = require("../schemas/book/newBookValidation.json");
 // const editShiftSchema = { ...newBookSchema, "required": [] };
 // const Book = require("../models/book");
+const Shift = require('../Shift');
 
 const router = new express.Router();
 
-/** GET / => {books: [book, ...]}  */
+/** GET / => {shifts: [shift, ...]}  */
 
 router.get("/shifts", async function (req, res, next) {
     try {
-        const books = await Book.findAll(req.query);
-        return res.json({ books });
+        const shifts = await Shift.findAll();
+        return res.json({ shifts });
     } catch (err) {
         return next(err);
     }

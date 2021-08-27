@@ -1,4 +1,4 @@
-const db = require("../db");
+const db = require("./db");
 
 const emptyResult = res => res.rows.length === 0;
 
@@ -96,17 +96,17 @@ class Shift {
         return result.rows[0];
     }
 
-    /** remove shift with matching isbn. Returns undefined. */
+    /** remove shift with matching id. Returns undefined. */
 
-    static async remove(isbn) {
+    static async remove(id) {
         const result = await db.query(
             `DELETE FROM shifts 
-         WHERE isbn = $1 
-         RETURNING isbn`,
-            [isbn]);
+         WHERE id = $1 
+         RETURNING id`,
+            [id]);
 
-        if (result.rows.length === 0) {
-            throw { message: `There is no shift with an isbn '${isbn}`, status: 404 }
+        if (emptyResult(result)) {
+            throw { message: `There is no shift with an id '${id}`, status: 404 }
         }
     }
 }
