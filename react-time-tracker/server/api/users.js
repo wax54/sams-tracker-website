@@ -5,6 +5,8 @@ const ExpressError = require("../expressError");
 
 // const newShiftSchema = require("../schemas/newShiftValidation.json");
 // // const editShiftSchema = { ...newShiftSchema, "required": [] };
+
+const { makeToken } = require("../helpers");
 const User = require('../models/User');
 
 const router = new express.Router();
@@ -17,7 +19,8 @@ router.post("/login", async function (req, res, next) {
         const valid_user = await User.authenticate({username, password});
         if(valid_user) {
             const user = await User.get(username);
-            res.json({ user });
+            const token = makeToken({id: user.id});
+            res.json({ user, token });
             await User.updateLoginTimestamp(username);
         } else {
             throw new ExpressError(`Invalid Credentials!`, 401);
@@ -33,7 +36,8 @@ router.post("/register", async function (req, res, next) {
     try {
         const { username, password } = req.body;
         const user = await User.register({username, password});
-        return res.json({ user });
+        const token = makeToken({ id: user.id });
+        return res.json({ user, token });
     } catch (err) {
         return next(err);
     }

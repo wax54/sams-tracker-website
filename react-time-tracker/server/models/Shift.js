@@ -73,7 +73,7 @@ class Shift {
             `INSERT INTO shifts 
             (start, stop, category, type, u_id) 
             VALUES ($1, $2, $3, $4, $5) 
-            RETURNING id, start, stop, category, type`
+            RETURNING id, start, stop, category, type, u_id`
             ,[data.start, data.stop, data.category, data.type, data.u_id]
         );
         return result.rows[0];

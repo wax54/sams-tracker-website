@@ -48,23 +48,25 @@ function shifts(shifts = SHIFTS_INITIAL_STATE, action) {
     }
 }
 
-const ERRORS_INITIAL_STATE = [];
+const QUEUE_INITIAL_STATE = [];
 
-function errors(errors = ERRORS_INITIAL_STATE, action) {
+function shiftQueue(shifts = QUEUE_INITIAL_STATE, action) {
     switch (action.type) {
-        case "ADD_ERROR":
-            return [...errors, action.payload];
+        case "ADD_SHIFT_TO_UPLOAD_QUEUE":
+            return [...shifts, action.payload];
 
-        case "REMOVE_ERROR":
+        case "REMOVE_SHIFT_FROM_UPLOAD_QUEUE":
             //to be improved
-            return errors.filter(e => e.message !== action.payload.message);
+            return shifts.filter(s => s.type !== action.payload.type ||
+                    s.category !== action.payload.category ||
+                    s.start !== action.payload.start);
         
-        case "RESET_ERROR":
+        case "RESET_UPLOAD_QUEUE":
         //to be improved
-        return ERRORS_INITIAL_STATE;
+        return [...QUEUE_INITIAL_STATE];
 
         default:
-            return errors;
+            return shifts;
     }
 }
 
@@ -84,5 +86,5 @@ function user(user = USER_INITIAL_STATE, action) {
 export default combineReducers({
     shifts,
     user,
-    errors
+    shiftQueue
 });

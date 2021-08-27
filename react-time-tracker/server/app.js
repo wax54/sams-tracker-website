@@ -4,11 +4,13 @@ const path = require("path");
 
 const shiftsApi = require("./api/shifts");
 const usersApi = require("./api/users");
+const { authenticateJWT } = require("./middleware/auth");
 
 const app = express();
-app.use(express.json());
 
 //handles API requests first
+app.use(express.json());
+app.use(authenticateJWT);
 app.use('/api/shifts', shiftsApi);
 app.use('/api/users', usersApi);
 

@@ -11,4 +11,5 @@ if (process.env.NODE_ENV === "test") {
 
 const BCRYPT_WORK_FACTOR = 12;
 
-module.exports = { DB_URI, BCRYPT_WORK_FACTOR };
+const SECRET_KEY = ENV.SECRET_KEY || "SUPER SECRET TEST KEY";
+module.exports = { DB_URI, BCRYPT_WORK_FACTOR, SECRET_KEY };

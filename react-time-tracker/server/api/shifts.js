@@ -7,6 +7,8 @@ const jsonschema = require("jsonschema");
 const newShiftSchema = require("../schemas/newShiftValidation.json");
 const editShiftSchema = { ...newShiftSchema, "required": [] };
 const Shift = require('../models/Shift');
+const User = require('../models/User');
+const { ensureLoggedIn } = require("../middleware/auth");
 
 const router = new express.Router();
 
@@ -33,13 +35,13 @@ router.get("/:id", async function (req, res, next) {
     }
 });
 
-/** POST /   shiftData => {shift: newShift}  */
+/** POST /   {shift: shiftData} => {shift: newShift}  */
 
-router.post("/", async function (req, res, next) {
+router.post("/", ensureLoggedIn, async function (req, res, next) {
     try {
-        const shiftData = req.body;
+        const shiftData = req.body.shift;
         validateInput(shiftData, newShiftSchema);
-        const shift = await Shift.create(shiftData);
+        const shift = await User.addShift(res.locals.user.id, shiftData);
         return res.status(201).json({ shift });
 
     } catch (err) {
