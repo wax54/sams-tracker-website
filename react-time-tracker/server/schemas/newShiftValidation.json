@@ -1,0 +1,70 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "/schemas/newShiftValidation.json",
+    "type": "object",
+    "title": "Shift",
+    "default": {},
+    "examples": [
+        {
+            "type": "coding",
+            "category": "school",
+            "start": "2021-08-23T17:37:29.178Z",
+            "end": "2021-08-23T20:37:29.178Z"
+        }
+    ],
+    "required": [
+        "type",
+        "category",
+        "start"
+    ],
+    "properties": {
+        "type": {
+            "$id": "#/properties/type",
+            "type": "string",
+            "title": "The type schema",
+            "description": "The type aspect of a shift. The activity being performed",
+            "default": "",
+            "examples": [
+                "coding",
+                "walking",
+                "watching videos",
+                "folding laundry"
+            ]
+        },
+        "category": {
+            "$id": "#/properties/category",
+            "type": "string",
+            "title": "The category schema",
+            "description": "The category the shift belongs to",
+            "default": "",
+            "examples": [
+                "school",
+                "work",
+                "My Well Being"
+            ]
+        },
+        "start": {
+            "$id": "#/properties/start",
+            "type": "string",
+            "title": "The start schema",
+            "description": "The start date-time of the shift",
+            "default": "",
+            "format": "date-time",
+            "examples": [
+                "2021-08-23T20:37:29.178Z"
+            ]
+        },
+        "end": {
+            "$id": "#/properties/end",
+            "type": "string",
+            "title": "The end schema",
+            "description": "The end date-time of the shift",
+            "default": "",
+            "format": "date-time",
+            "examples": [
+                "2021-08-23T20:37:29.178Z"
+            ]
+        }
+    },
+    "additionalProperties": false
+}

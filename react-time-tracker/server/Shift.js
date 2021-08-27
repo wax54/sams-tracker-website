@@ -50,7 +50,6 @@ class Shift {
      * */
 
     static async create(data) {
-        console.log(data);
         if(!data.stop){
             data.stop = null;
         }

@@ -1,10 +1,11 @@
 const express = require("express");
 
 const ExpressError = require("../expressError");
-// const jsonschema = require("jsonschema");
-// const newShiftSchema = require("../schemas/book/newBookValidation.json");
-// const editShiftSchema = { ...newBookSchema, "required": [] };
+const jsonschema = require("jsonschema");
 // const Book = require("../models/book");
+
+const newShiftSchema = require("../schemas/newShiftValidation.json");
+const editShiftSchema = { ...newShiftSchema, "required": [] };
 const Shift = require('../Shift');
 
 const router = new express.Router();
@@ -37,8 +38,7 @@ router.get("/:id", async function (req, res, next) {
 router.post("/", async function (req, res, next) {
     try {
         const shiftData = req.body;
-        // validateInput(bookData, newBookSchema);
-
+        validateInput(shiftData, newShiftSchema);
         const shift = await Shift.create(shiftData);
         return res.status(201).json({ shift });
 
@@ -53,7 +53,7 @@ router.patch("/:id", async function (req, res, next) {
     try {
         const id = req.params.id;
         const shiftData = req.body;
-        // validateInput(bookData, editBookSchema);
+        validateInput(shiftData, editShiftSchema);
         const shift = await Shift.update(id, shiftData);
         return res.json({ shift });
 
@@ -73,14 +73,14 @@ router.delete("/:id", async function (req, res, next) {
     }
 });
 
-// const validateInput = (data, schema) => {
-//     const verify = jsonschema.validate(data, schema);
-//     if (!verify.valid) {
-//         const errors = verify.errors.map(e => e.stack);
-//         throw new ExpressError(errors, 400);
-//     }
-//     else {
-//         return true;
-//     }
-// };
+const validateInput = (data, schema) => {
+    const verify = jsonschema.validate(data, schema);
+    if (!verify.valid) {
+        const errors = verify.errors.map(e => e.stack);
+        throw new ExpressError(errors, 400);
+    }
+    else {
+        return true;
+    }
+};
 module.exports = router
