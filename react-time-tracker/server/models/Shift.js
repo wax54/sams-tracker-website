@@ -1,4 +1,4 @@
-const db = require("./db");
+const db = require("../db");
 
 const emptyResult = res => res.rows.length === 0;
 
@@ -7,13 +7,13 @@ const emptyResult = res => res.rows.length === 0;
 class Shift {
     /** given an id, return shift data with that id:
      *
-     * => {id, start, stop, category, type}
+     * => {id, start, stop, category, type, u_id}
      *
      **/
 
     static async findOne(id) {
         const shiftRes = await db.query(
-            `SELECT id, start, stop, category, type
+            `SELECT id, start, stop, category, type, u_id
             FROM shifts 
             WHERE id = $1`, [id]);
 
@@ -26,24 +26,40 @@ class Shift {
 
     /** Return array of shift data:
      *
-     * => [ {isbn, amazon_url, author, language,
-     *       pages, publisher, title, year}, ... ]
+     * => [ {id, start, stop, type, category, u_id}, ... ]
      *
      * */
 
     static async findAll(limit=25, page=0) {
         const shiftsRes = await db.query(
-            `SELECT id, start, stop, category, type
+            `SELECT id, start, stop, category, type, u_id
             FROM shifts
             ORDER BY start
             LIMIT $1
-            OFFSET $2`, [limit, page*limit]);
+            OFFSET $2`, [ limit, (page*limit)]);
+        return shiftsRes.rows;
+    }
+    /** Return array of shift data:
+ *
+ * => [ {id, start, stop, type, category}, ... ]
+ *
+ * */
+
+    static async findAllByUser(u_id, limit = 25, page = 0) {
+        const shiftsRes = await db.query(
+            `SELECT id, start, stop, category, type
+            FROM shifts
+            ORDER BY start
+            WHERE u_id = $1
+            LIMIT $2
+            OFFSET $3`, [u_id, limit, (page * limit)]);
         return shiftsRes.rows;
     }
 
+
     /** create shift in database from data, return shift data:
      *
-     * {start, stop, category, type}
+     * {start, stop, category, type, u_id}
      *
      * => {id, start, stop, category, type}
      *
@@ -55,26 +71,25 @@ class Shift {
         }
         const result = await db.query(
             `INSERT INTO shifts 
-            (start, stop, category, type) 
-            VALUES ($1, $2, $3, $4) 
+            (start, stop, category, type, u_id) 
+            VALUES ($1, $2, $3, $4, $5) 
             RETURNING id, start, stop, category, type`
-            ,[data.start, data.stop, data.category, data.type]
+            ,[data.start, data.stop, data.category, data.type, data.u_id]
         );
         return result.rows[0];
     }
 
     /** Update data with matching ID to data, return updated shift.
   
-     * id, {start || stop || category || type }
+     * id, {start || stop || category || type } % all others ignored %
      *
-     * => {id, start, stop, category, type}
+     * => {id, start, stop, category, type, u_id}
      *
      * */
 
     static async update(id, data) {
         const shift = await Shift.findOne(id);
-        if(data.id)
-            delete data.id
+
         data = { ...shift, ...data };
         const result = await db.query(
             `UPDATE shifts SET 
@@ -83,7 +98,7 @@ class Shift {
             category=($3),
             type=($4)
             WHERE id=$5
-        RETURNING id, start, stop, category, type`,
+        RETURNING id, start, stop, category, type, u_id`,
             [
                 data.start, data.stop, data.category, data.type, id
             ]

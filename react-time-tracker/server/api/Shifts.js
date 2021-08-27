@@ -6,7 +6,7 @@ const jsonschema = require("jsonschema");
 
 const newShiftSchema = require("../schemas/newShiftValidation.json");
 const editShiftSchema = { ...newShiftSchema, "required": [] };
-const Shift = require('../Shift');
+const Shift = require('../models/Shift');
 
 const router = new express.Router();
 
