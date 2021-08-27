@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SimpleForm Tests matchesSnapshot 1`] = `
+<DocumentFragment>
+  <form
+    class="testForm"
+  >
+    <div>
+      <label
+        for="testInput"
+      >
+         testInput: 
+      </label>
+      <input
+        id="testInput"
+        name="testInput"
+        type="text"
+        value=""
+      />
+    </div>
+    <button>
+      Test Submit
+    </button>
+  </form>
+</DocumentFragment>
+`;

@@ -9,7 +9,8 @@
             "type": "coding",
             "category": "school",
             "start": "2021-08-23T17:37:29.178Z",
-            "end": "2021-08-23T20:37:29.178Z"
+            "end": "2021-08-23T20:37:29.178Z",
+            "u_id": 1
         }
     ],
     "required": [
@@ -63,6 +64,16 @@
             "format": "date-time",
             "examples": [
                 "2021-08-23T20:37:29.178Z"
+            ]
+        },
+        "u_id": {
+            "$id": "#/properties/u_id",
+            "type": "number",
+            "title": "The user_id schema",
+            "description": "the id the represents who owns the shift",
+            "default": "",
+            "examples": [
+                1,2,3
             ]
         }
     },

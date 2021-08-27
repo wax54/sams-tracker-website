@@ -24,7 +24,7 @@ class User {
           `INSERT INTO 
           users(username, password, join_at, last_login_at)
           VALUES($1, $2, $3, $4, $5, current_timestamp, current_timestamp)
-          RETURNING username, password, join_at`,
+          RETURNING u_id, username, join_at`,
           [username, hashed]);
 
       return result.rows[0];
@@ -67,7 +67,8 @@ class User {
 
   /** Get: get user by username
    *
-   * returns {username,
+   * returns {u_id,
+   *          username,
    *          join_at,
    *          last_login_at } */
 

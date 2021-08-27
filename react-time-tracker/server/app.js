@@ -2,13 +2,16 @@ const express = require("express");
 const ExpressError = require("./expressError");
 const path = require("path");
 
-const shiftsApi = require("./api/Shifts");
+const shiftsApi = require("./api/shifts");
+const usersApi = require("./api/users");
 
 const app = express();
 app.use(express.json());
 
-//handles react app homepage load 
-app.use('/api/shifts/', shiftsApi);
+//handles API requests first
+app.use('/api/shifts', shiftsApi);
+app.use('/api/users', usersApi);
+
 
 //handles react app homepage load 
 app.use('/',express.static(path.join(__dirname, "..", "build")));
