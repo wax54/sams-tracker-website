@@ -23,16 +23,17 @@ class UserApi {
         }
     }
     static async getShifts() {
+        if(!this.token) return { status: false, errors: ["USER NOT LOGGED IN"] };
         try {
             const shifts = [];
             let resp;
             let page = 0;
             do {
-                resp = await axios.get("/api/users/shifts", { params:{token: this.token, page }});
-                shifts.push(resp.data.shifts)
+                resp = await axios.post("/api/users/shifts", { token: this.token, page });
+                shifts.push(...resp.data.shifts)
                 page++;
             } while (resp.data.shifts.length);
-            
+
             return { status: true, shifts };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);

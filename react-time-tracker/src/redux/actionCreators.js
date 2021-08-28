@@ -22,7 +22,7 @@ export function refreshShifts() {
     return async function (dispatch) {
         const resp = await UserApi.getShifts();
         if (resp.status === true) {
-            dispatch({ type: "LOAD_SHIFT", payload: resp.shifts });
+            dispatch({ type: "LOAD_SHIFTS", payload: resp.shifts });
             return true;
         }
         if (resp.status === false) {
@@ -48,6 +48,8 @@ export function clockOutAt(shiftId, stop) {
             return true;
         }
         if (resp.status === false) {
+            //TODO effect the change on client side and 
+            //  queue up the shift to be updated on next refresh
             console.error(resp.errors);
             return false;
         }

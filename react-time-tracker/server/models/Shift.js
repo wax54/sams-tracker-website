@@ -49,8 +49,8 @@ class Shift {
         const shiftsRes = await db.query(
             `SELECT id, start, stop, category, type
             FROM shifts
-            ORDER BY start
             WHERE u_id = $1
+            ORDER BY start
             LIMIT $2
             OFFSET $3`, [u_id, limit, (page * limit)]);
         return shiftsRes.rows;
@@ -88,7 +88,7 @@ class Shift {
      * */
 
     static async update(id, data) {
-        const shift = await Shift.findOne(id);
+        const shift = await Shift.get(id);
 
         data = { ...shift, ...data };
         const result = await db.query(

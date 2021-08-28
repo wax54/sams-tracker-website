@@ -3,11 +3,13 @@ import NavBar from './NavBar';
 import Header from './Header';
 import Dashboard from './Dashboard';
 import { useDispatch, useSelector } from 'react-redux';
-import { authorizeUser } from './redux/actionCreators';
+import { authorizeUser, refreshShifts } from './redux/actionCreators';
 import LoginForm from './Forms/Login';
 import SignupForm from './Forms/Signup';
 
 function App() {
+  const dispatch = useDispatch();
+  dispatch(refreshShifts());
   const user = useSelector(({user})=> user);
   return (
     <div className="App">

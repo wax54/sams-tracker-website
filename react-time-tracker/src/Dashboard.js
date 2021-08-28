@@ -25,7 +25,7 @@ const Dashboard = () => {
     }))
     const [series, setSeries] = useState(makeSeries());
 
-    
+    console.log(series);
     useEffect(()=> {
         setSeries(makeSeries());
     }, [allShifts, setSeries]);

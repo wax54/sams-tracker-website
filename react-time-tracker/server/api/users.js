@@ -7,6 +7,7 @@ const ExpressError = require("../expressError");
 // // const editShiftSchema = { ...newShiftSchema, "required": [] };
 
 const { makeToken } = require("../helpers");
+const { ensureLoggedIn } = require("../middleware/auth");
 const User = require('../models/User');
 
 const router = new express.Router();
@@ -43,9 +44,9 @@ router.post("/register", async function (req, res, next) {
     }
 });
 
-router.get("/shifts", async function (req, res, next) {
+router.post("/shifts", ensureLoggedIn, async function (req, res, next) {
     try {
-        const page = req.query.page || 0;
+        const page = req.body.page || 0;
         const shifts = await User.getAllShifts(res.locals.user.id, page);
         return res.json({ shifts });
     } catch (err) {
