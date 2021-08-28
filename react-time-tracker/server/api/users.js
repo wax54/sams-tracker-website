@@ -43,4 +43,13 @@ router.post("/register", async function (req, res, next) {
     }
 });
 
+router.get("/shifts", async function (req, res, next) {
+    try {
+        const page = req.query.page || 0;
+        const shifts = await User.getAllShifts(res.locals.user.id, page);
+        return res.json({ shifts });
+    } catch (err) {
+        return next(err);
+    }
+});
 module.exports = router;

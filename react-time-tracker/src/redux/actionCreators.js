@@ -16,8 +16,24 @@ export function startShift(type, category) {
             //dispatch({ type: "ADD_SHIFT_TO_UPLOAD_QUEUE", payload: newShift })
         }
     }
-
 }
+
+export function refreshShifts() {
+    return async function (dispatch) {
+        const resp = await UserApi.getShifts();
+        if (resp.status === true) {
+            dispatch({ type: "LOAD_SHIFT", payload: resp.shifts });
+            return true;
+        }
+        if (resp.status === false) {
+            console.error(resp.errors);
+            return false;
+            //TODO make a queue for failed shift uploads to be merged later
+            //dispatch({ type: "ADD_SHIFT_TO_UPLOAD_QUEUE", payload: newShift })
+        }
+    }
+}
+
 
 export function endShift(id) {
     const stop = new Date();

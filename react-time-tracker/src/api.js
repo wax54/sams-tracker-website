@@ -22,6 +22,23 @@ class UserApi {
             return { status: false, errors };
         }
     }
+    static async getShifts() {
+        try {
+            const shifts = [];
+            let resp;
+            let page = 0;
+            do {
+                resp = await axios.get("/api/users/shifts", { params:{token: this.token, page }});
+                shifts.push(resp.data.shifts)
+                page++;
+            } while (resp.data.shifts.length);
+            
+            return { status: true, shifts };
+        } catch (e) {
+            const errors = getMessagesFromErrorRes(e);
+            return { status: false, errors };
+        }
+    }
     static async addShift(shift) {
         try {
             const resp = await axios.post("/api/shifts/", {shift, token: this.token});

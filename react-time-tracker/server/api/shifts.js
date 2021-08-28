@@ -17,8 +17,8 @@ const router = new express.Router();
 
 router.get("/", async function (req, res, next) {
     try {
-        const page = req.body.page || 0; 
-        const shifts = await Shift.findAll(25, page);
+        const page = req.query.page || 0; 
+        const shifts = await Shift.getAll(page, 25);
         return res.json({ shifts });
     } catch (err) {
         return next(err);
@@ -29,7 +29,7 @@ router.get("/", async function (req, res, next) {
 
 router.get("/:id", async function (req, res, next) {
     try {
-        const shift = await Shift.findOne(req.params.id);
+        const shift = await Shift.get(req.params.id);
         return res.json({ shift });
     } catch (err) {
         return next(err);
@@ -55,7 +55,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 router.patch("/:id", ensureLoggedIn, async function (req, res, next) {
     try {
         const shiftId = +req.params.id;
-        const shift = await Shift.findOne(shiftId);
+        const shift = await Shift.get(shiftId);
         //not Authorized to edit this shift
         if(shift['u_id'] !== res.locals.user.id) throw new UnauthorizedError();
         const updatedShiftData = req.body.shift;
@@ -73,7 +73,7 @@ router.patch("/:id", ensureLoggedIn, async function (req, res, next) {
 router.delete("/:id", async function (req, res, next) {
     try {
         const id = req.params.id;
-        const shift = await Shift.findOne(id);
+        const shift = await Shift.get(id);
         //not Authorized to edit this shift
         if (shift['u_id'] !== res.locals.user.id) throw new UnauthorizedError();
         await Shift.remove(id);

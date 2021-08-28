@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'; 
+import React, {useState, useEffect, useRef, useCallback} from 'react'; 
 import { shallowEqual, useSelector } from 'react-redux';
 import { Chart, Pies, Transform } from 'rumble-charts';
 import { Shift, ShiftCollection } from './ShiftCollection';
@@ -8,7 +8,6 @@ const Dashboard = () => {
     const shiftsByCategory = {};
     const currShifts = [];
     for(let key in allShifts) {
-
         const shift = new Shift(allShifts[key]);
         if(!shift.stop) currShifts.push(shift);
         if(shiftsByCategory[shift.category]){
@@ -18,16 +17,18 @@ const Dashboard = () => {
         }
     }
 
-
-    const [series, setSeries] = useState(Object.keys(shiftsByCategory).map(category => {
+    const makeSeries = useCallback(() => Object.keys(shiftsByCategory).map(category => {
         return {
             data: [shiftsByCategory[category].getTotalHours()],
             name: category
         }
-    }));
+    }))
+    const [series, setSeries] = useState(makeSeries());
 
     
-    
+    useEffect(()=> {
+        setSeries(makeSeries());
+    }, [allShifts, setSeries]);
     useEffect(() => {
         const intervalIdArray = currShifts.map(shift => {
             return setInterval(() => {

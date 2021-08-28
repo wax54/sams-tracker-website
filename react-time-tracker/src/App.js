@@ -11,7 +11,7 @@ function App() {
   const user = useSelector(({user})=> user);
   return (
     <div className="App">
-      {user ? 
+      {user.id ? 
         <h1> HELLO {user.username} </h1> :
         <h1>PLEASE LOGIN</h1>
       }

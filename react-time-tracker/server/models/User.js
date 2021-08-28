@@ -86,8 +86,8 @@ class User {
     return await Shift.create(shift);
   }
 
-  static async getAllShifts(u_id) {
-    return await Shift.getAllByUser(u_id);
+  static async getAllShifts(u_id, page, limit) {
+    return await Shift.getAllByUser(u_id, page, limit);
   }
   static async getShift(shiftId, u_id=0) {
     const shift = await Shift.get(shiftId);

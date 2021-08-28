@@ -11,7 +11,7 @@ class Shift {
      *
      **/
 
-    static async findOne(id) {
+    static async get(id) {
         const shiftRes = await db.query(
             `SELECT id, start, stop, category, type, u_id
             FROM shifts 
@@ -30,7 +30,7 @@ class Shift {
      *
      * */
 
-    static async findAll(limit=25, page=0) {
+    static async getAll(page = 0,limit = 25 ) {
         const shiftsRes = await db.query(
             `SELECT id, start, stop, category, type, u_id
             FROM shifts
@@ -45,7 +45,7 @@ class Shift {
  *
  * */
 
-    static async findAllByUser(u_id, limit = 25, page = 0) {
+    static async getAllByUser(u_id, page = 0,limit = 25) {
         const shiftsRes = await db.query(
             `SELECT id, start, stop, category, type
             FROM shifts
