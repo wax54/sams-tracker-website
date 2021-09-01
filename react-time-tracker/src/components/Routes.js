@@ -4,6 +4,8 @@ import Home from './scenes/Home';
 import Login from './forms/Login';
 import Signup from './forms/Signup';
 import Profile from "./Profile";
+import SetGoals from "./forms/SetGoals";
+import EditShifts from "./forms/EditShifts";
 
 function Routes() {
     return (
@@ -13,6 +15,8 @@ function Routes() {
             <Route exact path="/login"> <Login /> </Route>
             <Route exatc path="/signup"> <Signup /> </Route>
             <Route exact path="/profile"> <Profile /> </Route>
+            <Route exact path="/set-goals"> <SetGoals /> </Route>
+            <Route exact path="/edit-shifts"> <EditShifts /> </Route>
             <Route exact path="/"> <Home /> </Route>
             <Redirect to="/" />
         </Switch>
