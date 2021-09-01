@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { BrowserRouter } from 'react-router-dom'
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { store, persistedStore } from "./redux/store"
@@ -12,7 +13,9 @@ const index = (
 <React.StrictMode>
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistedStore}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </PersistGate>
   </Provider>
 </React.StrictMode>

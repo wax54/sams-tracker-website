@@ -16,6 +16,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.2.1",
     "react-scripts": "4.0.3",
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
@@ -26,6 +28,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start-server": "nodemon server/server.js",
+    "build-and-start": "npm run build && npm run start-server",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

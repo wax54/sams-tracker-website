@@ -1,27 +1,19 @@
 import './App.css';
+import React, { useEffect } from 'react';
 import NavBar from './NavBar';
-import Header from './Header';
-import Dashboard from './Dashboard';
-import { useDispatch, useSelector } from 'react-redux';
-import { authorizeUser, refreshShifts } from './redux/actionCreators';
-import LoginForm from './Forms/Login';
-import SignupForm from './Forms/Signup';
-
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { refreshShifts } from './redux/actionCreators';
+import Routes from './Routes';
 function App() {
-  const dispatch = useDispatch();
-  dispatch(refreshShifts());
-  const user = useSelector(({user})=> user);
+  const user = useSelector(({user})=> user, shallowEqual);
   return (
     <div className="App">
       {user.id ? 
         <h1> HELLO {user.username} </h1> :
         <h1>PLEASE LOGIN</h1>
       }
-      <LoginForm />
-      <SignupForm />
       <NavBar />
-      <Header />
-      <Dashboard />
+      <Routes />
     </div>
   );
 }

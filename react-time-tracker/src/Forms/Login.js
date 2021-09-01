@@ -6,8 +6,10 @@ import {useDispatch} from 'react-redux';
 // import UserContext from "../UserContext";
 import { authorizeUser} from "../redux/actionCreators";
 import SimpleForm from "./SimpleForm";
+import { useHistory } from 'react-router';
 
 const LoginForm = () => {
+    const history = useHistory();
     const dispatch = useDispatch(); 
     const [errors, setErrors] = useState([]);
 
@@ -22,6 +24,7 @@ const LoginForm = () => {
             reset();
             setErrors([]);
             alert(`logged In ${result.user.id}`);
+            history.push('/');
         } else {
             setErrors([result.errors]);
         }

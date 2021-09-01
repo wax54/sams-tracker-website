@@ -1,6 +1,5 @@
-import axios from "axios";
 import UserApi from "../api";
-
+/** SHIFTS */
 export function startShift(type, category) {
     return async function (dispatch) {
         const newShift = {start: new Date(), type, category};
@@ -18,7 +17,11 @@ export function startShift(type, category) {
     }
 }
 
-export function refreshShifts() {
+export function resetShifts() {
+    return { type: "RESET_SHIFTS" };
+}
+
+export function loadShifts() {
     return async function (dispatch) {
         const resp = await UserApi.getShifts();
         if (resp.status === true) {
@@ -34,7 +37,16 @@ export function refreshShifts() {
     }
 }
 
+export function refreshShifts() {
+    return async function (dispatch) {
+        dispatch(resetShifts());
+        return await dispatch(loadShifts());
+    }
+}
 
+export function updateShift(shift) {
+    return { type: "UPDATE_SHIFT", payload: shift };
+}
 export function endShift(id) {
     const stop = new Date();
     return clockOutAt(id, stop);
@@ -44,7 +56,7 @@ export function clockOutAt(shiftId, stop) {
     return async function(dispatch) {
         const resp = await UserApi.clockOutShift(shiftId, stop);
         if (resp.status === true) {
-            dispatch({ type: "UPDATE_SHIFT", payload: resp.shift });
+            dispatch(updateShift(resp.shift));
             return true;
         }
         if (resp.status === false) {
@@ -56,15 +68,21 @@ export function clockOutAt(shiftId, stop) {
     }
 }
 
+/** ERRORS (depreciated) */
 export function resetErrors() {
     return { type: "RESET_ERRORS" };
+}
+/** Users */
+export function setUser(userData) {
+    return { type: "SET_USER", payload: userData };
 }
 
 export function authorizeUser({ username, password }) {
     return async function (dispatch) {
         const resp = await UserApi.login({username, password});
         if(resp.status === true)
-            dispatch({ type: "SET_USER", payload: resp.user });
+            dispatch(setUser(resp.user));
+            dispatch(refreshShifts());
         return resp;
     }
 }
@@ -73,7 +91,8 @@ export function registerUser({ username, password }) {
     return async function (dispatch) {
         const resp = await UserApi.register({ username, password });
         if (resp.status === true)
-            dispatch({ type: "SET_USER", payload: resp.user });
+            dispatch(setUser(resp.user));
+            dispatch(resetShifts());
         return resp;
     }
 }

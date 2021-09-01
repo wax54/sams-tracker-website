@@ -6,6 +6,13 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import thunk from "redux-thunk";
 import root from "./reducers";
 import { createStore, applyMiddleware } from "redux";
+
+/**TODO 
+ * UPDATE SHIFT STORAGE FROM API ON INIT LOAD.
+ * 
+ * ALREADY UPDATES SHIFTS ON USER AUTH 
+ */
+
 //merges the initial state with the incoming state with a shallow merge
 //reset everytime for testing
 localStorage.clear();

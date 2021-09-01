@@ -40,7 +40,8 @@ function shifts(shifts = SHIFTS_INITIAL_STATE, action) {
         case "UPDATE_SHIFT":
             const updatedShift = new Shift(action.payload);
             return { ...shifts, [updatedShift.id]: updatedShift };
-            
+        case "RESET_SHIFTS":
+            return SHIFTS_INITIAL_STATE;
         default:
             return shifts;
     }

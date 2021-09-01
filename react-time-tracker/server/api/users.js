@@ -40,6 +40,7 @@ router.post("/register", async function (req, res, next) {
         const token = makeToken({ id: user.id });
         return res.json({ user, token });
     } catch (err) {
+        if (err.code === "23505") return next(new ExpressError(`Username Already Exists!`, 409));
         return next(err);
     }
 });
