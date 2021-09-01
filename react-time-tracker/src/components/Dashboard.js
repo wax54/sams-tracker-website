@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react'; 
 import { shallowEqual, useSelector } from 'react-redux';
 import { Chart, Pies, Transform } from 'rumble-charts';
-import { Shift, ShiftCollection } from './ShiftCollection';
+import { Shift, ShiftCollection } from '../models/ShiftCollection';
 
 const Dashboard = () => {
     const allShifts = useSelector(({ shifts }) => shifts, shallowEqual);

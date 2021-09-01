@@ -10,10 +10,10 @@ const NavBar = () => {
             </button>
             <div className="collapse navbar-collapse navbar-nav text-center justify-content-between mx-3" id="navLinks">
 
-                <NavLink exact to="/" className="nav-item nav-link active">Home</NavLink>
+                <NavLink exact to="/" className="nav-item nav-link">Home</NavLink>
                 <NavLink exact to="/login" className="nav-item nav-link">Login</NavLink>
-                <NavLink exact to="/signup" className="nav-item nav-link active">Sign Up</NavLink>
-                <NavLink exact to="/profile" className="nav-item nav-link active">Profile</NavLink>
+                <NavLink exact to="/signup" className="nav-item nav-link">Sign Up</NavLink>
+                <NavLink exact to="/profile" className="nav-item nav-link">Profile</NavLink>
                 {/* <!-- <a href="#" class="nav-item nav-link ">Modify Shifts</a>
                 <a href="#" class="nav-item nav-link">Set Goals</a> --> */}
                 {/* <!-- <a href="all-hours.html" class="nav-item nav-link">See Stats</a> --> */}

@@ -1,9 +1,9 @@
 import './App.css';
 import React, { useEffect } from 'react';
-import NavBar from './NavBar';
+import NavBar from '../NavBar';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { refreshShifts } from './redux/actionCreators';
-import Routes from './Routes';
+import { refreshShifts } from '../../models/redux/actionCreators';
+import Routes from '../Routes';
 function App() {
   const user = useSelector(({user})=> user, shallowEqual);
   return (

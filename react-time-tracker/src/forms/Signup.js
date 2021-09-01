@@ -1,7 +1,7 @@
 import './Signup.css';
 
 import { useDispatch} from 'react-redux';
-import { registerUser } from "../redux/actionCreators";
+import { registerUser } from "../../redux/actionCreators";
 
 import React, { useState } from "react";
 import SimpleForm from "./SimpleForm";

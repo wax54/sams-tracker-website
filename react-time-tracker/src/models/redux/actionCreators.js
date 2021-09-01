@@ -1,4 +1,4 @@
-import UserApi from "../api";
+import UserApi from "../Api";
 /** SHIFTS */
 export function startShift(type, category) {
     return async function (dispatch) {

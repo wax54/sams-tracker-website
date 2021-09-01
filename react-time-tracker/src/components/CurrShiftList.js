@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import CurrShift from './CurrShift';
-import { Shift, ShiftCollection } from './ShiftCollection';
+import { Shift, ShiftCollection } from '../models/ShiftCollection';
 
 const CurrShiftList = () => {
     let currShifts = useSelector(({ shifts }) => {
