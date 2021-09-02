@@ -49,7 +49,7 @@ class UserApi {
             let resp;
             let page = 0;
             do {
-                resp = await axios.post(API_URL + "/users/shifts", { token: this.token, page });
+                resp = await axios.post(API_URL + "/users/shifts", {token: this.token, page} );
                 shifts.push(...resp.data.shifts)
                 page++;
             } while (resp.data.shifts.length);
@@ -73,6 +73,15 @@ class UserApi {
         try {
             const resp = await axios.patch(API_URL + `/shifts/${id}`, { shift:{stop: time}, token: this.token });
             return { status: true, shift: resp.data.shift };
+        } catch (e) {
+            const errors = getMessagesFromErrorRes(e);
+            return { status: false, errors };
+        }
+    }
+    static async deleteShift(id) {
+        try {
+            const resp = await axios.delete(API_URL + `/shifts/${id}`, { data:{ token: this.token }});
+            return { status: true };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);
             return { status: false, errors };

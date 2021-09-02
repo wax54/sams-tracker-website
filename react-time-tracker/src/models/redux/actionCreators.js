@@ -68,6 +68,22 @@ export function clockOutAt(shiftId, stop) {
     }
 }
 
+export function deleteShift(shiftId) {
+    return async function (dispatch) {
+        const resp = await UserApi.deleteShift(shiftId);
+        if (resp.status === true) {
+            dispatch({ type: "DELETE_SHIFT", shiftId: shiftId });
+            return true;
+        }
+        if (resp.status === false) {
+            //TODO effect the change on client side and 
+            //  queue up the shift to be updated on next refresh
+            console.error(resp.errors);
+            return false;
+        }
+    }
+}
+
 /** ERRORS (depreciated) */
 export function resetErrors() {
     return { type: "RESET_ERRORS" };
