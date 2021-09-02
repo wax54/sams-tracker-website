@@ -15,7 +15,7 @@ import { createStore, applyMiddleware } from "redux";
 
 //merges the initial state with the incoming state with a shallow merge
 //reset everytime for testing
-localStorage.clear();
+// localStorage.clear();
 const persistConfig = {
     key: "root",
     storage,

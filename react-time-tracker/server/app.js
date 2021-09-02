@@ -11,9 +11,17 @@ const app = express();
 //handles API requests first
 app.use(express.json());
 app.use(authenticateJWT);
+//pass CORS perflight policies when cross origin during dev
+if (process.env.NODE_ENV !== "production") {
+    app.use((req, res, next) => {
+        res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+        res.set('Access-Control-Allow-Headers', 'Content-type');
+        // res.set('Content-Type', 'text/html');
+        next();
+    });
+}
 app.use('/api/shifts', shiftsApi);
 app.use('/api/users', usersApi);
-
 
 //handles react app homepage load 
 app.use('/',express.static(path.join(__dirname, "..", "build")));

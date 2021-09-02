@@ -14,6 +14,7 @@ function App() {
       }
       <NavBar />
       <Routes />
+      <h3>Footer</h3>
     </div>
   );
 }

@@ -14,9 +14,9 @@ const NavBar = () => {
                 <NavLink exact to="/login" className="nav-item nav-link">Login</NavLink>
                 <NavLink exact to="/signup" className="nav-item nav-link">Sign Up</NavLink>
                 <NavLink exact to="/profile" className="nav-item nav-link">Profile</NavLink>
-                {/* <!-- <a href="#" class="nav-item nav-link ">Modify Shifts</a>
-                <a href="#" class="nav-item nav-link">Set Goals</a> --> */}
-                {/* <!-- <a href="all-hours.html" class="nav-item nav-link">See Stats</a> --> */}
+                <NavLink exact to="/edit-shifts" className="nav-item nav-link">Modify Shifts</NavLink>
+                <NavLink exact to="/set-goals" className="nav-item nav-link">Set Goals</NavLink>
+                {/* <a href="all-hours.html" class="nav-item nav-link">See Stats</a> */}
 
             </div>
         </div>

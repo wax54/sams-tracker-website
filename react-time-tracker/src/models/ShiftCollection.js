@@ -90,9 +90,23 @@ class Shift {
 
 
 class ShiftCollection {
+    static SORT_PARAMS = {
+        START: "start",
+        STOP: "stop",
+        CATEGORY: "category",
+        TYPE: "type",
+        ID: "id",
+        UID: "u_id"
+    };
+
     constructor(...newShifts) {
         this.shifts = [];
         this.add(...newShifts);
+    }
+
+    shiftsBy(sortParam=ShiftCollection.SORT_PARAMS.START) {
+        const shifts = [...this.shifts];
+        return this.shifts.sort((shift1, shift2) => shift1[sortParam] - shift2[sortParam]);
     }
 
     toString() {

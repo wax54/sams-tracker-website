@@ -1,10 +1,19 @@
 import axios from "axios";
+
+let API_URL;
+if(process.env.NODE_ENV !== "production") {
+    //set the API to call port 5000 if not in productions
+    API_URL = "http://localhost:5000/api";
+} else {
+    //if in production, call the api endpoint of itself
+    API_URL = "/api";
+}
 class UserApi {
     static token = "";
 
     static async login({username, password}) {
         try {
-            const resp = await axios.post("/api/users/login", { username, password });
+            const resp = await axios.post(API_URL + "/users/login", { username, password });
             this.token = resp.data.token;
             return { status: true, user: resp.data.user };
         } catch (e) {
@@ -14,7 +23,7 @@ class UserApi {
     }
     static async register({username, password}) {
         try {
-            const resp = await axios.post("api/users/register", { username, password });
+            const resp = await axios.post(API_URL + "/users/register", { username, password });
             this.token = resp.data.token;
             return { status: true, user: resp.data.user };
         } catch (e) {
@@ -29,7 +38,7 @@ class UserApi {
             let resp;
             let page = 0;
             do {
-                resp = await axios.post("/api/users/shifts", { token: this.token, page });
+                resp = await axios.post(API_URL + "/users/shifts", { token: this.token, page });
                 shifts.push(...resp.data.shifts)
                 page++;
             } while (resp.data.shifts.length);
@@ -42,7 +51,7 @@ class UserApi {
     }
     static async addShift(shift) {
         try {
-            const resp = await axios.post("/api/shifts/", {shift, token: this.token});
+            const resp = await axios.post(API_URL + "/shifts/", {shift, token: this.token});
             return { status: true, shift: resp.data.shift };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);
@@ -51,7 +60,7 @@ class UserApi {
     }
     static async clockOutShift(id, time) {
         try {
-            const resp = await axios.patch(`/api/shifts/${id}`, { shift:{stop: time}, token: this.token });
+            const resp = await axios.patch(API_URL + `/shifts/${id}`, { shift:{stop: time}, token: this.token });
             return { status: true, shift: resp.data.shift };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);
