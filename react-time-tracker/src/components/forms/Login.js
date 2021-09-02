@@ -23,7 +23,6 @@ const LoginForm = () => {
         if (result.status) {
             reset();
             setErrors([]);
-            alert(`logged In ${result.user.id}`);
             history.push('/');
         } else {
             setErrors([result.errors]);

@@ -9,10 +9,12 @@ class Shift {
      * @param { string } type 
      * @param { string } category  
      * @param { Date } stop
+     * @param { Number } id
+     * @param { Number } u_id
      */
     constructor({ start, type, category, stop, id, u_id }) {
         this.id = id;
-        this["u_id"] = u_id;
+        this.u_id = u_id;
         if (start instanceof Date) this.start = start;
         else this.start = new Date(start);
 

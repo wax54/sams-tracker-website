@@ -16,6 +16,7 @@ if (process.env.NODE_ENV !== "production") {
     app.use((req, res, next) => {
         res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
         res.set('Access-Control-Allow-Headers', 'Content-type');
+        res.set('Access-Control-Allow-Methods', '*');
         // res.set('Content-Type', 'text/html');
         next();
     });

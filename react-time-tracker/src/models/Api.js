@@ -8,13 +8,23 @@ if(process.env.NODE_ENV !== "production") {
     //if in production, call the api endpoint of itself
     API_URL = "/api";
 }
+const userPersist = {
+    get: function () {
+        return localStorage.USERTOKEN || "";
+    },
+    set: function (token) {
+        return localStorage.USERTOKEN = token;
+    }
+}
+
 class UserApi {
-    static token = "";
+    static token = userPersist.get();
 
     static async login({username, password}) {
         try {
             const resp = await axios.post(API_URL + "/users/login", { username, password });
             this.token = resp.data.token;
+            userPersist.set(this.token);
             return { status: true, user: resp.data.user };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);
@@ -25,6 +35,7 @@ class UserApi {
         try {
             const resp = await axios.post(API_URL + "/users/register", { username, password });
             this.token = resp.data.token;
+            userPersist.set(this.token);
             return { status: true, user: resp.data.user };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);
