@@ -98,7 +98,9 @@ class ShiftCollection {
         CATEGORY: "category",
         TYPE: "type",
         ID: "id",
-        UID: "u_id"
+        UID: "u_id",
+        ASCENDING: "ascending",
+        DESCENDING: "descending"
     };
 
     constructor(...newShifts) {
@@ -106,9 +108,13 @@ class ShiftCollection {
         this.add(...newShifts);
     }
 
-    shiftsBy(sortParam=ShiftCollection.SORT_PARAMS.START) {
+    shiftsBy(sortParam = ShiftCollection.SORT_PARAMS.START, direction = ShiftCollection.SORT_PARAMS.DESCENDING) {
         const shifts = [...this.shifts];
-        return this.shifts.sort((shift1, shift2) => shift1[sortParam] - shift2[sortParam]);
+        if(direction === ShiftCollection.SORT_PARAMS.ASCENDING)
+            return shifts.sort((shift1, shift2) => shift1[sortParam] > shift2[sortParam] ? 1 : -1);
+        else {
+            return shifts.sort((shift1, shift2) => shift2[sortParam] > shift1[sortParam] ? 1 : -1);
+        }
     }
 
     toString() {

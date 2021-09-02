@@ -6,7 +6,7 @@ const EditShifts = () => {
     //shifts looks like {1: {id, start, stop, type, category, u_id}, ...}
     const shifts = useSelector(({shifts}) => shifts, shallowEqual);
     const allShifts = new ShiftCollection(...Object.values(shifts));
-
+    const sort = ShiftCollection.SORT_PARAMS;
     return (
         <table>
             <thead>
@@ -20,7 +20,7 @@ const EditShifts = () => {
                 </tr>
             </thead>
             <tbody>
-                {allShifts.shiftsBy(ShiftCollection.SORT_PARAMS.START)
+                {allShifts.shiftsBy(sort.STOP, sort.DESCENDING)
                     .map(shift => 
                         <ShiftRow shift={shift} key={shift.id} />
                 )}
