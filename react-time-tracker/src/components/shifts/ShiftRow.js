@@ -9,7 +9,7 @@ const ShiftRow = ({ shift }) => {
     const [style, setStyle] = useState({});
     const { start, stop, category, type, id } = shift;
     const dispatch = useDispatch();
-
+    const duration = shift.getFormattedDuration();
     const remove = () => {
         dispatch(deleteShift(id));
     };
@@ -52,7 +52,7 @@ const ShiftRow = ({ shift }) => {
                 onChange={updateStart} 
             />
             </td>
-            <td>- {shift.getFormattedDuration()} -</td>
+            <td>- {duration} -</td>
             <td>
             {stop ?
                 <DateTimeInput

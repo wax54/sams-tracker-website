@@ -14,7 +14,9 @@ const ClockOutButton = ({ shiftId }) => {
         if (clockoutDuration === NOW) {
             dispatch(endShift(shiftId));
         } else if (clockoutDuration === FIFTEEN_AGO) {
+            
             const clockOut = minsFrom(-15); //-15 minutes from now
+            console.log(clockOut);
             dispatch(clockOutAt(shiftId, clockOut));
         } else {
             console.error("ERROR ", clockoutDuration);

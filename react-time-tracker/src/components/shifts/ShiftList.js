@@ -21,7 +21,7 @@ const ShiftList = () => {
                 </tr>
             </thead>
             <tbody>
-                {allShifts.shiftsBy(sort.STOP, sort.DESCENDING)
+                {allShifts.shiftsBy(sort.START, sort.DESCENDING)
                     .map(shift => 
                         <ShiftRow shift={shift} key={shift.id} />
                 )}
