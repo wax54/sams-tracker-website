@@ -19,3 +19,10 @@ CREATE TABLE shifts (
     type TEXT,
     u_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE goals (
+    category TEXT PRIMARY KEY,
+    type TEXT PRIMARY KEY,
+    seconds_per_day INTEGER,
+    u_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
