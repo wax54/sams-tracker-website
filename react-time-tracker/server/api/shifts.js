@@ -5,7 +5,10 @@ const jsonschema = require("jsonschema");
 // const Book = require("../models/book");
 
 const newShiftSchema = require("../schemas/newShiftValidation.json");
-const editShiftSchema = { ...newShiftSchema, "required": [] };
+const editShiftSchema = {
+    ...newShiftSchema, 
+    "required": [],
+    "additionalProperties": true};
 const Shift = require('../models/Shift');
 const User = require('../models/User');
 const { ensureLoggedIn } = require("../middleware/auth");
@@ -59,6 +62,7 @@ router.patch("/:id", ensureLoggedIn, async function (req, res, next) {
         //not Authorized to edit this shift
         if(shift['u_id'] !== res.locals.user.id) throw new UnauthorizedError();
         const updatedShiftData = req.body.shift;
+        console.log("updated data", updatedShiftData);
         validateInput(updatedShiftData, editShiftSchema);
         const updatedShift = await Shift.update(shiftId, updatedShiftData);
         return res.json({ shift: updatedShift });

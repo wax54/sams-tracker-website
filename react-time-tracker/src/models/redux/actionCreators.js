@@ -47,13 +47,30 @@ export function refreshShifts() {
 export function updateShift(shift) {
     return { type: "UPDATE_SHIFT", payload: shift };
 }
+
+export function updateAShift(shift) {
+    return async function (dispatch) {
+        const resp = await UserApi.updateShift(shift.id, shift);
+        if (resp.status === true) {
+            dispatch(updateShift(resp.shift));
+            return true;
+        }
+        if (resp.status === false) {
+            //TODO effect the change on client side and 
+            //  queue up the shift to be updated on next refresh
+            console.error(resp.errors);
+            return false;
+        }
+    }
+}
+
 export function endShift(id) {
     const stop = new Date();
     return clockOutAt(id, stop);
 }
 
 export function clockOutAt(shiftId, stop) {
-    return async function(dispatch) {
+    return async function (dispatch) {
         const resp = await UserApi.clockOutShift(shiftId, stop);
         if (resp.status === true) {
             dispatch(updateShift(resp.shift));

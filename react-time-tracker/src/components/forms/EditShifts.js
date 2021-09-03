@@ -13,8 +13,8 @@ const EditShifts = () => {
                 <tr>
                     <th>Type</th>
                     <th>Category</th>
-                    <th>Time Spent</th>
                     <th>Start</th>
+                    <th>Time Spent</th>
                     <th>End</th>
                     <th>Delete</th>
                 </tr>

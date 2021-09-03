@@ -69,6 +69,16 @@ class UserApi {
             return { status: false, errors };
         }
     }
+    static async updateShift(id, shift) {
+        try {
+            console.log(shift);
+            const resp = await axios.patch(API_URL + `/shifts/${id}`, { shift, token: this.token });
+            return { status: true, shift: resp.data.shift };
+        } catch (e) {
+            const errors = getMessagesFromErrorRes(e);
+            return { status: false, errors };
+        }
+    }
     static async clockOutShift(id, time) {
         try {
             const resp = await axios.patch(API_URL + `/shifts/${id}`, { shift:{stop: time}, token: this.token });
