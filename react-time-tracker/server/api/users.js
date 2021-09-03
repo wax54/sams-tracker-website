@@ -9,6 +9,7 @@ const ExpressError = require("../expressError");
 const { makeToken } = require("../helpers");
 const { ensureLoggedIn } = require("../middleware/auth");
 const User = require('../models/User');
+const Goal = require('../models/Goal');
 
 const router = new express.Router();
 
@@ -50,6 +51,16 @@ router.post("/shifts", ensureLoggedIn, async function (req, res, next) {
         const page = req.body.page || 0;
         const shifts = await User.getAllShifts(res.locals.user.id, page);
         return res.json({ shifts });
+    } catch (err) {
+        return next(err);
+    }
+});
+
+router.post("/goals", ensureLoggedIn, async function (req, res, next) {
+    try {
+        const goals = await Goal.getAll(res.locals.user.id);
+        console.log(goals);
+        return res.json({ goals });
     } catch (err) {
         return next(err);
     }

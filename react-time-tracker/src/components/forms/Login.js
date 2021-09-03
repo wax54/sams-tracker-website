@@ -21,7 +21,8 @@ const LoginForm = () => {
     const login = async ({ username, password }, reset) => {
         const result = await dispatch(authorizeUser({ username, password }));
         if (result.status) {
-            reset();
+            //caused a memory leak because the login form was usually gone by the time it updated
+            //reset();
             setErrors([]);
             history.push('/');
         } else {

@@ -11,9 +11,8 @@ const { ensureLoggedIn } = require("../middleware/auth");
 const { ForbiddenError, UnauthorizedError } = require("../defaultErrors");
 
 const router = new express.Router();
-router.use(ensureLoggedIn);
 
-router.get("/", async function (req, res, next) {
+router.get("/", ensureLoggedIn, async function (req, res, next) {
     try {
         const goals = await Goal.getAll(res.locals.user.id);
         return res.json({ goals });
@@ -26,7 +25,7 @@ router.get("/", async function (req, res, next) {
  * post /goals/ goal:{ type, category, seconds_per_day } 
  *                  =>  {goal: {type, category, seconds_per_day, u_id}}
  */
-router.post("/", async function (req, res, next) {
+router.post("/", ensureLoggedIn, async function (req, res, next) {
     try {
         const {type, category, seconds_per_day} = req.body.goal;
         const u_id = res.locals.user.id;
@@ -43,7 +42,7 @@ router.post("/", async function (req, res, next) {
  * patch /goals/:category/:type goal:{ seconds_per_day } 
  *                  =>  {goal: {type, category, seconds_per_day, u_id}}
  */
-router.patch("/:category/:type", async function (req, res, next) {
+router.patch("/:category/:type", ensureLoggedIn, async function (req, res, next) {
     try {
         const { type, category } = req.params;
         const updatedSeconds = req.body.goal;
@@ -60,7 +59,7 @@ router.patch("/:category/:type", async function (req, res, next) {
  * delete /goals/:category/:type  
  *                  =>  {deleted: true} or {deleted: false}
  */
-router.delete("/:category/:type", async function (req, res, next) {
+router.delete("/:category/:type", ensureLoggedIn, async function (req, res, next) {
     try {
         const { type, category } = req.params;
         const u_id = res.locals.user.id;
@@ -71,5 +70,15 @@ router.delete("/:category/:type", async function (req, res, next) {
     }
 });
 
+const validateInput = (data, schema) => {
+    const verify = jsonschema.validate(data, schema);
+    if (!verify.valid) {
+        const errors = verify.errors.map(e => e.stack);
+        throw new ExpressError(errors, 400);
+    }
+    else {
+        return true;
+    }
+};
 
 module.exports = router;

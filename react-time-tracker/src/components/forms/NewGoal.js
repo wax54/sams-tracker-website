@@ -1,14 +1,15 @@
 import React from "react";
-import { useSelector, shallowEqual } from "react-redux";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { useFormFields } from "../../helpers/hooks";
+import { addGoal } from "../../models/redux/actionCreators";
 import { ShiftCollection } from "../../models/ShiftCollection";
 
 
-const DOING_ANYTHING_KEY = "doing anything in the whole world";
-const NEW_THING_KEY = "a whole new thing";
+export const DOING_ANYTHING_KEY = "doing anything in the whole world";
+export const NEW_THING_KEY = "a whole new thing";
 
 const NewGoal = ({ timeFrame }) => {
-    
+    const dispatch = useDispatch();
     // const [newestGoal, setNewestGoal] = useState(5);
     const shifts = useSelector(({ shifts }) => shifts, shallowEqual);
     const allShifts = new ShiftCollection(...Object.values(shifts));
@@ -19,10 +20,19 @@ const NewGoal = ({ timeFrame }) => {
         type: DOING_ANYTHING_KEY,
         category: allShifts.getCategories()[0]
     });
-    const handleSubmit = evt => {
+    const handleSubmit = async evt => {
         evt.preventDefault();
-        data.hours = +data.hours;
-        console.log(data);
+        let { category, type, hours } = data;
+        hours = +hours;
+        const seconds = 60 * 60 * hours;//60 seconds in min * 60 mins in hour
+        const seconds_per_day = Math.floor(seconds / timeFrame.val); // if day, val is 1, if week val is 7
+        const newGoal = {
+            type,
+            category,
+            seconds_per_day
+        }
+        console.log(newGoal);
+        await dispatch(addGoal(newGoal));
         //TODO dispatch new Goal Event
         resetForm();
     }
@@ -36,7 +46,7 @@ const NewGoal = ({ timeFrame }) => {
                 value={data.hours}
                 onChange={handleChange}
             />
-            <label htmlFor="hours">{data.hours} Hours {timeFrame} </label> 
+            <label htmlFor="hours">{data.hours} Hours {timeFrame.title} </label> 
             <select id="type" name="type" value={data.type} onChange={handleChange}>
                 <option value={DOING_ANYTHING_KEY}>
                     Doing Anything

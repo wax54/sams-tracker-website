@@ -49,6 +49,30 @@ function shifts(shifts = SHIFTS_INITIAL_STATE, action) {
             return shifts;
     }
 }
+const GOALS_INITIAL_STATE = [];
+
+function goals(goals = GOALS_INITIAL_STATE, action) {
+    switch (action.type) {
+        case "ADD_GOAL":
+            return [ ...goals, action.payload ];
+        case "LOAD_GOALS":
+            console.log(action.payload);
+            return [...goals, ...action.payload ];
+        case "UPDATE_GOAL":
+            const nGoal = action.payload
+            return goals.map(goal => (goal.type === nGoal.type && 
+                                    goal.category === nGoal.category) ? 
+                            nGoal : goal);
+        case "DELETE_GOAL":
+            const seeking = action.payload
+            return goals.filter(goal => !(goal.type === seeking.type &&
+                goal.category === seeking.category));
+        case "RESET_GOALS":
+            return GOALS_INITIAL_STATE;
+        default:
+            return goals;
+    }
+}
 
 const QUEUE_INITIAL_STATE = [];
 
@@ -88,5 +112,6 @@ function user(user = USER_INITIAL_STATE, action) {
 export default combineReducers({
     shifts,
     user,
-    shiftQueue
+    shiftQueue,
+    goals
 });

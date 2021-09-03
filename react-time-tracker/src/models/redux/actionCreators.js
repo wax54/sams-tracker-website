@@ -105,16 +105,17 @@ export function deleteShift(shiftId) {
 export function resetErrors() {
     return { type: "RESET_ERRORS" };
 }
+
+
 /** Users */
 export function setUser(userData) {
     return { type: "SET_USER", payload: userData };
 }
-
-/** Users */
 export function resetUser() {
     return async function (dispatch) { 
         dispatch({ type: "RESET_USER" });
         dispatch(resetShifts());
+        dispatch(resetGoals());
     }
 }
 export function authorizeUser({ username, password }) {
@@ -122,7 +123,9 @@ export function authorizeUser({ username, password }) {
         const resp = await UserApi.login({username, password});
         if(resp.status === true)
             dispatch(setUser(resp.user));
-            dispatch(refreshShifts());
+            await dispatch(refreshShifts());
+            await dispatch(refreshGoals());
+
         return resp;
     }
 }
@@ -133,7 +136,84 @@ export function registerUser({ username, password }) {
         if (resp.status === true)
             dispatch(setUser(resp.user));
             dispatch(resetShifts());
+            dispatch(resetGoals());
         return resp;
     }
 }
 
+/** GOALS */
+export function addGoal({type, category, seconds_per_day}) {
+    return async function (dispatch) {
+        const newGoal= { seconds_per_day, type, category };
+        const resp = await UserApi.addGoal(newGoal);
+        if (resp.status === true) {
+            dispatch({ type: "ADD_GOAL", payload: resp.goal });
+            return true;
+        }
+        if (resp.status === false) {
+            console.error(resp.errors);
+            return false;
+        }
+    }
+}
+
+export function resetGoals() {
+    return { type: "RESET_GOALS" };
+}
+
+export function loadGoals() {
+    return async function (dispatch) {
+        const resp = await UserApi.getGoals();
+        console.log(resp);
+        if (resp.status === true) {
+            dispatch({ type: "LOAD_GOALS", payload: resp.goals });
+            return true;
+        }
+        if (resp.status === false) {
+            console.error(resp.errors);
+            return false;
+        }
+    }
+}
+
+export function refreshGoals() {
+    return async function (dispatch) {
+        dispatch(resetGoals());
+        return await dispatch(loadGoals());
+    }
+}
+
+export function updateGoal({type, category, seconds_per_day}) {
+    return { type: "UPDATE_GOAL", payload: {type, category, seconds_per_day} };
+}
+
+export function updateAGoal({ type, category, seconds_per_day }) {
+    return async function (dispatch) {
+        const resp = await UserApi.updateGoal({type, category}, seconds_per_day);
+        if (resp.status === true) {
+            dispatch(updateGoal(resp.goal));
+            return true;
+        }
+        if (resp.status === false) {
+            //TODO effect the change on client side and 
+            //  queue up the shift to be updated on next refresh
+            console.error(resp.errors);
+            return false;
+        }
+    }
+}
+
+export function deleteGoal({type, category}) {
+    return async function (dispatch) {
+        const resp = await UserApi.deleteGoal({category, type});
+        if (resp.status === true) {
+            dispatch({ type: "DELETE_GOAL", payload: {category, type} });
+            return true;
+        } else {
+            //TODO effect the change on client side and 
+            //  queue up the shift to be updated on next refresh
+            console.error(resp.errors);
+            return false;
+        }
+    }
+}

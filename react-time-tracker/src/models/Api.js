@@ -19,7 +19,7 @@ const userPersist = {
 
 class UserApi {
     static token = userPersist.get();
-
+    //USERS
     static async login({username, password}) {
         try {
             const resp = await axios.post(API_URL + "/users/login", { username, password });
@@ -42,6 +42,8 @@ class UserApi {
             return { status: false, errors };
         }
     }
+
+    //SHIFTS
     static async getShifts() {
         if(!this.token) return { status: false, errors: ["USER NOT LOGGED IN"] };
         try {
@@ -62,7 +64,7 @@ class UserApi {
     }
     static async addShift(shift) {
         try {
-            const resp = await axios.post(API_URL + "/shifts/", {shift, token: this.token});
+            const resp = await axios.post(API_URL + "/shifts", {shift, token: this.token});
             return { status: true, shift: resp.data.shift };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);
@@ -92,6 +94,47 @@ class UserApi {
         try {
             await axios.delete(API_URL + `/shifts/${id}`, { data:{ token: this.token }});
             return { status: true };
+        } catch (e) {
+            const errors = getMessagesFromErrorRes(e);
+            return { status: false, errors };
+        }
+    }
+
+    //GOALS
+    static async getGoals() {
+        try {
+            const resp = await axios.post(API_URL + `/users/goals`, { token: this.token });
+            return { status: true, goals: resp.data.goals };
+        } catch (e) {
+            const errors = getMessagesFromErrorRes(e);
+            return { status: false, errors };
+        }
+    }
+    static async addGoal(goal) {
+        try {
+            const resp = await axios.post(API_URL + "/goals", { goal, token: this.token });
+            return { status: true, goal: resp.data.goal };
+        } catch (e) {
+            const errors = getMessagesFromErrorRes(e);
+            return { status: false, errors };
+        }
+    }
+
+
+    static async updateGoal({ category, type },  seconds_per_day ) {
+        try {
+            const resp = await axios.patch(API_URL + `/goals/${category}/${type}`, { goal: {seconds_per_day}, token: this.token });
+            return { status: true, goal: resp.data.goal };
+        } catch (e) {
+            const errors = getMessagesFromErrorRes(e);
+            return { status: false, errors };
+        }
+    }
+
+    static async removeGoal({ category, type }) {
+        try {
+            const resp = await axios.delete(API_URL + `/goals/${category}/${type}`, { data:{ token: this.token }});
+            return { status: resp.deleted };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);
             return { status: false, errors };

@@ -21,7 +21,8 @@ const SignupForm = () => {
     const signup = async ({ username, password }, reset) => {
         const result = await dispatch(registerUser({ username, password }));
         if(result.status) {
-            reset();
+            //caused a memory leak because the login form was usually gone by the time it updated
+            //reset();
             setErrors([]);
             alert(`Registered ${result.user.id}`);
             history.push('/');
