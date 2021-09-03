@@ -8,7 +8,7 @@ function getWindowDimensions() {
     };
 }
 
-export default function useWindowDimensions() {
+export function useWindowDimensions() {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
     useEffect(() => {
@@ -21,4 +21,14 @@ export default function useWindowDimensions() {
     }, [setWindowDimensions]);
 
     return windowDimensions;
+}
+
+
+export function useFormFields(init={}) {
+    const [formData, setFormData] = useState(init);
+    const handleChange = evt => setFormData(data => {
+        return { ...data, [evt.target.name]: evt.target.value }
+    });
+    const resetForm = () => setFormData(init);
+    return [formData, handleChange, resetForm];
 }

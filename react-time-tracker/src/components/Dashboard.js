@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react'; 
 import { shallowEqual, useSelector } from 'react-redux';
 import { Chart, Pies, Transform } from 'rumble-charts';
-import useWindowDimensions from '../helpers/hooks';
+import {useWindowDimensions} from '../helpers/hooks';
 import { Shift, ShiftCollection } from '../models/ShiftCollection';
 
 const Dashboard = () => {
@@ -13,7 +13,7 @@ const Dashboard = () => {
     } else {
         size = Math.floor((width / 10) * 6);
     }
-    
+
     const allShifts = useSelector(({ shifts }) => shifts, shallowEqual);
     const shiftsByCategory = {};
     const currShifts = [];
