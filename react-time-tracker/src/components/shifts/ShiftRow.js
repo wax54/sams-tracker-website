@@ -16,12 +16,19 @@ const ShiftRow = ({ shift }) => {
     const update = (name, newVal) => {
         const updatedShift = {...shift, [name]: newVal};
         dispatch(updateAShift(updatedShift));
+    }; 
+    const updateType = (name, newVal) => {
+        update(name, newVal.toLowerCase())
+    };
+    const updateCategory = (name, newVal) => {
+        update(name, newVal.toLowerCase())
     };
 
     /** TODO 
      * a little buggy, doesn't update start if you put start after stop and then adjust stop to be later than start
      * im thinking I'm going to have to use state for this, but I'm not sure
      */
+    
     const updateStart = (val) => {
         if (val < stop){
             update('start', val);
@@ -44,9 +51,9 @@ const ShiftRow = ({ shift }) => {
     };
     return (
         <tr id={`shiftRow-${id}`} style ={style}>
-            <td><MultiTextBox text={type} value={type} name="type" onSubmit={update} /> </td>
+            <td><MultiTextBox text={type} value={type} name="type" onSubmit={updateType} /> </td>
             <td><small>for</small></td>
-            <td><MultiTextBox text={category} value={category} name="category" onSubmit={update} /> </td>
+            <td><MultiTextBox text={category} value={category} name="category" onSubmit={updateCategory} /> </td>
             <td><DateTimeInput 
                 value={start} 
                 onChange={updateStart} 

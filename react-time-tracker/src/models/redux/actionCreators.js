@@ -110,6 +110,13 @@ export function setUser(userData) {
     return { type: "SET_USER", payload: userData };
 }
 
+/** Users */
+export function resetUser() {
+    return async function (dispatch) { 
+        dispatch({ type: "RESET_USER" });
+        dispatch(resetShifts());
+    }
+}
 export function authorizeUser({ username, password }) {
     return async function (dispatch) {
         const resp = await UserApi.login({username, password});
