@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, shallowEqual } from "react-redux";
 import { useFormFields } from "../../helpers/hooks";
 import { ShiftCollection } from "../../models/ShiftCollection";
@@ -15,12 +15,20 @@ const NewGoal = ({ timeFrame }) => {
 
     /** TODO Fix up this initial state to account for when there are no shifts */
     const [data, handleChange, resetForm] = useFormFields({
-        hours: 5,
+        hours: '5',
         type: DOING_ANYTHING_KEY,
         category: allShifts.getCategories()[0]
     });
+    const handleSubmit = evt => {
+        evt.preventDefault();
+        data.hours = +data.hours;
+        console.log(data);
+        //TODO dispatch new Goal Event
+        resetForm();
+    }
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <input type="range"
                 id="hours" name="hours"
                 min={0}
@@ -28,9 +36,11 @@ const NewGoal = ({ timeFrame }) => {
                 value={data.hours}
                 onChange={handleChange}
             />
-            <label htmlFor="hours">{data.hours} Hours {timeFrame} </label>
+            <label htmlFor="hours">{data.hours} Hours {timeFrame} </label> 
             <select id="type" name="type" value={data.type} onChange={handleChange}>
-                <option value={DOING_ANYTHING_KEY}>Doing Anything</option>
+                <option value={DOING_ANYTHING_KEY}>
+                    Doing Anything
+                </option>
                 {allShifts.getTypes().map( type => 
                     <option key={type} value={type}>{type}</option>
                 )}
@@ -42,9 +52,12 @@ const NewGoal = ({ timeFrame }) => {
             For
             <select id = "category" name = "category" value={data.category} onChange={handleChange}>
                 {allShifts.getCategories().map(category =>
-                    <option key={category} value={category}>{category}</option>)
+                    <option key={category} value={category}>
+                        {category}
+                    </option>)
                 }
             </select >
+            <button className="btn btn-success" >Add Goal</button>
 
         </form >
     );

@@ -90,7 +90,7 @@ class UserApi {
     }
     static async deleteShift(id) {
         try {
-            const resp = await axios.delete(API_URL + `/shifts/${id}`, { data:{ token: this.token }});
+            await axios.delete(API_URL + `/shifts/${id}`, { data:{ token: this.token }});
             return { status: true };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);

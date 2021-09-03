@@ -1,4 +1,3 @@
-import { emit } from "process";
 import { combineReducers } from "redux";
 import {Shift} from "../ShiftCollection";
 // EX
