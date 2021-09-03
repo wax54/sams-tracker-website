@@ -1,8 +1,6 @@
 import './App.css';
-import React, { useEffect } from 'react';
+import React from 'react';
 import NavBar from '../NavBar';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { refreshShifts } from '../../models/redux/actionCreators';
 import Routes from '../Routes';
 function App() {
   return (

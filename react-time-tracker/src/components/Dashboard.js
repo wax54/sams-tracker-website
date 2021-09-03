@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react'; 
+import React, {useState, useEffect, useCallback} from 'react'; 
 import { shallowEqual, useSelector } from 'react-redux';
 import { Chart, Pies, Transform } from 'rumble-charts';
 import {useWindowDimensions} from '../helpers/hooks';
@@ -32,13 +32,15 @@ const Dashboard = () => {
             data: [shiftsByCategory[category].getTotalHours()],
             name: category
         }
-    }))
+    }), [allShifts]);
     const [series, setSeries] = useState(makeSeries());
 
     console.log(series);
+
     useEffect(()=> {
         setSeries(makeSeries());
-    }, [allShifts, setSeries]);
+    }, [makeSeries, setSeries]);
+
     useEffect(() => {
         const intervalIdArray = currShifts.map(shift => {
             return setInterval(() => {

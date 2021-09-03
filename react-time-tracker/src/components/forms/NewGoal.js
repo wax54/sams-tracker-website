@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector, shallowEqual } from "react-redux";
 import { useFormFields } from "../../helpers/hooks";
 import { ShiftCollection } from "../../models/ShiftCollection";
