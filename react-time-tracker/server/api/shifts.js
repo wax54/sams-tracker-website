@@ -62,7 +62,6 @@ router.patch("/:id", ensureLoggedIn, async function (req, res, next) {
         //not Authorized to edit this shift
         if(shift['u_id'] !== res.locals.user.id) throw new UnauthorizedError();
         const updatedShiftData = req.body.shift;
-        console.log("updated data", updatedShiftData);
         validateInput(updatedShiftData, editShiftSchema);
         const updatedShift = await Shift.update(shiftId, updatedShiftData);
         return res.json({ shift: updatedShift });

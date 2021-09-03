@@ -3,6 +3,7 @@ const ExpressError = require("./expressError");
 const path = require("path");
 
 const shiftsApi = require("./api/shifts");
+const goalsApi = require("./api/goals");
 const usersApi = require("./api/users");
 const { authenticateJWT } = require("./middleware/auth");
 
@@ -23,6 +24,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 app.use('/api/shifts', shiftsApi);
 app.use('/api/users', usersApi);
+app.use('/api/goals', goalsApi);
+
 
 //handles react app homepage load 
 app.use('/',express.static(path.join(__dirname, "..", "build")));

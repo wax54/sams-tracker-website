@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "/schemas/newGoalValidation.json",
+    "type": "object",
+    "title": "Goal",
+    "default": {},
+    "examples": [
+        {
+            "seconds_in_day": 60000
+        }
+    ],
+    "required": [
+        "seconds_in_day"
+    ],
+    "properties": {
+        "seconds_in_day": {
+            "$id": "#/properties/seconds_in_day",
+            "type": "number",
+            "title": "The sconds_in_day schema",
+            "description": "the seconds per day you're goal is ",
+            "default": "",
+            "examples": [
+                1000,200000,60
+            ]
+        }
+    },
+    "additionalProperties": false
+}

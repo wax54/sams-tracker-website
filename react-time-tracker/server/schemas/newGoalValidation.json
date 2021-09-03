@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "/schemas/newGoalValidation.json",
+    "type": "object",
+    "title": "Goal",
+    "default": {},
+    "examples": [
+        {
+            "type": "coding",
+            "category": "school",
+            "seconds_in_day": 60000,
+            "u_id": 1
+        }
+    ],
+    "required": [
+        "type",
+        "category",
+        "seconds_in_day",
+        "u_id"
+    ],
+    "properties": {
+        "type": {
+            "$id": "#/properties/type",
+            "type": "string",
+            "title": "The type schema",
+            "description": "The type aspect of a shift. The activity being performed",
+            "default": "",
+            "examples": [
+                "coding",
+                "walking",
+                "watching videos",
+                "folding laundry"
+            ]
+        },
+        "category": {
+            "$id": "#/properties/category",
+            "type": "string",
+            "title": "The category schema",
+            "description": "The category the shift belongs to",
+            "default": "",
+            "examples": [
+                "school",
+                "work",
+                "My Well Being"
+            ]
+        },
+        "seconds_in_day": {
+            "$id": "#/properties/seconds_in_day",
+            "type": "number",
+            "title": "The sconds_in_day schema",
+            "description": "the seconds per day you're goal is ",
+            "default": "",
+            "examples": [
+                1000,200000,60
+            ]
+        },
+        "u_id": {
+            "$id": "#/properties/u_id",
+            "type": "number",
+            "title": "The user_id schema",
+            "description": "the id the represents who owns the shift",
+            "default": "",
+            "examples": [
+                1,
+                2,
+                3
+            ]
+        }
+    },
+    "additionalProperties": false
+}
