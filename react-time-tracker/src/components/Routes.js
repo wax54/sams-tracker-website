@@ -5,7 +5,7 @@ import Login from './forms/Login';
 import Signup from './forms/Signup';
 import Profile from "./Profile";
 import SetGoals from "./forms/SetGoals";
-import EditShifts from "./forms/EditShifts";
+import EditShifts from "./scenes/EditShifts";
 
 function Routes() {
     return (

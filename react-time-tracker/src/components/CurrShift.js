@@ -21,7 +21,9 @@ const CurrShift = ({ shift }) => {
                     { duration }
                 </div>
             </div>
-            <ClockOutButton shiftId={shift.id}/>
+            <div className="col-12 col-md-5">
+                <ClockOutButton shiftId={shift.id}/>
+            </div>
         </li >
     )
 };

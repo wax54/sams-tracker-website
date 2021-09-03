@@ -22,16 +22,22 @@ const ClockOutButton = ({ shiftId }) => {
         }
     }
     return (
-    <div className="col-4 dropdown clockout">
-        <button className="btn btn-secondary dropdown-toggle text-center" data-bs-toggle="dropdown">
-            Clock Out
-        </button>
-        <div className="dropdown-menu clock-out">
-            <button className="btn" data-reference={NOW} onClick={clockOut}>
-                Now
-            </button>
-            <button className="btn" data-reference={FIFTEEN_AGO} onClick={clockOut}>15 Mins Ago</button>
-        </div>
-    </div>
+        <>
+            <div className="dropdown clockout row align-items-start justify-content-center">
+                <button className="btn btn-secondary col-10 text-center" 
+                    style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
+                    data-reference={NOW} onClick={clockOut}
+                >
+                    Clock Out
+                </button>
+                <button className="btn btn-secondary col-2 dropdown-toggle text-center" style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0}} data-bs-toggle="dropdown" />
+                
+                <div className="dropdown-menu clock-out">
+                    <button className="btn btn-block" data-reference={FIFTEEN_AGO} onClick={clockOut}>
+                        15 Mins Ago
+                    </button>
+                </div>
+            </div>
+        </>
 )};
 export default ClockOutButton

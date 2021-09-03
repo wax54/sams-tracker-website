@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { deleteShift, updateAShift } from "../../models/redux/actionCreators";
 import ClockOutButton from "../ClockOutButton";
-import MultiTextBox from "./MultiTextBox";
+import MultiTextBox from "../forms/MultiTextBox";
 import DateTimeInput from 'react-datetime-picker';
 import { useState } from "react";
 
@@ -45,7 +45,8 @@ const ShiftRow = ({ shift }) => {
     return (
         <tr id={`shiftRow-${id}`} style ={style}>
             <td><MultiTextBox text={type} value={type} name="type" onSubmit={update} /> </td>
-            <td><MultiTextBox text={`for ${category}`} value={category} name="category" onSubmit={update} /> </td>
+            <td><small>for</small></td>
+            <td><MultiTextBox text={category} value={category} name="category" onSubmit={update} /> </td>
             <td><DateTimeInput 
                 value={start} 
                 onChange={updateStart} 

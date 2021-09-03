@@ -24,8 +24,8 @@ const MultiTextBox = ({ text, name, value, onSubmit }) => {
                     value={val}
                     onChange={handleChange}
                 />
-                <button className="btn btn-warning" onClick={reset}>Reset</button>
                 <input className="btn btn-success" type="submit" value="Change"/>
+                <button className="btn btn-warning" onClick={reset}>Reset</button>
             </form>
         );
     } else {

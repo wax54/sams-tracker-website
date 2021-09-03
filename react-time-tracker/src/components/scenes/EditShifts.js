@@ -1,16 +1,13 @@
 import React from 'react';
-import Header from '../Header';
-import Dashboard from '../Dashboard';
-const Home = () => {
+import ShiftList from '../shifts/ShiftList';
+const EditShifts = () => {
     return (
-
         <div className="container-fluid p-2 align-items-center justify-content-around">
             <div className="row border m-3 p-4 rounded shadow justify-content-center">
-            <Header />
-            <Dashboard />
+                <ShiftList />
             </div>
         </div>
     )
 };
 
-export default Home
+export default EditShifts

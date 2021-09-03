@@ -2,7 +2,7 @@ import { shallowEqual, useSelector } from "react-redux";
 import { ShiftCollection } from "../../models/ShiftCollection";
 import ShiftRow from "./ShiftRow";
 
-const EditShifts = () => {
+const ShiftList = () => {
     //shifts looks like {1: {id, start, stop, type, category, u_id}, ...}
     const shifts = useSelector(({shifts}) => shifts, shallowEqual);
     const allShifts = new ShiftCollection(...Object.values(shifts));
@@ -12,6 +12,7 @@ const EditShifts = () => {
             <thead>
                 <tr>
                     <th>Type</th>
+                    <th></th>
                     <th>Category</th>
                     <th>Start</th>
                     <th>Time Spent</th>
@@ -28,4 +29,4 @@ const EditShifts = () => {
         </table>
     )
 };
-export default EditShifts
+export default ShiftList

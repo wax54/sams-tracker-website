@@ -1,9 +1,19 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react'; 
 import { shallowEqual, useSelector } from 'react-redux';
 import { Chart, Pies, Transform } from 'rumble-charts';
+import useWindowDimensions from '../helpers/hooks';
 import { Shift, ShiftCollection } from '../models/ShiftCollection';
 
 const Dashboard = () => {
+    const { width, height } = useWindowDimensions();
+    let size;
+    //make the size almost as big as the shortest screen dimension
+    if(width > height){
+        size = Math.floor((height / 10) * 7);
+    } else {
+        size = Math.floor((width / 10) * 6);
+    }
+    
     const allShifts = useSelector(({ shifts }) => shifts, shallowEqual);
     const shiftsByCategory = {};
     const currShifts = [];
@@ -59,11 +69,11 @@ const Dashboard = () => {
         console.log(series[+i])
     }
     return (
-    <div id="hours-spent-dashboard" className="jumbotron bg-light border m-3 p-4 rounded shadow  d-none d-md-block" >
-        <h1 className="display-4 text-center col-12 col-md-3 col-xl-12">
+        <div id="hours-spent-dashboard" className="col-12 border m-3 p-4 rounded shadow " >
+        <h1 className="display-4 text-center">
             Hours Spent In Last Week
         </h1>
-            <Chart width={600} height={250} series={series}>
+            <Chart width={size} height={size} series={series}>
                 <Transform method={['stackNormalized']}>
                     <Pies
                         className='category-pie-chart'
