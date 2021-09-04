@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import NewGoal, {DOING_ANYTHING_KEY} from '../forms/NewGoal';
+import NewGoal from '../forms/NewGoal';
 import { useSelector, shallowEqual } from 'react-redux';
+import GoalList from '../goals/GoalList';
+
 const timeFrames = { 
     day:{
         title: "Every Day", 
@@ -33,20 +35,11 @@ const SetGoals = () => {
                     <option value="month">{timeFrames.month.title}</option>
                     </select> I want to spend...
                 </h1>
-                {goals.map(({seconds_per_day, category, type}) => {
-                    const hours = Math.ceil((seconds_per_day/60/60)*timeFrames[timeFrame].val);
-                    type = (type === DOING_ANYTHING_KEY)? "Doing Anything" : type;
-                    return (
-                    <h4 key={`${category}-${type}`}> 
-                        
-                        {hours} {hours === 1 ? "hour":"hours"} {type} for {category}</h4>
-                    )}
-                )}
+                <GoalList goals={goals} timeFrame={timeFrames[timeFrame]} />
                 <h4>And...</h4>
                 <NewGoal timeFrame={timeFrames[timeFrame]} />
             </div>
         </div>
     )
 };
-
 export default SetGoals

@@ -123,7 +123,7 @@ class UserApi {
 
     static async updateGoal({ category, type },  seconds_per_day ) {
         try {
-            const resp = await axios.patch(API_URL + `/goals/${category}/${type}`, { goal: {seconds_per_day}, token: this.token });
+            const resp = await axios.patch(API_URL + "/goals/", { goal: { seconds_per_day, category, type }, token: this.token });
             return { status: true, goal: resp.data.goal };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);
@@ -133,7 +133,7 @@ class UserApi {
 
     static async removeGoal({ category, type }) {
         try {
-            const resp = await axios.delete(API_URL + `/goals/${category}/${type}`, { data:{ token: this.token }});
+            const resp = await axios.delete(API_URL + `/goals/`, { data:{ goal: {type, category}, token: this.token }});
             return { status: resp.deleted };
         } catch (e) {
             const errors = getMessagesFromErrorRes(e);

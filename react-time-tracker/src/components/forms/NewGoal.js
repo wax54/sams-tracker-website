@@ -3,10 +3,8 @@ import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { useFormFields } from "../../helpers/hooks";
 import { addGoal } from "../../models/redux/actionCreators";
 import { ShiftCollection } from "../../models/ShiftCollection";
+import { DOING_ANYTHING_KEY, NEW_THING_KEY } from "../../config";
 
-
-export const DOING_ANYTHING_KEY = "doing anything in the whole world";
-export const NEW_THING_KEY = "a whole new thing";
 
 const NewGoal = ({ timeFrame }) => {
     const dispatch = useDispatch();

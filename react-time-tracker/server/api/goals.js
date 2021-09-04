@@ -39,13 +39,12 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 });
 
 /**
- * patch /goals/:category/:type goal:{ seconds_per_day } 
+ * patch /goals/ goal:{ seconds_per_day } 
  *                  =>  {goal: {type, category, seconds_per_day, u_id}}
  */
-router.patch("/:category/:type", ensureLoggedIn, async function (req, res, next) {
+router.patch("/", ensureLoggedIn, async function (req, res, next) {
     try {
-        const { type, category } = req.params;
-        const updatedSeconds = req.body.goal;
+        const { type, category, seconds_per_day:updatedSeconds } = req.body.goal;
         const u_id = res.locals.user.id;
         validateInput(updatedSeconds, editGoalSchema);
         const goal = await Goal.update({ type, category, u_id }, updatedSeconds);
@@ -56,12 +55,13 @@ router.patch("/:category/:type", ensureLoggedIn, async function (req, res, next)
 });
 
 /**
- * delete /goals/:category/:type  
+ * delete /goals/  
  *                  =>  {deleted: true} or {deleted: false}
  */
-router.delete("/:category/:type", ensureLoggedIn, async function (req, res, next) {
+router.delete("/", ensureLoggedIn, async function (req, res, next) {
     try {
-        const { type, category } = req.params;
+        const { type, category } = req.body.goal;
+        console.log(type, category);
         const u_id = res.locals.user.id;
         await Goal.remove({ type, category, u_id });
         return res.json({ deleted: true });
