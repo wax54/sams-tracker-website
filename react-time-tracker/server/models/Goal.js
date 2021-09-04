@@ -60,7 +60,7 @@ class Goal {
             [u_id, type, category]);
         if (emptyResult(goalRes)) {
             throw {
-                message: `There is no goal with the u_id='${U_id}', type='${type} and, category='${category}'`, status: 404
+                message: `There is no goal with the u_id='${u_id}', type='${type}', and category='${category}'`, status: 404
             }
         }
         return goalRes.rows[0];

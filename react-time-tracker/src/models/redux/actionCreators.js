@@ -206,6 +206,7 @@ export function updateAGoal({ type, category, seconds_per_day }) {
 export function deleteGoal({ type, category }) {
     return async function (dispatch) {
         const resp = await UserApi.removeGoal({category, type});
+
         if (resp.status === true) {
             dispatch({ type: "DELETE_GOAL", payload: {category, type} });
             return true;

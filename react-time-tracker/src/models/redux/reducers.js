@@ -65,6 +65,8 @@ function goals(goals = GOALS_INITIAL_STATE, action) {
                             nGoal : goal);
         case "DELETE_GOAL":
             const seeking = action.payload
+            console.log(goals.filter(goal => !(goal.type === seeking.type &&
+                goal.category === seeking.category)));
             return goals.filter(goal => !(goal.type === seeking.type &&
                 goal.category === seeking.category));
         case "RESET_GOALS":

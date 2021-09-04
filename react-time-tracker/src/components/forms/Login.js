@@ -23,7 +23,7 @@ const LoginForm = () => {
         if (result.status) {
             //caused a memory leak because the login form was usually gone by the time it updated
             //reset();
-            setErrors([]);
+            // setErrors([]);
             history.push('/');
         } else {
             setErrors([result.errors]);

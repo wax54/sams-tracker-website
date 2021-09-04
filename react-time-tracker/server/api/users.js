@@ -18,6 +18,8 @@ const router = new express.Router();
 router.post("/login", async function (req, res, next) {
     try {
         const { username, password } = req.body;
+        console.log(req.body);
+
         const valid_user = await User.authenticate({username, password});
         if(valid_user) {
             const user = await User.get(username);
@@ -46,9 +48,9 @@ router.post("/register", async function (req, res, next) {
     }
 });
 
-router.post("/shifts", ensureLoggedIn, async function (req, res, next) {
+router.get("/shifts", ensureLoggedIn, async function (req, res, next) {
     try {
-        const page = req.body.page || 0;
+        const page = req.query.page || 0;
         const shifts = await User.getAllShifts(res.locals.user.id, page);
         return res.json({ shifts });
     } catch (err) {
@@ -56,7 +58,7 @@ router.post("/shifts", ensureLoggedIn, async function (req, res, next) {
     }
 });
 
-router.post("/goals", ensureLoggedIn, async function (req, res, next) {
+router.get("/goals", ensureLoggedIn, async function (req, res, next) {
     try {
         const goals = await Goal.getAll(res.locals.user.id);
         console.log(goals);

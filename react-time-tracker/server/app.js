@@ -11,12 +11,14 @@ const app = express();
 
 //handles API requests first
 app.use(express.json());
+app.use(express.urlencoded());
+
 app.use(authenticateJWT);
 //pass CORS perflight policies when cross origin during dev
 if (process.env.NODE_ENV !== "production") {
     app.use((req, res, next) => {
         res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
-        res.set('Access-Control-Allow-Headers', 'Content-type');
+        res.set('Access-Control-Allow-Headers', 'Content-type, Authorization');
         res.set('Access-Control-Allow-Methods', '*');
         // res.set('Content-Type', 'text/html');
         next();

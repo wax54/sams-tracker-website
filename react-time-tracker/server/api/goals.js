@@ -66,6 +66,7 @@ router.delete("/", ensureLoggedIn, async function (req, res, next) {
         await Goal.remove({ type, category, u_id });
         return res.json({ deleted: true });
     } catch (err) {
+        console.log(err);
         return res.json({ deleted: false });
     }
 });

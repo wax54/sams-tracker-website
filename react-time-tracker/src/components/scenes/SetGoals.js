@@ -20,7 +20,7 @@ const timeFrames = {
 const SetGoals = () => {
     const [ timeFrame, setTimeFrame ] = useState("week");
 
-    const goals = useSelector(({ goals }) => goals, shallowEqual);
+    const goals = useSelector(({ goals }) => goals);
 
     return (
         <div className="container-fluid p-2 align-items-center justify-content-around">
