@@ -39,14 +39,15 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 });
 
 /**
- * patch /goals/ goal:{ seconds_per_day } 
+ * patch /goals/ goal:{ type, category, seconds_per_day } 
  *                  =>  {goal: {type, category, seconds_per_day, u_id}}
  */
 router.patch("/", ensureLoggedIn, async function (req, res, next) {
     try {
+        validateInput(req.body.goal, editGoalSchema);
         const { type, category, seconds_per_day:updatedSeconds } = req.body.goal;
         const u_id = res.locals.user.id;
-        validateInput(updatedSeconds, editGoalSchema);
+
         const goal = await Goal.update({ type, category, u_id }, updatedSeconds);
         return res.json({ goal });
     } catch (err) {

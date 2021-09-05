@@ -189,8 +189,10 @@ export function updateGoal({type, category, seconds_per_day}) {
 
 export function updateAGoal({ type, category, seconds_per_day }) {
     return async function (dispatch) {
+
         const resp = await UserApi.updateGoal({type, category}, seconds_per_day);
         if (resp.status === true) {
+            console.log(resp);
             dispatch(updateGoal(resp.goal));
             return true;
         }

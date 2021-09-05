@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import NewGoal from '../forms/NewGoal';
-import { useSelector, shallowEqual } from 'react-redux';
+import NewGoal from '../goals/NewGoal';
+import { useSelector} from 'react-redux';
 import GoalList from '../goals/GoalList';
 
 const timeFrames = { 

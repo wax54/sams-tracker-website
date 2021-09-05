@@ -11,7 +11,7 @@ const app = express();
 
 //handles API requests first
 app.use(express.json());
-app.use(express.urlencoded());
+// app.use(express.urlencoded());
 
 app.use(authenticateJWT);
 //pass CORS perflight policies when cross origin during dev

@@ -14,8 +14,8 @@ const { verifyToken } = require("../helpers");
  */
 
 function authenticateJWT(req, res, next) {
-  console.log(req.body);
-  console.log(req.query);
+  console.log('req.body = ',req.body);
+  console.log('req.query = ',req.query);
   res.locals.user = verifyToken(req.headers.authorization);
   console.log("HELLO FROM AUTH", res.locals.user);
   next();

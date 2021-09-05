@@ -47,7 +47,8 @@ class Goal {
         const goalRes = await db.query(
             `UPDATE goals 
             SET seconds_per_day = $1
-            WHERE u_id = $2 AND type = $3 AND category =$4`,
+            WHERE u_id = $2 AND type = $3 AND category =$4
+            RETURNING u_id, type, category, seconds_per_day`,
             [seconds_per_day, u_id, type, category]);
         return goalRes.rows[0];
     }

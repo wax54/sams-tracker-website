@@ -6,13 +6,42 @@
     "default": {},
     "examples": [
         {
+            "type": "coding",
+            "category": "school",
             "seconds_per_day": 60000
         }
     ],
     "required": [
+        "type",
+        "category",
         "seconds_per_day"
     ],
     "properties": {
+        "type": {
+            "$id": "#/properties/type",
+            "type": "string",
+            "title": "The type schema",
+            "description": "The type aspect of a shift. The activity being performed",
+            "default": "",
+            "examples": [
+                "coding",
+                "walking",
+                "watching videos",
+                "folding laundry"
+            ]
+        },
+        "category": {
+            "$id": "#/properties/category",
+            "type": "string",
+            "title": "The category schema",
+            "description": "The category the shift belongs to",
+            "default": "",
+            "examples": [
+                "school",
+                "work",
+                "My Well Being"
+            ]
+        },
         "seconds_per_day": {
             "$id": "#/properties/seconds_per_day",
             "type": "number",
@@ -20,7 +49,9 @@
             "description": "the seconds per day you're goal is ",
             "default": "",
             "examples": [
-                1000,200000,60
+                1000,
+                200000,
+                60
             ]
         }
     },

@@ -25,8 +25,9 @@ class UserApi {
             const headers = this.token ?
                 { Authorization: `${this.token}` } 
                 :   {};
-            const dataType  = (method === "get") ? "params" : "data" ;
-            data = (method === "delete") ? { data: data } : data;
+            const dataType  = 
+                (method === "get") ? "params" : "data" ;
+            // data = (method === "delete") ? { data: data } : data;
 
             const resp = await axios({
                 method,
@@ -149,12 +150,14 @@ class UserApi {
 
 
     static async updateGoal({ category, type },  seconds_per_day ) {
+
         const resp = await this.request({
             method: "patch",
             url: API_URL + "/goals/", 
             data: { goal: { seconds_per_day, category, type }}
         });
         if (resp.status === false) return resp;
+        console.log(resp);
         return { status: true, goal: resp.data.goal };
         
     }

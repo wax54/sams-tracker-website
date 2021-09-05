@@ -22,7 +22,7 @@ const NewGoal = ({ timeFrame }) => {
         evt.preventDefault();
         let { category, type, hours } = data;
         hours = +hours;
-        const seconds = 60 * 60 * hours;//60 seconds in min * 60 mins in hour
+        const seconds = 60 * 60 * 24 * hours;//60 seconds in min * 60 mins in hour * 24 hours in a day
         const seconds_per_day = Math.floor(seconds / timeFrame.val); // if day, val is 1, if week val is 7
         const newGoal = {
             type,
