@@ -20,11 +20,11 @@ const router = new express.Router();
 
 router.get("/", async function (req, res, next) {
     try {
-        console.log("HELLO");
         const page = req.query.page || 0; 
         const shifts = await Shift.getAll(page, 25);
         return res.json({ shifts });
     } catch (err) {
+        console.log(err);
         return next(err);
     }
 });
@@ -36,6 +36,7 @@ router.get("/:id", async function (req, res, next) {
         const shift = await Shift.get(req.params.id);
         return res.json({ shift });
     } catch (err) {
+
         return next(err);
     }
 });

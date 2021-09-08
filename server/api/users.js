@@ -18,7 +18,6 @@ const router = new express.Router();
 router.post("/login", async function (req, res, next) {
     try {
         const { username, password } = req.body;
-        console.log('round Two', req.body);
 
         const valid_user = await User.authenticate({username, password});
         if(valid_user) {
@@ -39,7 +38,9 @@ router.post("/login", async function (req, res, next) {
 
 router.post("/register", async function (req, res, next) {
     try {
+
         const { username, password } = req.body;
+        console.log('round Two', req.body);
         const user = await User.register({username, password});
         const token = makeToken({ id: user.id });
         return res.json({ user, token });
