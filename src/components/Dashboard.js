@@ -5,7 +5,7 @@ import {useWindowDimensions} from '../helpers/hooks';
 import { Shift, ShiftCollection } from '../models/ShiftCollection';
 import GoalStats from './goals/GoalStats';
 import { DOING_ANYTHING_KEY } from '../config';
-import ShiftsPieChart from './ShiftsPieChart';
+import ShiftsPieChart from './shifts/ShiftsPieChart';
 
 const Dashboard = () => {
     const { width, height } = useWindowDimensions();
@@ -62,7 +62,7 @@ const Dashboard = () => {
     const makeSeries = useCallback(() => [
         ['Task', 'Hours'], 
         ...Object.keys(shiftsByCategory).map(category => {
-            return [category, Math.floor(shiftsByCategory[category].getTotalHours() * 100)/100];
+            return [category, Math.ceil(shiftsByCategory[category].getTotalHours() * 100)/100];
     })], [allShifts]);
     
 
