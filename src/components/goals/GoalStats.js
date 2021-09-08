@@ -29,7 +29,7 @@ const GoalStats = ({hours={}, timeFrame = {val: 7, title:"Every Week"}}) => {
                         if(percent > 1) percent = 1;
                         const getGoalStatus = () => {
                             if(percent < 1)
-                                return `${goalHours - currHours} Hours Till You Meet This Goal!`;
+                                return `${Math.floor((goalHours - currHours) * 100) / 100} Hours Till You Meet This Goal!`;
                             else 
                                 return  `Congradulations You've Met this Goal!`
                         }

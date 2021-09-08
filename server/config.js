@@ -1,9 +1,9 @@
 /** Common config for timetracker server. */
 // read .env files and make environmental variables
 
-const ENV = require("dotenv").config().parsed;
+const ENV = require("dotenv").config().parsed || {};
 
-let DB_URI = ENV.DB_BASE_URI || "postgresql://";
+let DB_URI = process.env.DB_BASE_URI || "postgresql://";
 if (process.env.NODE_ENV === "test") {
     DB_URI = `${DB_URI}/time_tracker_test`;
 } else {
@@ -14,7 +14,7 @@ let PORT;
 if (process.env.NODE_ENV !== "production") {
     PORT = 5000;
 } else {
-    PORT = ENV.PORT || 3000;
+    PORT = process.env.PORT || 3000;
 }
 
 const BCRYPT_WORK_FACTOR = 12;
