@@ -18,7 +18,7 @@ const router = new express.Router();
 router.post("/login", async function (req, res, next) {
     try {
         const { username, password } = req.body;
-        console.log(req.body);
+        console.log('round Two', req.body);
 
         const valid_user = await User.authenticate({username, password});
         if(valid_user) {
@@ -26,6 +26,7 @@ router.post("/login", async function (req, res, next) {
             const token = makeToken({id: user.id});
             res.json({ user, token });
             await User.updateLoginTimestamp(username);
+            return;
         } else {
             throw new ExpressError(`Invalid Credentials!`, 401);
         }

@@ -1,4 +1,5 @@
-# Getting Started with Create React App
+# The Time Tracker
+## An app to help you find where your time goes, and (hopefully) be able to plan better in the future
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
