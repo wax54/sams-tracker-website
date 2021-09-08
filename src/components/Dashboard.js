@@ -21,7 +21,7 @@ const Dashboard = () => {
             : 
             Math.floor((width / 10) * 8)
         )
-    });
+    }, [ width, height]);
         
 
     //make the size almost as big as the shortest screen dimension
