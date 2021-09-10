@@ -11,6 +11,7 @@ const CurrShiftList = () => {
         }
         return currShifts;
     });
+    console.log("currShifts", currShifts);
     currShifts = currShifts.map(shift => new Shift(shift));
     return (
         <div className="col-xl m-3 p-4 rounded shadow border">
@@ -19,7 +20,7 @@ const CurrShiftList = () => {
 
                 <ul id="current-shifts" className="col-12 col-md-9 col-xl-12">
                     {currShifts.map(shift => 
-                        <CurrShift key={`${shift.type}-${shift.category}`} shift={shift} />
+                        <CurrShift key={shift.id} shift={shift} />
                     )}
                 </ul>
             </div>

@@ -19,7 +19,8 @@ import { createStore, applyMiddleware } from "redux";
 const persistConfig = {
     key: "root",
     storage,
-    stateReconciler: autoMergeLevel2
+    stateReconciler: autoMergeLevel2,
+    blacklist: ['syncing']
 };
 
 const persistedReducer = persistReducer(persistConfig, root);

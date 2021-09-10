@@ -80,18 +80,17 @@ const QUEUE_INITIAL_STATE = [];
 
 function shiftQueue(shifts = QUEUE_INITIAL_STATE, action) {
     switch (action.type) {
-        case "ADD_SHIFT_TO_UPLOAD_QUEUE":
+        case "ADD_TO_UPLOAD_QUEUE":
+            console.log("HELLO")
             return [...shifts, action.payload];
 
-        case "REMOVE_SHIFT_FROM_UPLOAD_QUEUE":
+        case "SET_UPLOAD_QUEUE":
             //to be improved
-            return shifts.filter(s => s.type !== action.payload.type ||
-                    s.category !== action.payload.category ||
-                    s.start !== action.payload.start);
+            return [...action.payload]
         
         case "RESET_UPLOAD_QUEUE":
-        //to be improved
-        return [...QUEUE_INITIAL_STATE];
+            //to be improved
+            return [...QUEUE_INITIAL_STATE];
 
         default:
             return shifts;
@@ -111,9 +110,30 @@ function user(user = USER_INITIAL_STATE, action) {
             return user;
     }
 }
+
+const SYNCING_INIT = {};
+function syncing(syncing = SYNCING_INIT, action) {
+    switch (action.type) {
+        case "ADD_SYNCING":
+            return {...syncing, [action.payload.id]: action.payload.name};
+            
+        case "REMOVE_SYNCING":
+            const returned = {...syncing };
+            delete returned[action.payload];
+            return returned;
+
+        case "RESET_SYNCING":
+            return SYNCING_INIT;
+
+        default:
+            return syncing;
+    }
+}
+
 export default combineReducers({
     shifts,
     user,
     shiftQueue,
-    goals
+    goals,
+    syncing
 });

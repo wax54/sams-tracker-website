@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ClockOutButton from './ClockOutButton';
 
 const CurrShift = ({ shift }) => {
-
-    const [duration, setDuration] = useState(shift.getFormattedDuration());
+    const [duration, setDuration] = useState(shift.getFormattedDuration() || "Just Started");
     useEffect(() => {
         const intervalId = setInterval(() => (
             setDuration(shift.getFormattedDuration())
@@ -13,7 +12,7 @@ const CurrShift = ({ shift }) => {
 
     
     return (
-        <li className="row p-3 align-items-start justify-content-center" >
+        <li id={shift.id} className="row p-3 align-items-start justify-content-center" >
             <div className="col-7 text-center h2">
                 <span className="type">{ shift.type } </span> for 
                 <span className="category"> { shift.category }</span> 

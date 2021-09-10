@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { resetUser } from '../models/redux/actionCreators';
 const NavBar = () => {
     const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const NavBar = () => {
                     <NavLink exact to="/profile" className="nav-item nav-link">Profile</NavLink>
                     <NavLink exact to="/edit-shifts" className="nav-item nav-link">Modify Shifts</NavLink>
                     <NavLink exact to="/set-goals" className="nav-item nav-link">Set Goals</NavLink>
-                    <NavLink exact onClick={logoutUser} to="/logout" className="nav-item nav-link bg-danger">Logout</NavLink>
+                    <Link exact onClick={logoutUser} to="/logout" className="nav-item nav-link bg-danger">Logout</Link>
 
                 </> : <>
                     <NavLink exact to="/login" className="nav-item nav-link">Login</NavLink>
@@ -32,7 +32,6 @@ const NavBar = () => {
                 </>
                 }
                 {/* <a href="all-hours.html" class="nav-item nav-link">See Stats</a> */}
-
             </div>
         </div>
     )

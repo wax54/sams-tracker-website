@@ -23,7 +23,7 @@ const SignupForm = () => {
         if(result.status) {
             //caused a memory leak because the login form was usually gone by the time it updated
             //reset();
-            setErrors([]);
+            // setErrors([]);
             alert(`Registered ${result.user.id}`);
             history.push('/');
         } else {

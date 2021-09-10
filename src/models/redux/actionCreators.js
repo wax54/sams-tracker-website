@@ -1,36 +1,16 @@
 import UserApi from "../Api";
 import {v4 as uuid} from "uuid";
+import UploadQueue from "../UploadQueue";
+import { store } from "./store";
 /** SHIFTS */
 export function startShift(type, category) {
-    return async function (dispatch) {
-        const tempId = uuid();
-        console.log(tempId);
-        const newShift = {id: tempId, start: new Date(), type, category};
-
-        //add the shift to the store
-        // add a command and shift/data to the upload queue
-        //      when a command is added to the upload queue(for instance Start Shift)
-        //      the command is attempted immediately
-        //      if success, 
-        //          update store to reflect new state (ie. replace id with new ID, or update shift with latest data)
-        //          try the rest of the commands in the upload queue
-        //          if any of those fail, add to error pool
-        //      if fail due to DB ERROR, add to upload Queue
-        //      if fail due to other, return Error and add to error pool
-        
-
-        const resp = await UserApi.addShift(newShift);
-        if (resp.status === true) {
-            dispatch({ type: "START_SHIFT", payload: resp.shift });
-            return true;
-        }
-        if (resp.status === false) {
-            console.error(resp.errors);
-            return false;
-            //TODO make a queue for failed shift uploads to be merged later
-            //dispatch({ type: "ADD_SHIFT_TO_UPLOAD_QUEUE", payload: newShift })
-        }
-    }
+    const tempId = uuid();
+    const newShift = {id: tempId, start: new Date(), type, category};
+    
+    // add a command and shift/data to the upload queue
+    UploadQueue.addToQueue({type:"addShift", data: newShift});
+    //add the shift to the store
+    return { type: "START_SHIFT", payload: newShift };
 }
 
 export function resetShifts() {
@@ -65,19 +45,8 @@ export function updateShift(shift) {
 }
 
 export function updateAShift(shift) {
-    return async function (dispatch) {
-        const resp = await UserApi.updateShift(shift.id, shift);
-        if (resp.status === true) {
-            dispatch(updateShift(resp.shift));
-            return true;
-        }
-        if (resp.status === false) {
-            //TODO effect the change on client side and 
-            //  queue up the shift to be updated on next refresh
-            console.error(resp.errors);
-            return false;
-        }
-    }
+    UploadQueue.addToQueue({ type: "updateShift", data: shift });
+    return updateShift(shift);
 }
 
 export function endShift(id) {
@@ -86,35 +55,15 @@ export function endShift(id) {
 }
 
 export function clockOutAt(shiftId, stop) {
-    return async function (dispatch) {
-        const resp = await UserApi.clockOutShift(shiftId, stop);
-        if (resp.status === true) {
-            dispatch(updateShift(resp.shift));
-            return true;
-        }
-        if (resp.status === false) {
-            //TODO effect the change on client side and 
-            //  queue up the shift to be updated on next refresh
-            console.error(resp.errors);
-            return false;
-        }
-    }
+    const shift = store.getState().shifts[shiftId];
+    shift.stop = stop;
+    UploadQueue.addToQueue({type: 'updateShift', data: shift})
+    return updateShift(shift);
 }
 
 export function deleteShift(shiftId) {
-    return async function (dispatch) {
-        const resp = await UserApi.deleteShift(shiftId);
-        if (resp.status === true) {
-            dispatch({ type: "DELETE_SHIFT", shiftId: shiftId });
-            return true;
-        }
-        if (resp.status === false) {
-            //TODO effect the change on client side and 
-            //  queue up the shift to be updated on next refresh
-            console.error(resp.errors);
-            return false;
-        }
-    }
+    UploadQueue.addToQueue({type: 'deleteShift', data: shiftId});
+    return { type: "DELETE_SHIFT", shiftId: shiftId };
 }
 
 /** ERRORS (depreciated) */
@@ -159,18 +108,9 @@ export function registerUser({ username, password }) {
 
 /** GOALS */
 export function addGoal({type, category, seconds_per_day}) {
-    return async function (dispatch) {
-        const newGoal= { seconds_per_day, type, category };
-        const resp = await UserApi.addGoal(newGoal);
-        if (resp.status === true) {
-            dispatch({ type: "ADD_GOAL", payload: resp.goal });
-            return true;
-        }
-        if (resp.status === false) {
-            console.error(resp.errors);
-            return false;
-        }
-    }
+    const newGoal = { seconds_per_day, type, category };
+    UploadQueue.addToQueue({type: "addGoal", data: newGoal});
+    return {type: "ADD_GOAL", payload: newGoal};
 }
 
 export function resetGoals() {
@@ -203,36 +143,12 @@ export function updateGoal({type, category, seconds_per_day}) {
     return { type: "UPDATE_GOAL", payload: {type, category, seconds_per_day} };
 }
 
-export function updateAGoal({ type, category, seconds_per_day }) {
-    return async function (dispatch) {
-
-        const resp = await UserApi.updateGoal({type, category}, seconds_per_day);
-        if (resp.status === true) {
-            console.log(resp);
-            dispatch(updateGoal(resp.goal));
-            return true;
-        }
-        if (resp.status === false) {
-            //TODO effect the change on client side and 
-            //  queue up the shift to be updated on next refresh
-            console.error(resp.errors);
-            return false;
-        }
-    }
+export function updateAGoal(goal) {
+    UploadQueue.addToQueue({type: "updateGoal", data: goal});
+    return updateGoal(goal);
 }
 
 export function deleteGoal({ type, category }) {
-    return async function (dispatch) {
-        const resp = await UserApi.removeGoal({category, type});
-
-        if (resp.status === true) {
-            dispatch({ type: "DELETE_GOAL", payload: {category, type} });
-            return true;
-        } else {
-            //TODO effect the change on client side and 
-            //  queue up the shift to be updated on next refresh
-            console.error(resp.errors);
-            return false;
-        }
-    }
+    UploadQueue.addToQueue({type: "deleteGoal", data: { type, category }})
+    return { type: "DELETE_GOAL", payload: { category, type } };
 }
