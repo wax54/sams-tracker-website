@@ -111,9 +111,24 @@ class ShiftCollection {
     shiftsBy(sortParam = ShiftCollection.SORT_PARAMS.START, direction = ShiftCollection.SORT_PARAMS.DESCENDING) {
         const shifts = [...this.shifts];
         if(direction === ShiftCollection.SORT_PARAMS.ASCENDING)
-            return shifts.sort((shift1, shift2) => shift1[sortParam] > shift2[sortParam] ? 1 : -1);
+            return shifts.sort((shift1, shift2) => {
+                if(sortParam === ShiftCollection.SORT_PARAMS.STOP){
+                    let stop1 = shift1.stop || new Date();
+                    let stop2 = shift2.stop || new Date();
+                    return stop1 > stop2 ? 1 : -1;
+                }
+
+                return shift1[sortParam] > shift2[sortParam] ? 1 : -1;
+            });
         else {
-            return shifts.sort((shift1, shift2) => shift2[sortParam] > shift1[sortParam] ? 1 : -1);
+            return shifts.sort((shift1, shift2) => {
+                if (sortParam === ShiftCollection.SORT_PARAMS.STOP) {
+                    let stop1 = shift1.stop || new Date();
+                    let stop2 = shift2.stop || new Date();
+                    return stop2 > stop1 ? 1 : -1;
+                }
+                return shift2[sortParam] > shift1[sortParam] ? 1 : -1;
+            });
         }
     }
 
