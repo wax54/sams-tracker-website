@@ -24,7 +24,12 @@ const GoalStats = ({hours={}, timeFrame = {val: 7, title:"Every Week"}}) => {
                 { goalsByCategory[category]
                     .map(({type, category, seconds_per_day}) => {
                         const goalHours = Math.floor((seconds_per_day * timeFrame.val) / 60 / 60) || 1; // 1000seconds_per_day * timeframe.val now its seconds in timeframe / 60 secs in min / 60 mins in hour 
-                        const currHours = Math.floor(hours[category][type] * 10)/10 || 0;
+                        let currHours = 0;
+                        if(hours[category]){
+                            if(hours[category][type]){
+                                currHours = Math.floor(hours[category][type] * 10) / 10;
+                            }
+                        } 
                         let percent = currHours/goalHours;
                         if(percent > 1) percent = 1;
                         const getGoalStatus = () => {
