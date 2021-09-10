@@ -16,13 +16,14 @@ class UploadQueue {
     }
 
     static async run({ type, data }){
+        console.log('in run ', type, data);
         const id = uuid();
         store.dispatch({ type: "ADD_SYNCING", payload: { id, name: type} });
 
         const resp = await this[type](data);
         
         store.dispatch({ type: "REMOVE_SYNCING", payload: id });
-        
+
         if (resp.status === false) {
             console.error(resp.errors);
             store.dispatch({ type: "ADD_TO_UPLOAD_QUEUE", payload: { type, data } });
