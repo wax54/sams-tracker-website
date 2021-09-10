@@ -93,7 +93,7 @@ class UserApi {
     static async addShift(shift) {
         const resp = await this.request({
             method: "post",
-            url: API_URL + "/shifts", 
+            url: API_URL + "/shifts/", 
             data: { shift }
         });
         if(resp.status === false) return resp;

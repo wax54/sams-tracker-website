@@ -1,8 +1,24 @@
 import UserApi from "../Api";
+import {v4 as uuid} from "uuid";
 /** SHIFTS */
 export function startShift(type, category) {
     return async function (dispatch) {
-        const newShift = {start: new Date(), type, category};
+        const tempId = uuid();
+        console.log(tempId);
+        const newShift = {id: tempId, start: new Date(), type, category};
+
+        //add the shift to the store
+        // add a command and shift/data to the upload queue
+        //      when a command is added to the upload queue(for instance Start Shift)
+        //      the command is attempted immediately
+        //      if success, 
+        //          update store to reflect new state (ie. replace id with new ID, or update shift with latest data)
+        //          try the rest of the commands in the upload queue
+        //          if any of those fail, add to error pool
+        //      if fail due to DB ERROR, add to upload Queue
+        //      if fail due to other, return Error and add to error pool
+        
+
         const resp = await UserApi.addShift(newShift);
         if (resp.status === true) {
             dispatch({ type: "START_SHIFT", payload: resp.shift });
@@ -25,7 +41,7 @@ export function loadShifts() {
     return async function (dispatch) {
         const resp = await UserApi.getShifts();
         if (resp.status === true) {
-            dispatch({ type: "LOAD_SHIFTS", payload: resp.shifts });
+            dispatch({ type: "ADD_SHIFTS", payload: resp.shifts });
             return true;
         }
         if (resp.status === false) {

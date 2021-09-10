@@ -32,7 +32,7 @@ function shifts(shifts = SHIFTS_INITIAL_STATE, action) {
         case "START_SHIFT":
             const newShift = new Shift(action.payload);
             return {...shifts, [newShift.id]: newShift };
-        case "LOAD_SHIFTS":
+        case "ADD_SHIFTS":
             shifts = {...shifts}
             action.payload.forEach(shift => shifts[shift.id] = shift );
             return shifts;
