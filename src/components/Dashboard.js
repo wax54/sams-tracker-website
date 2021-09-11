@@ -93,9 +93,7 @@ const Dashboard = () => {
             shifts._hours += hours;
         }
         return shifts;
-    }, (older, newer) => (
-                older._currShifts.length === newer._currShifts.length
-    ));
+    }, shallowEqual);
 // old way, maybe we'll bring it back
     // const allShifts = useSelector(({ shifts }) => shifts);
     // const shiftsByCategory = {};

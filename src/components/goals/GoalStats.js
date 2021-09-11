@@ -10,6 +10,7 @@ const GoalStats = ({ shifts = {
 
     const goals = useSelector(({ goals }) => goals);
     
+    console.log('hours', goals);
 
     return (
     <div className="row border shadow rounded p-4 ">
@@ -22,11 +23,14 @@ const GoalStats = ({ shifts = {
                         const seconds_per_day = goals[category][type];
                         const goalHours = Math.floor((seconds_per_day * timeFrame.val) / 60 / 60) || 1; // 1000seconds_per_day * timeframe.val now its seconds in timeframe / 60 secs in min / 60 mins in hour 
                         let currHours = 0;
-                        if(shifts[category]) {
-                            if(shifts[category][type]) {
-                                currHours = Math.floor(shifts[category][type]._hours * 10) / 10;
+                        if(type === DOING_ANYTHING_KEY) {
+                            if (shifts[category]) {
+                                currHours = Math.floor(shifts[category]._hours * 100) / 100;
                             }
-                        } 
+                        } else if(shifts[category] && shifts[category][type]) {
+                            currHours = Math.floor(shifts[category][type]._hours * 100) / 100;
+                        }
+
                         let percent = currHours/goalHours;
                         if(percent > 1) percent = 1;
                         const getGoalStatus = () => {
