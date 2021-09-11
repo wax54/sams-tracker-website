@@ -49,26 +49,41 @@ function shifts(shifts = SHIFTS_INITIAL_STATE, action) {
             return shifts;
     }
 }
-const GOALS_INITIAL_STATE = [];
+const GOALS_INITIAL_STATE = {};
 
 function goals(goals = GOALS_INITIAL_STATE, action) {
+    
     switch (action.type) {
         case "ADD_GOAL":
-            return [ ...goals, action.payload ];
+            goals = { ...goals };
+            let { category, type, seconds_per_day } = action.payload;
+            if(!goals[category]) goals[category] = {};
+            goals[category] = {...goals[category], [type]: seconds_per_day};
+            return goals;
         case "LOAD_GOALS":
-            console.log(action.payload);
-            return [...goals, ...action.payload ];
+            goals = {};
+            for (let {category, type, seconds_per_day} of action.payload) {
+                if (!goals[category]) goals[category] = {};
+                goals[category][type] = seconds_per_day ;
+            }
+            return goals;
         case "UPDATE_GOAL":
-            const nGoal = action.payload
-            return goals.map(goal => (goal.type === nGoal.type && 
-                                    goal.category === nGoal.category) ? 
-                            nGoal : goal);
+            if (!goals[action.payload.category]) goals[action.payload.category] = {};
+            return {
+                ...goals, 
+                [action.payload.category]: {
+                    ...goals[action.payload.category], 
+                    [action.payload.type]: 
+                        action.payload.seconds_per_day
+                }
+            }
         case "DELETE_GOAL":
-            const seeking = action.payload
-            console.log(goals.filter(goal => !(goal.type === seeking.type &&
-                goal.category === seeking.category)));
-            return goals.filter(goal => !(goal.type === seeking.type &&
-                goal.category === seeking.category));
+            // a little hacky but ok
+            if (!goals[action.payload.category]) goals[action.payload.category] = {};
+            goals = { ...goals };
+            delete goals[action.payload.category][action.payload.type];
+            return goals;
+            
         case "RESET_GOALS":
             return GOALS_INITIAL_STATE;
         default:

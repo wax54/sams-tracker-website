@@ -15,6 +15,8 @@ const Dashboard = () => {
 
     //const [size, setSize] = useState(Math.floor((width / 10) * 6));
     console.log(size);
+
+    //make the size almost as big as the shortest screen dimension
     useEffect(() => {
         setSize((width > height) ? 
             Math.floor((height / 10) * 8) 
@@ -24,93 +26,118 @@ const Dashboard = () => {
     }, [ width, height]);
         
 
-    //make the size almost as big as the shortest screen dimension
-    
+    // shifts 
+        // {
+        //     _hours: 17.3,
+        //     _categories: ["school", "my well being"],
+        //     _currShifts:[shift],
+        //     school: { 
+        //         _hours: 12, 
+        //         _types:["coding"], 
+        //         coding: { 
+        //             _hours: 12, 
+        //             _shifts: [shift, shift, shift] 
+        //         }
+        //     },
+        //     "my well being": {
+        //         _hours: 5.3,
+        //         _types: ["resting", "painting"],
+        //         resting: {
+        //             _hours: 2.7,
+        //             _shifts: [shift,  shift]
+        //         },
+        //         painting: {
+        //             _hours: 2.6,
+        //             _shifts: [shift]
+        //         }
+        //     },
+        //  }
 
-    const allShifts = useSelector(({ shifts }) => shifts, shallowEqual);
-    const shiftsByCategory = {};
-    const currShifts = [];
-    const totalHours = {};
-
-    for(let key in allShifts) {
-        const shift = new Shift(allShifts[key]);
-        if(!shift.stop) currShifts.push(shift);
-        if(shiftsByCategory[shift.category]){
-            shiftsByCategory[shift.category].add(shift);
-        } else {
-            shiftsByCategory[shift.category] = new ShiftCollection(shift);
-        }
-        if(totalHours[shift.category]) {
-            if(totalHours[shift.category][shift.type]) {
-                totalHours[shift.category][shift.type] += shift.getHours();
-            } else {
-                totalHours[shift.category][shift.type] = shift.getHours();
+    const shifts = useSelector(({ shifts: storeShifts }) => {
+        const shifts = {
+            _allShifts: function() {
+                const shifts = new ShiftCollection();
+                this._categories.entries().forEach(cat => {
+                    this[cat]._types.forEach( type => {
+                        this[cat][type]._shifts.forEach( shift => {
+                            shifts.add(shift);
+                        });
+                    });
+                });
+                return shifts;
+            }, 
+            _currShifts: [], 
+            _hours: 0, 
+            _categories: new Set() 
+        };
+        for (let key in storeShifts) {
+            const shift = new Shift(storeShifts[key]);
+            const hours = shift.getHours();
+            if (!shift.stop) shifts._currShifts.push(shift);
+            //if there is no entry for this category...
+            if (!shifts._categories.has(shift.category)) {
+                //make it
+                shifts._categories.add(shift.category);
+                shifts[shift.category] = { _hours: 0, _types: new Set() };
             }
-        } else {
-            totalHours[shift.category] = {
-                [shift.type]: shift.getHours()
-            };
+            //shifts[shift.category] is garunteed at this point
+            //if there is no entry for this type in the category...
+            if (!shifts[shift.category]._types.has(shift.type)) {
+                // make it
+                shifts[shift.category]._types.add(shift.type);
+                shifts[shift.category][shift.type] = { _hours: 0, _shifts: [] };
+            }
+            shifts[shift.category][shift.type]._shifts.push(shift);
+            shifts[shift.category][shift.type]._hours += hours;
+            shifts[shift.category]._hours += hours;
+            shifts._hours += hours;
         }
-        if(totalHours[shift.category][DOING_ANYTHING_KEY]) {
-            totalHours[shift.category][DOING_ANYTHING_KEY] += shift.getHours();
-        } else {
-            totalHours[shift.category][DOING_ANYTHING_KEY] = shift.getHours();
+        return shifts;
+    }, (older, newer) => (
+                older._currShifts.length === newer._currShifts.length
+    ));
+// old way, maybe we'll bring it back
+    // const allShifts = useSelector(({ shifts }) => shifts);
+    // const shiftsByCategory = {};
+    // const currShifts = [];
+    // const totalHours = {};
 
-        }
-    }
+    // for (let key in allShifts) {
+    //     const shift = new Shift(allShifts[key]);
+    //     if (!shift.stop) currShifts.push(shift);
+    //     if (shiftsByCategory[shift.category]) {
+    //         shiftsByCategory[shift.category].add(shift);
+    //     } else {
+    //         shiftsByCategory[shift.category] = new ShiftCollection(shift);
+    //     }
+    //     if (totalHours[shift.category]) {
+    //         if (totalHours[shift.category][shift.type]) {
+    //             totalHours[shift.category][shift.type] += shift.getHours();
+    //         } else {
+    //             totalHours[shift.category][shift.type] = shift.getHours();
+    //         }
+    //     } else {
+    //         totalHours[shift.category] = {
+    //             [shift.type]: shift.getHours()
+    //         };
+    //     }
+    //     if (totalHours[shift.category][DOING_ANYTHING_KEY]) {
+    //         totalHours[shift.category][DOING_ANYTHING_KEY] += shift.getHours();
+    //     } else {
+    //         totalHours[shift.category][DOING_ANYTHING_KEY] = shift.getHours();
 
-    const makeSeries = useCallback(() => [
-        ['Task', 'Hours'], 
-        ...Object.keys(shiftsByCategory).map(category => {
-            return [category, Math.ceil(shiftsByCategory[category].getTotalHours() * 100)/100];
-    })], [allShifts]);
-    
+    //     }
+    // }
 
-    const [series, setSeries] = useState(makeSeries());
 
-    console.log(series);
-
-    useEffect(()=> {
-        setSeries(makeSeries());
-    }, [makeSeries, setSeries]);
-
-    // useEffect(() => {
-    //     const intervalIdArray = currShifts.map(shift => {
-    //         return setInterval(() => {
-    //             setSeries(series => {
-    //                 return series.map(data => {
-    //                     if(data.name === shift.category) {
-    //                         data.data[0] += 4/60/60 //4 second / 60 secs in min / 60 mins in hour
-    //                         return {...data};
-    //                     } else {
-    //                         return data;
-    //                     }
-    //                 });
-    //             });
-    //         }, 4000);
-    //     });
-    //     return () => 
-    //         intervalIdArray.forEach(id => clearInterval(id));
-    // }, [allShifts, setSeries]);
-    
-
-    const displayCategory = (evt) => {
-        const pieSlice = evt.target.parentElement.parentElement;
-        console.log(pieSlice.classList);
-        const i = pieSlice.classList[1].replace("category-pie-chart-series-", "");
-        console.log(pieSlice.classList);
-
-        console.log(i);
-        console.log(series[+i])
-    }
     return (
         <div id="hours-spent-dashboard" className="col-12 m-3 p-4 " >
             {/* <h1 className="display-4 text-center">
             Hours Spent In Last Week
             </h1> */}
-            <ShiftsPieChart series={series} size={size} />
+            <ShiftsPieChart shifts={shifts} size={size} />
 
-            <GoalStats hours={totalHours} size={size}/>
+            <GoalStats shifts={shifts} size={size}/>
 
             {/* <Chart width={size} height={size} series={series}>
                 <Transform method={['stackNormalized']}>

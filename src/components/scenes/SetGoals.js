@@ -20,7 +20,6 @@ const timeFrames = {
 const SetGoals = () => {
     const [ timeFrame, setTimeFrame ] = useState("week");
 
-    const goals = useSelector(({ goals }) => goals);
 
     return (
         <div className="container-fluid p-2 align-items-center justify-content-around">
@@ -35,7 +34,7 @@ const SetGoals = () => {
                     <option value="month">{timeFrames.month.title}</option>
                     </select> I want to spend...
                 </h1>
-                <GoalList goals={goals} timeFrame={timeFrames[timeFrame]} />
+                <GoalList timeFrame={timeFrames[timeFrame]} />
                 <h4>And...</h4>
                 <NewGoal timeFrame={timeFrames[timeFrame]} />
             </div>

@@ -10,6 +10,8 @@ const NewGoal = ({ timeFrame }) => {
     const dispatch = useDispatch();
     // const [newestGoal, setNewestGoal] = useState(5);
     const shifts = useSelector(({ shifts }) => shifts, shallowEqual);
+    const goals = useSelector(({ goals }) => goals, shallowEqual);
+
     const allShifts = new ShiftCollection(...Object.values(shifts));
 
     /** TODO Fix up this initial state to account for when there are no shifts */
@@ -21,6 +23,11 @@ const NewGoal = ({ timeFrame }) => {
     const handleSubmit = async evt => {
         evt.preventDefault();
         let { category, type, hours } = data;
+        if(goals[category] && goals[category][type]) {
+            alert(` You already set a goal to spend time ${type} for ${category}. Try editing that goal instead`);
+            return;
+        }
+
         hours = +hours;
         const seconds = 60 * 60 * hours;//60 seconds in min * 60 mins in hour 
         const seconds_per_day = Math.floor(seconds / timeFrame.val); // if day, val is 1, if week val is 7
@@ -30,7 +37,7 @@ const NewGoal = ({ timeFrame }) => {
             seconds_per_day
         }
         console.log(newGoal);
-        await dispatch(addGoal(newGoal));
+        dispatch(addGoal(newGoal));
         //TODO dispatch new Goal Event
         resetForm();
     }
