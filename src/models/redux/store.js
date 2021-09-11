@@ -6,6 +6,7 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import thunk from "redux-thunk";
 import root from "./reducers";
 import { createStore, applyMiddleware } from "redux";
+import { refreshShifts, refreshGoals } from "./actionCreators";
 
 /**TODO 
  * UPDATE SHIFT STORAGE FROM API ON INIT LOAD.
@@ -32,6 +33,10 @@ export const store = createStore(
         applyMiddleware(thunk),
     )
 );
+
+store.dispatch(refreshShifts());
+store.dispatch(refreshGoals());
+
 
 /** an object containing 
  * .purge()
