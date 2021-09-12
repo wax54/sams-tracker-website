@@ -14,7 +14,6 @@ function App() {
     <div className="App">
       <NavBar />
       <Routes />
-      <h3>Footer</h3>
       
       {currentlySyncing ? <Loader /> : null}
 

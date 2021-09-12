@@ -1,5 +1,11 @@
-.Signup-error{
+.Signup-error {
     background-color: red;
     color: white;
     margin: 5px;
+}
+.Signup {
+    text-align: center;
+}
+.Signup * {
+    margin: auto;
 }

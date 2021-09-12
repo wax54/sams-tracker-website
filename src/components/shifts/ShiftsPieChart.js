@@ -73,10 +73,11 @@ const ShiftsPieChart = ({ shifts, size }) => {
             }
         };
         options.pieSliceText = 'percentage';
-        options.pieSliceTextStyle = { fontSize: 18 };
+        options.pieSliceTextStyle = { fontSize: 13 };
     }
     if(size < 417) {
-        options.legend.textStyle.fontSize = 12;
+        options.legend.textStyle.fontSize = 10;
+
     }
     const chartEvents = [
         {
@@ -90,7 +91,7 @@ const ShiftsPieChart = ({ shifts, size }) => {
                     console.warn("Clicked", series[slice + 1]);
                 });
                 google.visualization.events.addListener(chart, "onmouseover", e => {
-                    const { row} = e;
+                    const { row } = e;
                     console.warn("MOUSE OVER ", series[row + 1]);
                 });
             }
