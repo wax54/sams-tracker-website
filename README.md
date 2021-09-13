@@ -15,6 +15,23 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+### `npm start-server`
+
+Runs the server hosting the latest build of you're react App on port 5000.\
+Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
+
+The server will reload if you make edits.\
+You can use this with another terminal running `npm start` to see updates as you save
+
+### `npm production-start`
+
+Runs the server hosting the latest build of you're react App on port 5000.\
+Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
+
+You will have to exit and restart to see edits to your server
+You will have to rebuild to see edits to your react app
+
+
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\

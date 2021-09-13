@@ -35,7 +35,6 @@
   "scripts": {
     "start": "react-scripts start",
     "start-server": "nodemon server/server.js",
-    "build-and-start": "npm run build && node server/server.js",
     "production-start": "node server/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
