@@ -11,3 +11,13 @@ export function makeColor (shift) {
     }
     return colour;
 }
+
+export function round(num, decimals = 0) {
+    if (decimals < 0) {
+        decimals = decimals * -1;
+        const divider = 10 ** decimals;
+        num = Math.round(num / divider) * divider;
+    }
+    const multiplier = 10 ** decimals;
+    return Math.round(num * multiplier) / multiplier;
+}

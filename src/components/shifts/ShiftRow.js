@@ -5,12 +5,9 @@ import MultiTextBox from "../forms/MultiTextBox";
 import DateTimeInput from 'react-datetime-picker';
 import { useState } from "react";
 import { makeColor } from "../../helpers/tools";
+import { round } from "../../helpers/tools";
 
 
-const round = (num, decimalPlaces = 0) => {
-    const magnitude = (10 ** decimalPlaces)
-    return Math.floor(num * magnitude) / magnitude;
-}
 
 const ShiftRow = ({ shift }) => {
     const duration = shift.getFormattedDuration();
@@ -50,7 +47,7 @@ const ShiftRow = ({ shift }) => {
      */
     
     const updateStart = (val) => {
-        if (val < stop){
+        if ((val < stop) || !stop){
             update('start', val);
             setStyle(style => ({ ...style, backgroundColor: color }));
         }

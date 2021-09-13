@@ -8,10 +8,18 @@ const MultiTextBox = ({
     type="text", 
     style={},
     min=undefined, 
-    max=undefined 
+    max=undefined,
+    step=undefined,
 }) => {
+
     const [clicked, setClicked] = useState(false);
     const [val, setVal] = useState(value);
+
+    function handleClick(evt) {
+        setVal(value);
+        setClicked(state => state ? false : true);
+
+    }
     function handleChange (evt) {
         setVal(evt.target.value);
     } 
@@ -25,8 +33,9 @@ const MultiTextBox = ({
         setClicked(false);
     }
     const inputOptions = {};
-    if (min) inputOptions.min = min;
-    if (max) inputOptions.max = max;
+    if (min !== undefined) inputOptions.min = min;
+    if (max !== undefined) inputOptions.max = max;
+    if (step !== undefined) inputOptions.step = step;
 
     if(clicked){
         return (
@@ -45,7 +54,7 @@ const MultiTextBox = ({
         );
     } else {
         return (
-            <span className={className} style={style} onClick={() => setClicked(state => state ? false:true)} >
+            <span className={className} style={style} onClick={handleClick} >
                 {text}
             </span>
         );

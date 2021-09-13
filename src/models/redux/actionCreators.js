@@ -2,6 +2,13 @@ import UserApi from "../Api";
 import {v4 as uuid} from "uuid";
 import UploadQueue from "../UploadQueue";
 import { store } from "./store";
+import { SET_TIMEFRAME } from "./actionTypes";
+
+/** Timeframes */
+export function setTimeFrame(timeframeKey) {
+    return { type: SET_TIMEFRAME, payload: timeframeKey };
+}
+
 /** SHIFTS */
 export function startShift(type, category) {
     const tempId = uuid();

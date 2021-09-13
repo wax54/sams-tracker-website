@@ -1,42 +1,34 @@
 import React, {useState} from 'react';
 import NewGoal from '../goals/NewGoal';
-import { useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GoalList from '../goals/GoalList';
+import { timeFrames } from '../../helpers/config';
+import { setTimeFrame } from '../../models/redux/actionCreators';
 
-const timeFrames = { 
-    day:{
-        title: "Every Day", 
-        val:1
-    },
-    week: {
-        title: "Every Week",
-        val: 7,
-    },
-    month: {
-        title: "Every Month",
-        val: 30
-    }
-}
 const SetGoals = () => {
-    const [ timeFrame, setTimeFrame ] = useState("week");
-
+    const timeFrameKey = useSelector(({timeFrame}) => timeFrame);
+    const dispatch = useDispatch();
+    const handleTimeFrameChange = evt => dispatch(setTimeFrame(evt.target.value));
 
     return (
         <div className="container-fluid p-2 align-items-center justify-content-around">
             <div className="row border m-3 p-4 rounded shadow justify-content-center">
                 <h1><select 
-                        name='timeframe' 
-                        onChange={evt => setTimeFrame(evt.target.value)}
-                        value={timeFrame}
+                        name='timeFrame' 
+                        onChange={handleTimeFrameChange}
+                        value={timeFrameKey}
                     >
-                    <option value="day">{timeFrames.day.title}</option>
+                    { Object.keys(timeFrames).map(key =>
+                        <option key={key} value={key}>{timeFrames[key].title}</option>
+                    )}
+                    {/* <option value="day">{timeFrames.day.title}</option>
                     <option value="week">{timeFrames.week.title}</option>
-                    <option value="month">{timeFrames.month.title}</option>
+                    <option value="month">{timeFrames.month.title}</option> */}
                     </select> I want to spend...
                 </h1>
-                <GoalList timeFrame={timeFrames[timeFrame]} />
+                <GoalList timeFrame={timeFrames[timeFrameKey]} />
                 <h4>And...</h4>
-                <NewGoal timeFrame={timeFrames[timeFrame]} />
+                <NewGoal timeFrame={timeFrames[timeFrameKey]} />
             </div>
         </div>
     )

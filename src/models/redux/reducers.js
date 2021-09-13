@@ -145,10 +145,25 @@ function syncing(syncing = SYNCING_INIT, action) {
     }
 }
 
+const TIMEFRAME_INIT = 'week';
+
+function timeFrame(timeFrame = TIMEFRAME_INIT, action) {
+    switch (action.type) {
+        case "SET_TIMEFRAME":
+            return action.payload;
+
+        case "RESET_TIMEFRAME":
+            return TIMEFRAME_INIT;
+
+        default:
+            return timeFrame;
+    }
+}
 export default combineReducers({
     shifts,
     user,
     shiftQueue,
     goals,
-    syncing
+    syncing,
+    timeFrame
 });

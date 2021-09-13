@@ -261,6 +261,17 @@ class ShiftCollection {
 }
 
 /**
+ * returns a date representing x days away from dateTime 
+ * 
+ * @param {number} days the number of days from dateTime you want
+ * @param {Date} dateTime the dateTime you want to have a reference from(defaults to now)
+ * @returns {Date} a new Date that is x hours from dateTime
+ */
+function daysFrom(days, dateTime = new Date()) {
+    return new Date(dateTime.getTime() + (1000 * 60 * 60 * 24 * days)); //1000ms * 60s * 60m * 24hrs * X days
+}
+
+/**
  * returns a day representing x hours away from dateTime 
  * 
  * @param {number} hours the number of hours from dateTime you want
@@ -385,4 +396,4 @@ function timeFormatFromHours(hrs, specificity) {
 //testing purposes #cleanUp
 // const deli = new ShiftCollection(...JSON.parse(localStorage.records));
 
-export { ShiftCollection, Shift, minsFrom, hoursFrom }
+export { ShiftCollection, Shift, minsFrom, hoursFrom, daysFrom }

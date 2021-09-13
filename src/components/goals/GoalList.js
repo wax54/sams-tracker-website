@@ -1,8 +1,10 @@
 import { useSelector, shallowEqual } from "react-redux";
+import { timeFrames } from "../../helpers/config";
 import GoalRow from "./GoalRow";
 
-const GoalList = ({ timeFrame }) => {
+const GoalList = () => {
     // const goals = useSelector(({goals}) => goals, shallowEqual);
+    // make an array of goals instead
     const goals = useSelector(({ goals }) => {
         const finalGoals = [];
         Object.keys(goals).forEach(category => 
@@ -11,6 +13,8 @@ const GoalList = ({ timeFrame }) => {
         ));
         return finalGoals;
     }, shallowEqual);
+    
+    const timeFrame = useSelector(({ timeFrame }) => timeFrames[timeFrame]);
 
     return (
     <>

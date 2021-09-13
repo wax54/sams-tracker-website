@@ -4,13 +4,15 @@ import { useFormFields } from "../../helpers/hooks";
 import { addGoal } from "../../models/redux/actionCreators";
 import { ShiftCollection } from "../../models/ShiftCollection";
 import { DOING_ANYTHING_KEY, NEW_THING_KEY } from "../../config";
+import { timeFrames } from "../../helpers/config";
 
 
-const NewGoal = ({ timeFrame }) => {
+const NewGoal = () => {
     const dispatch = useDispatch();
     // const [newestGoal, setNewestGoal] = useState(5);
     const shifts = useSelector(({ shifts }) => shifts, shallowEqual);
     const goals = useSelector(({ goals }) => goals, shallowEqual);
+    const timeFrame = useSelector(({timeFrame}) => timeFrames[timeFrame], shallowEqual);
 
     const allShifts = new ShiftCollection(...Object.values(shifts));
 
@@ -20,6 +22,7 @@ const NewGoal = ({ timeFrame }) => {
         type: DOING_ANYTHING_KEY,
         category: allShifts.getCategories()[0]
     });
+
     const handleSubmit = async evt => {
         evt.preventDefault();
         let { category, type, hours } = data;
@@ -43,15 +46,19 @@ const NewGoal = ({ timeFrame }) => {
     }
 
     return (
+        
         <form onSubmit={handleSubmit}>
-            <input type="range"
-                id="hours" name="hours"
+            <input 
+                type="number"
+                id="hours" 
+                name="hours"
                 min={0}
-                max={50}
                 value={data.hours}
                 onChange={handleChange}
+                step={1 / (10 ** timeFrame.roundPlaces)}
             />
-            <label htmlFor="hours">{data.hours} Hours {timeFrame.title} </label> 
+            <label htmlFor="hours"> Hours {timeFrame.title} </label> 
+
             <select id="type" name="type" value={data.type} onChange={handleChange}>
                 <option value={DOING_ANYTHING_KEY}>
                     Doing Anything

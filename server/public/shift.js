@@ -205,6 +205,8 @@ class ShiftCollection{
     length() { return this.shifts.length };
 }
 
+
+
 /**
  * returns a day representing x hours away from dateTime 
  * 
@@ -215,6 +217,7 @@ class ShiftCollection{
 function hoursFrom(hours, dateTime = new Date()) {
     return new Date(dateTime.getTime() + (1000 * 60 * 60 * hours)); //1000ms * 60s * 60m * X hours
 }
+
 
 /**
  * returns a day representing x mins away from dateTime 

@@ -1,5 +1,6 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import { Chart } from 'react-google-charts';
+import { setTimeFrame } from '../../models/redux/actionCreators';
 
 const ShiftsPieChart = ({ shifts, size }) => {
     const makeCategorySeries = useCallback((shifts) => {
@@ -13,9 +14,12 @@ const ShiftsPieChart = ({ shifts, size }) => {
     const [series, setSeries] = useState(() => makeCategorySeries(shifts));
 
     console.log(series);
-
     useEffect(() => {
-        console.log(shifts);
+        setSeries(makeCategorySeries(shifts));
+    }, [shifts]);
+    
+    useEffect(() => {
+        console.log('inUseEffect', shifts);
         if (shifts._currShifts.length) {
             const INTERVAL_STEP = 10000;
             const updates = shifts._currShifts.reduce((updates, shift) => {

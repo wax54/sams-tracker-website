@@ -2,6 +2,7 @@
 import GaugeChart from 'react-gauge-chart';
 
 const GoalGauge = ({ goal, current, id }) => {
+    const totalHours = (goal > 1) ? Math.ceil(goal) : 1;
     let percent = current / goal;
     if (percent > 1) percent = 1;
     
@@ -11,7 +12,7 @@ const GoalGauge = ({ goal, current, id }) => {
                     margin: 'auto'
                 }}
                 id={id}
-                nrOfLevels={Math.floor(goal)}
+                nrOfLevels={totalHours}
                 formatTextValue={() => ''}
                 marginIn={.5}
                 textColor="#0000000"

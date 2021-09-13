@@ -1,17 +1,18 @@
 import { useSelector } from "react-redux";
 import { DOING_ANYTHING_KEY, NEW_THING_KEY } from "../../config";
+import { timeFrames } from "../../helpers/config";
+import { round } from "../../helpers/tools";
 import GoalGauge from "./GoalGauge";
 import GoalRow from "./GoalRow";
 
 const GoalStats = ({ shifts = {
-        _currShifts: [],
-        _hours: 0,
-        _categories: new Set()
-    }, timeFrame = {val: 7, title:"Every Week"}}) => {
-
-    const goals = useSelector(({ goals }) => goals);
+    _currShifts: [],
+    _hours: 0,
+    _categories: new Set()
+}}) => {
     
-    console.log('hours', goals);
+    const goals = useSelector(({ goals }) => goals);
+    const timeFrame = useSelector(({timeFrame}) => timeFrames[timeFrame]);
 
     return (
     <div className="row border shadow rounded p-4 ">
@@ -22,21 +23,21 @@ const GoalStats = ({ shifts = {
                 { Object.keys(goals[category])
                     .map( type => {
                         const seconds_per_day = goals[category][type];
-                        const goalHours = Math.round((seconds_per_day * timeFrame.val) / 60 / 60) || 1;
+                        const goalHours = round((seconds_per_day * timeFrame.val) / 60 / 60, timeFrame.roundPlaces);
                             // 1000seconds_per_day * timeframe.val now its seconds in timeframe / 60 secs in min / 60 mins in hour 
                         
                         let currHours = 0;
                         if(type === DOING_ANYTHING_KEY) {
                             if (shifts[category]) {
-                                currHours = Math.round(shifts[category]._hours * 100) / 100;
+                                currHours = round(shifts[category]._hours, timeFrame.roundPlaces );
                             }
                         } else if(shifts[category] && shifts[category][type]) {
-                            currHours = Math.round(shifts[category][type]._hours * 100) / 100;
+                            currHours = round(shifts[category][type]._hours, timeFrame.roundPlaces);
                         }
 
                         const getGoalStatus = () => {
                             if (goalHours > currHours)
-                                return `${Math.round((goalHours - currHours) * 100) / 100} Hours Till You Meet This Goal!`;
+                                return `${round((goalHours - currHours), timeFrame.roundPlaces)} Hours Till You Meet This Goal!`;
                             else
                                 return `Congradulations You've Met this Goal!`
                         }
@@ -46,13 +47,13 @@ const GoalStats = ({ shifts = {
                                 key={`${type}-${category}`} 
                                 style={{ position: 'relative' }} className='col-12 col-md-6 col-lg-4 '
                                 >
-                                <div style={{ height: '3rem' }}>
+                                <div >
                                     <GoalRow 
                                         goal={{type, category, seconds_per_day}} 
                                         timeFrame={timeFrame} 
                                         />
+                                    <p>{getGoalStatus()}</p>
                                 </div>
-                                <p>{getGoalStatus()}</p>
                                 <GoalGauge 
                                     id={`gauge-chart-${category}-${type}`}
                                     goal={goalHours}

@@ -2,20 +2,16 @@ import React, {useState, useEffect, useCallback} from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 // import { Chart, Pies, Transform } from 'rumble-charts';
 import {useWindowDimensions} from '../helpers/hooks';
-import { Shift, ShiftCollection } from '../models/ShiftCollection';
+import { daysFrom, Shift, ShiftCollection } from '../models/ShiftCollection';
 import GoalStats from './goals/GoalStats';
 import { DOING_ANYTHING_KEY } from '../config';
 import ShiftsPieChart from './shifts/ShiftsPieChart';
+import { timeFrames } from '../helpers/config';
 
 const Dashboard = () => {
     const { width, height } = useWindowDimensions();
     const [size, setSize] = useState((width > height) ? Math.floor((height / 10) * 8) : Math.floor((width / 10) * 6));
-    console.log(width);
-    console.log(height);
-
-    //const [size, setSize] = useState(Math.floor((width / 10) * 6));
-    console.log(size);
-
+    
     //make the size almost as big as the shortest screen dimension
     useEffect(() => {
         setSize((width > height) ? 
@@ -25,6 +21,7 @@ const Dashboard = () => {
         )
     }, [ width, height]);
         
+    const timeFrame = useSelector(({timeFrame}) => timeFrames[timeFrame]);
 
     // shifts 
         // {
@@ -70,8 +67,13 @@ const Dashboard = () => {
             _hours: 0, 
             _categories: new Set() 
         };
+        const earliestDateInTimeFrame = daysFrom(-timeFrame.val);
+
         for (let key in storeShifts) {
             const shift = new Shift(storeShifts[key]);
+            //only shows shifts in timeFrame
+            if(shift.stop < earliestDateInTimeFrame) continue; 
+
             const hours = shift.getHours();
             if (!shift.stop) shifts._currShifts.push(shift);
             //if there is no entry for this category...
@@ -127,7 +129,7 @@ const Dashboard = () => {
     //     }
     // }
 
-
+    console.log("SHIFTS in DASH", shifts);
     return (
         <div id="hours-spent-dashboard" className="col-12 m-3 p-4 " >
             {/* <h1 className="display-4 text-center">
