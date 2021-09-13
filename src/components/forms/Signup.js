@@ -35,7 +35,7 @@ const SignupForm = () => {
 
 
     return (
-        <form className="Signup" onSubmit={signup}>
+        <form className="Signup container-fluid" onSubmit={signup} >
             {errors.map(message =>
                 <div key={message} className="alert alert-danger">
                     {message}
@@ -69,7 +69,7 @@ const SignupForm = () => {
                     onChange={handleChange}
                 />
                 <label className="input-group-text btn btn-secondary" htmlFor="signup-password" style={{ }} onClick={() => toggleVisible(curr => !curr)} >
-                    {passwordVisible ? "Hide Password" : "View Password"}
+                    {passwordVisible ? "Hide" : "View"}
                 </label>
             
             </div>
