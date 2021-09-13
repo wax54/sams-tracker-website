@@ -4,20 +4,8 @@ import ClockOutButton from "../ClockOutButton";
 import MultiTextBox from "../forms/MultiTextBox";
 import DateTimeInput from 'react-datetime-picker';
 import { useState } from "react";
+import { makeColor } from "../../helpers/tools";
 
-const makeColor = (shift) => {
-    const str = shift.type + shift.category;
-    var hash = 0;
-    for (var i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    var colour = '#';
-    for (var i = 0; i < 3; i++) {
-        var value = (hash >> (i * 8)) & 0xFF;
-        colour += ('00' + value.toString(16)).substr(-2);
-    }
-    return colour;
-}
 
 const round = (num, decimalPlaces = 0) => {
     const magnitude = (10 ** decimalPlaces)
