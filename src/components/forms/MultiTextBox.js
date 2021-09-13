@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-const MultiTextBox = ({ text, name, value, onSubmit }) => {
+const MultiTextBox = ({ 
+    text, 
+    name, 
+    value, 
+    onSubmit, 
+    className, 
+    type="text", 
+    style={},
+    min=undefined, 
+    max=undefined 
+}) => {
     const [clicked, setClicked] = useState(false);
     const [val, setVal] = useState(value);
     function handleChange (evt) {
@@ -14,15 +24,20 @@ const MultiTextBox = ({ text, name, value, onSubmit }) => {
         setVal(value);
         setClicked(false);
     }
+    const inputOptions = {};
+    if (min) inputOptions.min = min;
+    if (max) inputOptions.max = max;
 
     if(clicked){
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={className} style={style}>
                 <input 
-                    type="text"
+                    type={type}
                     name={name}
                     value={val}
+                    style={{width:"100%"}}
                     onChange={handleChange}
+                    {...inputOptions}
                 />
                 <input className="btn btn-success" type="submit" value="Change"/>
                 <button className="btn btn-warning" onClick={reset}>Reset</button>
@@ -30,7 +45,7 @@ const MultiTextBox = ({ text, name, value, onSubmit }) => {
         );
     } else {
         return (
-            <span onClick={() => setClicked(state => state ? false:true)} >
+            <span className={className} style={style} onClick={() => setClicked(state => state ? false:true)} >
                 {text}
             </span>
         );

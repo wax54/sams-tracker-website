@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
-import GaugeChart from 'react-gauge-chart';
 import { DOING_ANYTHING_KEY, NEW_THING_KEY } from "../../config";
+import GoalGauge from "./GoalGauge";
+import GoalRow from "./GoalRow";
 
 const GoalStats = ({ shifts = {
         _currShifts: [],
@@ -21,46 +22,44 @@ const GoalStats = ({ shifts = {
                 { Object.keys(goals[category])
                     .map( type => {
                         const seconds_per_day = goals[category][type];
-                        const goalHours = Math.floor((seconds_per_day * timeFrame.val) / 60 / 60) || 1; // 1000seconds_per_day * timeframe.val now its seconds in timeframe / 60 secs in min / 60 mins in hour 
+                        const goalHours = Math.round((seconds_per_day * timeFrame.val) / 60 / 60) || 1;
+                            // 1000seconds_per_day * timeframe.val now its seconds in timeframe / 60 secs in min / 60 mins in hour 
+                        
                         let currHours = 0;
                         if(type === DOING_ANYTHING_KEY) {
                             if (shifts[category]) {
-                                currHours = Math.floor(shifts[category]._hours * 100) / 100;
+                                currHours = Math.round(shifts[category]._hours * 100) / 100;
                             }
                         } else if(shifts[category] && shifts[category][type]) {
-                            currHours = Math.floor(shifts[category][type]._hours * 100) / 100;
+                            currHours = Math.round(shifts[category][type]._hours * 100) / 100;
                         }
 
-                        let percent = currHours/goalHours;
-                        if(percent > 1) percent = 1;
                         const getGoalStatus = () => {
-                            if(percent < 1)
-                                return `${Math.floor((goalHours - currHours) * 100) / 100} Hours Till You Meet This Goal!`;
-                            else 
-                                return  `Congradulations You've Met this Goal!`
+                            if (goalHours > currHours)
+                                return `${Math.round((goalHours - currHours) * 100) / 100} Hours Till You Meet This Goal!`;
+                            else
+                                return `Congradulations You've Met this Goal!`
                         }
-                        type = type === DOING_ANYTHING_KEY ? "Anything to do with " + category : type + ' for ' + category;
-                        return <div key={`${type}-${category}`} style={{position: 'relative'}} className='col-12 col-md-6 col-lg-4 '>
-                            <h4 style={{height: '3rem'}}>{type}</h4>
-                            <div className={`border rounded shadow ${percent < 1 ? 'bg-warning text-light' : 'bg-success text-dark'}`} >
-                                <p style={{ height: '2rem' }}>{getGoalStatus()}</p>
-                                <GaugeChart 
-                                    animate={false}
-                                    style={{
-                                        margin: 'auto'
-                                    }}
+
+                        return (
+                            <div
+                                key={`${type}-${category}`} 
+                                style={{ position: 'relative' }} className='col-12 col-md-6 col-lg-4 '
+                                >
+                                <div style={{ height: '3rem' }}>
+                                    <GoalRow 
+                                        goal={{type, category, seconds_per_day}} 
+                                        timeFrame={timeFrame} 
+                                        />
+                                </div>
+                                <p>{getGoalStatus()}</p>
+                                <GoalGauge 
                                     id={`gauge-chart-${category}-${type}`}
-                                    nrOfLevels={goalHours}
-                                    formatTextValue={() => ''}
-                                    marginIn={.5}
-                                    textColor="#0000000"
-                                    arcWidth={0.8}
-                                    colors={['#EA4228', '#00FF00']}
-                                    percent={percent}
-                                    arcPadding={0.02}
-                                />
+                                    goal={goalHours}
+                                    current={currHours}
+                                    /> 
                             </div>
-                        </div>
+                        )
                     })
                 }
             </div>

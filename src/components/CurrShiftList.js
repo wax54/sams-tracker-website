@@ -11,6 +11,7 @@ const CurrShiftList = () => {
         }
         return currShifts;
     });
+    if(currShifts.length === 0) return null;
     console.log("currShifts", currShifts);
     currShifts = currShifts.map(shift => new Shift(shift));
     return (

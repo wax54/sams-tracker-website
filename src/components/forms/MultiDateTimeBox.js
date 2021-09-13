@@ -9,7 +9,7 @@ function formatForInput(d) {
     //remove seconds and tz for input
     return str.slice(0,-8);
 }
-const MultiDateTimeBox = ({ date, name, onSubmit, min, max }) => {
+const MultiDateTimeBox = ({ value, text, onChange}) => {
     const [clicked, setClicked] = useState(false);
     const [val, setVal] = useState(date);
     const text = formatDateTime(date);
@@ -31,15 +31,11 @@ const MultiDateTimeBox = ({ date, name, onSubmit, min, max }) => {
 
     if(clicked){
         return (
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="datetime-local"
-                    name={name}
-                    {...minAndMax}
-                    defaultValue={formatForInput(val)}
-                    onChange={handleChange}
-                /><button>Change</button>
-            </form>
+            <DateTimeInput
+                value={value}
+                className="btn-secondary col-12 col-md-5 p-0"
+                onChange={onChange}
+            />
         );
     } else {
         return (

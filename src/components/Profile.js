@@ -11,11 +11,7 @@ const Profile = () => {
     return (
         <div>
             <h1>Welcome to your profile, {user.username}!</h1> 
-            <ul>
-                {Object.keys(user).map(key => 
-                    <li>{key}: {user[key]}</li>
-                )}
-            </ul>
+            <p> There's not much Here, but it's here</p>
             <Link onClick={logoutUser} to="/logout" className="nav-item nav-link mx-3 btn-danger text-light rounded">Logout</Link>
 
         </div>

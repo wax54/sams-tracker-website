@@ -15,7 +15,9 @@ const GoalList = ({ timeFrame }) => {
     return (
     <>
         {goals.map( goal => 
-            <GoalRow key={`${goal.type}-${goal.category}`} goal={goal} timeFrame={timeFrame} />
+            <GoalRow key={`${goal.type}-${goal.category}`} 
+                goal={goal} 
+                timeFrame={timeFrame} />
         )}
     </>)
 };
