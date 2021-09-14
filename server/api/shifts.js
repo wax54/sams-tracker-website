@@ -79,7 +79,6 @@ router.delete("/:id", ensureLoggedIn, async function (req, res, next) {
     try {
         const id = req.params.id;
         const shift = await Shift.get(id);
-        console.log('VALID?',res.locals.user.id, shift.u_id);
         //not Authorized to edit this shift
         if (shift['u_id'] !== res.locals.user.id) throw new UnauthorizedError();
         await Shift.remove(id);

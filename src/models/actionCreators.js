@@ -127,7 +127,6 @@ export function resetGoals() {
 export function loadGoals() {
     return async function (dispatch) {
         const resp = await UserApi.getGoals();
-        console.log(resp);
         if (resp.status === true) {
             dispatch({ type: "LOAD_GOALS", payload: resp.goals });
             return true;

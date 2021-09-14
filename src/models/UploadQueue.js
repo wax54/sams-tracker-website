@@ -16,7 +16,6 @@ class UploadQueue {
     }
 
     static async run({ type, data }){
-        console.log('in run ', type, data);
         const id = uuid();
         store.dispatch({ type: "ADD_SYNCING", payload: { id, name: type} });
 

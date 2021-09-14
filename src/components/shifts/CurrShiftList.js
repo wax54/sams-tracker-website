@@ -12,7 +12,6 @@ const CurrShiftList = () => {
         return currShifts;
     });
     if(currShifts.length === 0) return null;
-    console.log("currShifts", currShifts);
     currShifts = currShifts.map(shift => new Shift(shift));
     return (
         <div className="col-xl m-3 p-4 rounded shadow border">

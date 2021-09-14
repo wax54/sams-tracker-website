@@ -5,7 +5,6 @@ function formatDateTime(dateTime, local = 'en-US', style = { dateStyle: 'short',
 //datetime => "2018-06-12T19:30"
 function formatForInput(d) {
     let str = d.toISOString();
-    console.log(str);
     //remove seconds and tz for input
     return str.slice(0,-8);
 }

@@ -81,7 +81,6 @@ class UserApi {
                 url: API_URL + "/users/shifts", 
                 data: { page } 
             });
-            console.log(resp);
             if(resp.status === false) return resp;
             shifts.push(...resp.data.shifts)
             page++;
@@ -157,7 +156,6 @@ class UserApi {
             data: { goal: { seconds_per_day, category, type }}
         });
         if (resp.status === false) return resp;
-        console.log(resp);
         return { status: true, goal: resp.data.goal };
         
     }

@@ -13,7 +13,6 @@ const ShiftsPieChart = ({ shifts, size }) => {
 
     const [series, setSeries] = useState(() => makeCategorySeries(shifts));
 
-    console.log(series);
     useEffect(() => {
         setSeries(makeCategorySeries(shifts));
     }, [shifts]);

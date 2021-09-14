@@ -95,7 +95,6 @@ const QUEUE_INITIAL_STATE = [];
 function shiftQueue(shifts = QUEUE_INITIAL_STATE, action) {
     switch (action.type) {
         case "ADD_TO_UPLOAD_QUEUE":
-            console.log("HELLO")
             return [...shifts, action.payload];
 
         case "SET_UPLOAD_QUEUE":

@@ -62,7 +62,6 @@ router.patch("/", ensureLoggedIn, async function (req, res, next) {
 router.delete("/", ensureLoggedIn, async function (req, res, next) {
     try {
         const { type, category } = req.body.goal;
-        console.log(type, category);
         const u_id = res.locals.user.id;
         await Goal.remove({ type, category, u_id });
         return res.json({ deleted: true });

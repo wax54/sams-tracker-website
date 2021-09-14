@@ -40,7 +40,6 @@ router.post("/register", async function (req, res, next) {
     try {
 
         const { username, password } = req.body;
-        console.log('round Two', req.body);
         const user = await User.register({username, password});
         const token = makeToken({ id: user.id });
         return res.json({ user, token });

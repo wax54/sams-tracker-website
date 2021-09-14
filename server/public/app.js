@@ -297,7 +297,6 @@ function inputAlert(inputId, msg = 'Input Must Be Filled') {
     alert.className = 'alert bg-warning';
     alert.innerText = msg;
     parent.append(alert);
-    console.log(alertId);
     setTimeout(() => {
         document.getElementById(alertId).remove();
     }, 2500);
