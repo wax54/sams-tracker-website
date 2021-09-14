@@ -18,30 +18,6 @@ const ShiftsPieChart = ({ shifts, size }) => {
         setSeries(makeCategorySeries(shifts));
     }, [shifts]);
     
-    useEffect(() => {
-        console.log('inUseEffect', shifts);
-        if (shifts._currShifts.length) {
-            const INTERVAL_STEP = 10000;
-            const updates = shifts._currShifts.reduce((updates, shift) => {
-                updates[shift.category] ? updates[shift.category]++ : updates[shift.category] = 1;
-                return updates;
-            }, {});
-            const intervalID = setInterval(() => {
-                    setSeries( series => {
-                        series = [...series];
-                        for(let category in updates) {
-                            const i = series.findIndex(arr => arr[0] === category);
-                            series[i][1] = series[i][1] + (updates[category] * (INTERVAL_STEP / 1000 / 60 / 60))  // increment by amount of curr shifts in category times INTERVAL_STEP(in ms) 1000 ms/s 60 s/m 60 m/hr
-                        }
-                        console.log("NEW SERIES", series);
-                        return series;
-                    });
-                }, INTERVAL_STEP);
-            console.log(intervalID);
-
-            return () => clearInterval(intervalID);
-        }
-    }, [makeCategorySeries, setSeries, shifts]);
 
     let options = {
         // is3D: true,

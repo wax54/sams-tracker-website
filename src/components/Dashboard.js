@@ -7,6 +7,7 @@ import GoalStats from './goals/GoalStats';
 import { DOING_ANYTHING_KEY } from '../config';
 import ShiftsPieChart from './shifts/ShiftsPieChart';
 import { timeFrames } from '../helpers/config';
+import { getShiftsByCategory } from '../helpers/tools';
 
 const Dashboard = () => {
     const { width, height } = useWindowDimensions();
@@ -23,79 +24,42 @@ const Dashboard = () => {
         
     const timeFrame = useSelector(({timeFrame}) => timeFrames[timeFrame]);
 
-    // shifts 
-        // {
-        //     _hours: 17.3,
-        //     _categories: ["school", "my well being"],
-        //     _currShifts:[shift],
-        //     school: { 
-        //         _hours: 12, 
-        //         _types:["coding"], 
-        //         coding: { 
-        //             _hours: 12, 
-        //             _shifts: [shift, shift, shift] 
-        //         }
-        //     },
-        //     "my well being": {
-        //         _hours: 5.3,
-        //         _types: ["resting", "painting"],
-        //         resting: {
-        //             _hours: 2.7,
-        //             _shifts: [shift,  shift]
-        //         },
-        //         painting: {
-        //             _hours: 2.6,
-        //             _shifts: [shift]
-        //         }
-        //     },
-        //  }
+    const shifts =  useSelector(({shifts}) => shifts, shallowEqual);
+    
+    const [shiftsByCategory, setShiftsByCategory] = useState(getShiftsByCategory(shifts, timeFrame));
 
-    const shifts = useSelector(({ shifts: storeShifts }) => {
-        const shifts = {
-            _allShifts: function() {
-                const shifts = new ShiftCollection();
-                this._categories.entries().forEach(cat => {
-                    this[cat]._types.forEach( type => {
-                        this[cat][type]._shifts.forEach( shift => {
-                            shifts.add(shift);
-                        });
-                    });
+    useEffect(() => {
+        const shiftsByCategory = getShiftsByCategory(shifts, timeFrame);
+        if (shiftsByCategory._currShifts.length) {
+            const INTERVAL_STEP = 10000;
+            //updates = {school:{coding:1, 'messing around': 2}, 'my well being': {'hanging with zoe': 1}}
+            const updates = shiftsByCategory._currShifts.reduce((updates, shift) => {
+                if(!updates[shift.category]) updates[shift.category] = {};
+                updates[shift.category][shift.type] ? updates[shift.category][shift.type]++ : updates[shift.category][shift.type] = 1;
+                return updates;
+            }, {});
+            const intervalID = setInterval(() => {
+                setShiftsByCategory(shiftsByCategory => {
+                    shiftsByCategory = {...shiftsByCategory};
+                    for (let category in updates) {
+                        for(let type in updates[category]) {
+                            const timeElapsed = updates[category][type] * (INTERVAL_STEP / 1000 / 60 / 60);  // increment by amount of curr shifts in category type times INTERVAL_STEP(in ms) 1000 ms/s 60 s/m 60 m/hr
+                            shiftsByCategory._hours += timeElapsed;
+                            shiftsByCategory[category]._hours += timeElapsed;
+                            shiftsByCategory[category][type]._hours += timeElapsed;
+                        }
+                    }
+                    return shiftsByCategory;
                 });
-                return shifts;
-            }, 
-            _currShifts: [], 
-            _hours: 0, 
-            _categories: new Set() 
-        };
-        const earliestDateInTimeFrame = daysFrom(-timeFrame.val);
+            }, INTERVAL_STEP);
 
-        for (let key in storeShifts) {
-            const shift = new Shift(storeShifts[key]);
-            //only shows shifts in timeFrame
-            if(shift.stop < earliestDateInTimeFrame) continue; 
-
-            const hours = shift.getHours();
-            if (!shift.stop) shifts._currShifts.push(shift);
-            //if there is no entry for this category...
-            if (!shifts._categories.has(shift.category)) {
-                //make it
-                shifts._categories.add(shift.category);
-                shifts[shift.category] = { _hours: 0, _types: new Set() };
-            }
-            //shifts[shift.category] is garunteed at this point
-            //if there is no entry for this type in the category...
-            if (!shifts[shift.category]._types.has(shift.type)) {
-                // make it
-                shifts[shift.category]._types.add(shift.type);
-                shifts[shift.category][shift.type] = { _hours: 0, _shifts: [] };
-            }
-            shifts[shift.category][shift.type]._shifts.push(shift);
-            shifts[shift.category][shift.type]._hours += hours;
-            shifts[shift.category]._hours += hours;
-            shifts._hours += hours;
+            return () => clearInterval(intervalID);
+        } else {
+            //if no current shifts, then just set shiftsby category to the new shifts
+            setShiftsByCategory(shiftsByCategory);
         }
-        return shifts;
-    }, shallowEqual);
+    }, [getShiftsByCategory, setShiftsByCategory, shifts, timeFrame]);
+
 // old way, maybe we'll bring it back
     // const allShifts = useSelector(({ shifts }) => shifts);
     // const shiftsByCategory = {};
@@ -129,15 +93,14 @@ const Dashboard = () => {
     //     }
     // }
 
-    console.log("SHIFTS in DASH", shifts);
     return (
         <div id="hours-spent-dashboard" className="col-12 m-3 p-4 " >
             {/* <h1 className="display-4 text-center">
             Hours Spent In Last Week
             </h1> */}
-            <ShiftsPieChart shifts={shifts} size={size} />
+            <ShiftsPieChart shifts={shiftsByCategory} size={size} />
 
-            <GoalStats shifts={shifts} size={size}/>
+            <GoalStats shifts={shiftsByCategory} size={size}/>
 
             {/* <Chart width={size} height={size} series={series}>
                 <Transform method={['stackNormalized']}>
