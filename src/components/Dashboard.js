@@ -30,6 +30,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         const shiftsByCategory = getShiftsByCategory(shifts, timeFrame);
+        setShiftsByCategory(shiftsByCategory);
+
         if (shiftsByCategory._currShifts.length) {
             const INTERVAL_STEP = 10000;
             //updates = {school:{coding:1, 'messing around': 2}, 'my well being': {'hanging with zoe': 1}}
@@ -45,6 +47,11 @@ const Dashboard = () => {
                         for(let type in updates[category]) {
                             const timeElapsed = updates[category][type] * (INTERVAL_STEP / 1000 / 60 / 60);  // increment by amount of curr shifts in category type times INTERVAL_STEP(in ms) 1000 ms/s 60 s/m 60 m/hr
                             shiftsByCategory._hours += timeElapsed;
+                            if(!shiftsByCategory[category]) shiftsByCategory[category] = {_types:new Set(), _hours: 0}
+                            if(!shiftsByCategory[category][type]) {
+                                shiftsByCategory[category]._types.add(type);
+                                shiftsByCategory[category][type] = {_shifts:[], _hours: 0};
+                            }
                             shiftsByCategory[category]._hours += timeElapsed;
                             shiftsByCategory[category][type]._hours += timeElapsed;
                         }

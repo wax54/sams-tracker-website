@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deleteGoal, updateAGoal } from "../../models/redux/actionCreators";
+import { deleteGoal, updateAGoal } from "../../models/actionCreators";
 import { DOING_ANYTHING_KEY } from "../../config";
 import MultiTextBox from "../forms/MultiTextBox";
 import { round } from "../../helpers/tools";

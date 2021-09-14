@@ -1,6 +1,6 @@
-import UserApi from "../Api";
+import UserApi from "./Api";
 import {v4 as uuid} from "uuid";
-import UploadQueue from "../UploadQueue";
+import UploadQueue from "./UploadQueue";
 import { store } from "./store";
 import { SET_TIMEFRAME } from "./actionTypes";
 

@@ -1,6 +1,6 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import { Chart } from 'react-google-charts';
-import { setTimeFrame } from '../../models/redux/actionCreators';
+import { setTimeFrame } from '../../models/actionCreators';
 
 const ShiftsPieChart = ({ shifts, size }) => {
     const makeCategorySeries = useCallback((shifts) => {
