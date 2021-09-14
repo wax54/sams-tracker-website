@@ -1,5 +1,5 @@
 import React from 'react';
-import ShiftList from '../shifts/ShiftList';
+import ShiftList from './components/shifts/ShiftList';
 const EditShifts = () => {
     return (
         <div className="container-fluid p-2 align-items-center justify-content-around">

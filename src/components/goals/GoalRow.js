@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deleteGoal, updateAGoal } from "../../models/actionCreators";
-import { DOING_ANYTHING_KEY } from "../../config";
+import { DOING_ANYTHING_KEY, timeFrames } from "../../config";
 import MultiTextBox from "../forms/MultiTextBox";
 import { round } from "../../helpers/tools";
-import { timeFrames } from "../../helpers/config";
 const GoalRow = ({ goal }) => {
     let { type, category, seconds_per_day } = goal;
     const timeFrame = useSelector(({timeFrame}) => timeFrames[timeFrame]);

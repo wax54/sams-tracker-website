@@ -1,12 +1,12 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Home from './scenes/Home';
-import Login from './forms/Login';
+import Home from './Home';
+import Login from './components/forms/Login';
 
-import Signup from './forms/Signup';
+import Signup from './components/forms/Signup';
 import Profile from "./Profile";
-import SetGoals from "./scenes/SetGoals";
-import EditShifts from "./scenes/EditShifts";
+import SetGoals from "./SetGoals";
+import EditShifts from "./EditShifts";
 import { useSelector } from "react-redux";
 
 function Routes() {

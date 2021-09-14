@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { startShift } from "../models/redux/actionCreators";
-import InputAlert from "./InputAlert";
+import { startShift } from "../../models/actionCreators";
+import InputAlert from "../InputAlert";
 
 const AddShift = () => {
     let currShifts = useSelector(({ shifts }) => {

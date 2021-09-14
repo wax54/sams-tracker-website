@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
-import { setTimeFrame } from '../models/redux/actionCreators';
-import { timeFrames } from '../helpers/config';
+import { setTimeFrame } from '../models/actionCreators';
+import { timeFrames } from '../config';
 const NavBar = () => {
     const dispatch = useDispatch();
     const user = useSelector(({user}) => user);

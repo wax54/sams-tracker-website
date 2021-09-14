@@ -1,5 +1,5 @@
 import { useSelector, shallowEqual } from "react-redux";
-import { timeFrames } from "../../helpers/config";
+import { timeFrames } from "../../config";
 import GoalRow from "./GoalRow";
 
 const GoalList = () => {

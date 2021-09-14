@@ -1,6 +1,6 @@
 import React from 'react';
-import AddShift from './AddShift';
-import CurrShiftList from './CurrShiftList';
+import AddShift from './shifts/AddShift';
+import CurrShiftList from './shifts/CurrShiftList';
 const Header = () => {
     return (
         <>

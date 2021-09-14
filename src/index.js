@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './components/scenes/App';
+import App from './App';
 import reportWebVitals from './helpers/reportWebVitals';
 
 import { BrowserRouter } from 'react-router-dom'
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
-import { store, persistedStore } from "./models/redux/store"
+import { store, persistedStore } from "./models/store"
 
 const index = (
 <React.StrictMode>

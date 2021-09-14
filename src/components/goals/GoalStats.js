@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
-import { DOING_ANYTHING_KEY, NEW_THING_KEY } from "../../config";
-import { timeFrames } from "../../helpers/config";
+import { DOING_ANYTHING_KEY, NEW_THING_KEY, timeFrames } from "../../config";
 import { round } from "../../helpers/tools";
 import GoalGauge from "./GoalGauge";
 import GoalRow from "./GoalRow";

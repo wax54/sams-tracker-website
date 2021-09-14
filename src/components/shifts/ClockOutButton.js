@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { minsFrom } from '../models/ShiftCollection';
-import { clockOutAt, deleteShift, endShift } from '../models/redux/actionCreators';
+import { minsFrom } from '../../models/ShiftCollection';
+import { clockOutAt, deleteShift, endShift } from '../../models/actionCreators';
 const NOW = "NOW";
 const FIFTEEN_AGO = "-15";
 

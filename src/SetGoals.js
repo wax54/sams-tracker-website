@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import NewGoal from '../goals/NewGoal';
+import NewGoal from './components/goals/NewGoal';
 import { useDispatch, useSelector } from 'react-redux';
-import GoalList from '../goals/GoalList';
-import { timeFrames } from '../../helpers/config';
-import { setTimeFrame } from '../../models/redux/actionCreators';
+import GoalList from './components/goals/GoalList';
+import { timeFrames } from './config';
+import { setTimeFrame } from './models/actionCreators';
 
 const SetGoals = () => {
     const timeFrameKey = useSelector(({timeFrame}) => timeFrame);

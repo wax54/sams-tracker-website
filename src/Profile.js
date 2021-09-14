@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { resetUser } from '../models/redux/actionCreators';
+import { resetUser } from './models/actionCreators';
 const Profile = () => {
     const user = useSelector(({ user }) => user, shallowEqual);
     const dispatch = useDispatch();

@@ -4,9 +4,8 @@ import { shallowEqual, useSelector } from 'react-redux';
 import {useWindowDimensions} from '../helpers/hooks';
 import { daysFrom, Shift, ShiftCollection } from '../models/ShiftCollection';
 import GoalStats from './goals/GoalStats';
-import { DOING_ANYTHING_KEY } from '../config';
+import { DOING_ANYTHING_KEY, timeFrames} from '../config';
 import ShiftsPieChart from './shifts/ShiftsPieChart';
-import { timeFrames } from '../helpers/config';
 import { getShiftsByCategory } from '../helpers/tools';
 
 const Dashboard = () => {

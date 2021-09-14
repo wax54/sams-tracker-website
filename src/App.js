@@ -1,8 +1,8 @@
 import './App.css';
 import React from 'react';
-import NavBar from '../NavBar';
-import Routes from '../Routes';
-import Loader from '../Loader';
+import NavBar from './components/NavBar';
+import Routes from './Routes';
+import Loader from './components/Loader';
 import { useSelector } from 'react-redux';
 function App() {
   const currentlySyncing = useSelector( ({syncing}) => Object.keys(syncing).length > 0 );

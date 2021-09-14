@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import {Shift} from "../ShiftCollection";
+import {Shift} from "./ShiftCollection";
 // EX
 // import { combineReducers } from "redux";
 // function planets(state = INITIAL_STATE, action) {
@@ -27,7 +27,6 @@ import {Shift} from "../ShiftCollection";
 const SHIFTS_INITIAL_STATE = {};
 
 function shifts(shifts = SHIFTS_INITIAL_STATE, action) {
-    
     switch (action.type) {
         case "START_SHIFT":
             const newShift = new Shift(action.payload);

@@ -3,8 +3,7 @@ import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { useFormFields } from "../../helpers/hooks";
 import { addGoal } from "../../models/actionCreators";
 import { ShiftCollection } from "../../models/ShiftCollection";
-import { DOING_ANYTHING_KEY, NEW_THING_KEY } from "../../config";
-import { timeFrames } from "../../helpers/config";
+import { DOING_ANYTHING_KEY, NEW_THING_KEY, timeFrames } from "../../config";
 
 
 const NewGoal = () => {

@@ -1,4 +1,4 @@
-import { store } from './redux/store';
+import { store } from './store';
 import UserApi from './Api';
 import { v4 as uuid } from "uuid";
 
