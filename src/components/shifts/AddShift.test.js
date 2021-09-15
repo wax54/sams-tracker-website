@@ -1,4 +1,4 @@
-import { renderWithRedux, renderAndWaitFor } from '../../helpers/testHelpers';
+import { renderWithRedux, renderAndWaitFor } from '../../helpers/reactTestHelpers';
 import AddShift from './AddShift';
 import userEvent from '@testing-library/user-event';
 import { store } from '../../models/store';

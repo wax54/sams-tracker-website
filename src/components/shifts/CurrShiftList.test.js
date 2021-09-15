@@ -1,4 +1,4 @@
-import { renderWithRedux, renderAndWaitFor } from '../../helpers/testHelpers';
+import { renderWithRedux, renderAndWaitFor } from '../../helpers/reactTestHelpers';
 import CurrShiftList from './CurrShiftList';
 import { store } from '../../models/store';
 import { resetAll } from '../../models/actionCreators';

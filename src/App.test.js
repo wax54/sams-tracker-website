@@ -1,4 +1,4 @@
-import { renderWithRedux, renderAndWaitFor } from './helpers/testHelpers';
+import { renderWithRedux, renderAndWaitFor } from './helpers/reactTestHelpers';
 import App from './App';
 import { store } from './models/store';
 

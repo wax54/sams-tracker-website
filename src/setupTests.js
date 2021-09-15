@@ -5,25 +5,24 @@
 import '@testing-library/jest-dom';
 import { v4 as uuid } from "uuid";
 
-
 export const MockApi = {
-    CONNECTION_ERROR : "DB CONNECTION ERROR",
-    VALID_CREDENTIALS : {username: "John Smith", password: "I AM GREAT"},
-    VALID_USER : {
+    CONNECTION_ERROR: "DB CONNECTION ERROR",
+    VALID_CREDENTIALS: { username: "John Smith", password: "I AM GREAT" },
+    VALID_USER: {
         id: 0, username: "John Smith", join_at: new Date(), last_login_at: new Date()
     },
     API_URL: "",
     token: false,
-    
-        //    { status: true, data: resp.data[type] };
-        //    { status: false, errors };
+
+    //    { status: true, data: resp.data[type] };
+    //    { status: false, errors };
 
     //USERS
     async login({ username, password }) {
-        if(username === this.VALID_CREDENTIALS.username &&
+        if (username === this.VALID_CREDENTIALS.username &&
             password === this.VALID_CREDENTIALS.password) {
             this.token = true;
-            return {status: true, user:this.VALID_USER};
+            return { status: true, user: this.VALID_USER };
         } else {
             this.token = false;
             return { status: false, errors: [`Invalid Credentials!`] };
@@ -63,7 +62,7 @@ export const MockApi = {
         return { status: true, shift: resp.data.shift };
 
     }
-    ,async clockOutShift(id, time) {
+    , async clockOutShift(id, time) {
         const resp = await this.request({
             method: "patch",
             url: this.API_URL + `/shifts/${id}`,
@@ -114,5 +113,6 @@ export const MockApi = {
     }
 
 }
+
 
 jest.mock('./models/Api', () => ({ ...MockApi }));

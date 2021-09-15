@@ -3,6 +3,8 @@ import { MemoryRouter } from 'react-router';
 import { Provider } from "react-redux";
 import { store } from "../models/store"
 
+
+
 function preRender(options = {}) {
     const defaultOptions = {
         initialEntries: ['/'],
@@ -16,7 +18,7 @@ function preRender(options = {}) {
     return newOptions;
 }
 
-function renderWithRedux(Component, options) {
+export function renderWithRedux(Component, options) {
     options = preRender(options);
     return render(
         <Provider store={options.store}>
@@ -27,7 +29,7 @@ function renderWithRedux(Component, options) {
     );
 }
 
-async function renderAndWaitFor(Component, options) {
+export async function renderAndWaitFor(Component, options) {
     options = preRender(options);
     return await waitFor(() => render(
         <Provider store={options.store}>
@@ -36,11 +38,4 @@ async function renderAndWaitFor(Component, options) {
             </MemoryRouter>
         </Provider>
     ));
-}
-
-
-
-export {
-    renderWithRedux,
-    renderAndWaitFor
 }

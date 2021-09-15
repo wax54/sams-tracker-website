@@ -6,7 +6,6 @@ const NOW = "NOW";
 const FIFTEEN_AGO = "-15";
 
 const ClockOutButton = ({ shiftId }) => {
-    console.log("HELLO", shiftId);
     const dispatch = useDispatch();
     const shift = useSelector(({ shifts }) => shifts[shiftId]); 
 

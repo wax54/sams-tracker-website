@@ -1,4 +1,4 @@
-import { renderWithRedux, renderAndWaitFor } from '../../helpers/testHelpers';
+import { renderWithRedux, renderAndWaitFor } from '../../helpers/reactTestHelpers';
 import Login from './Login';
 import { createStore } from 'redux';
 import userEvent from '@testing-library/user-event';
@@ -14,6 +14,8 @@ jest.mock('react-router-dom', () => (
         ...jest.requireActual('react-router-dom'),
         useHistory: () => mockHistory,
     }));
+
+
 
 beforeEach(() => store.dispatch(resetAll()));
 

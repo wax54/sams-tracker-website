@@ -1,4 +1,4 @@
-import { renderWithRedux, renderAndWaitFor } from '../../helpers/testHelpers';
+import { renderWithRedux, renderAndWaitFor } from '../../helpers/reactTestHelpers';
 import ClockOutButton from './ClockOutButton';
 import { createStore } from 'redux';
 import userEvent from '@testing-library/user-event';
@@ -24,7 +24,6 @@ test("doesn't blow up", () => {
 });
 
 test("matchesSnapshot", () => {
-    console.log("SHIFT", TEST_SHIFT.id);
     const { asFragment:withValidShiftId} = renderWithRedux(() => 
         <ClockOutButton shiftId={TEST_SHIFT.id} />
     );
