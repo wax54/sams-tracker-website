@@ -1,22 +1,43 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import { Chart } from 'react-google-charts';
+import { round } from '../../helpers/tools';
 import { setTimeFrame } from '../../models/actionCreators';
 
 const ShiftsPieChart = ({ shifts, size }) => {
+
     const makeCategorySeries = useCallback((shifts) => {
-        const series = [['Type', 'Hours']];
-        for (let category of shifts._categories.values()) {
-            series.push([category, Math.ceil(shifts[category]._hours * 100) / 100]);
-        }
+        const series = [['Category', 'Hours'],
+            ...makeSeries(shifts._categories.values(), shifts)
+        ];
         return series;
+        
     });
 
-    const [series, setSeries] = useState(() => makeCategorySeries(shifts));
+    const makeTypesSeries = useCallback((categoryObj) => {
+        const series = [['Type', 'Hours'],
+            ...makeSeries(categoryObj._types.values(), categoryObj)
+        ];
+        return series;
+
+    });
+
+    const makeSeries = useCallback((keys, obj) => {
+        const series = [];
+        for (let key of keys) {
+            const hours = obj[key] ? obj[key]._hours : 0;
+            series.push([key, round(hours, 2)]);
+        }
+        return series;
+    })
+
+
+    const [seriesMaker, setSeriesMaker] = useState(() => makeCategorySeries.bind(undefined, shifts));
+    const [series, setSeries] = useState(() => seriesMaker());
 
     useEffect(() => {
-        setSeries(makeCategorySeries(shifts));
-    }, [shifts]);
-    
+        setSeries(seriesMaker());
+    }, [shifts, seriesMaker]);
+
 
     let options = {
         // is3D: true,
@@ -63,18 +84,24 @@ const ShiftsPieChart = ({ shifts, size }) => {
             eventName: "ready",
             callback: ({ chartWrapper, google }) => {
                 const chart = chartWrapper.getChart();
-                google.visualization.events.addListener(chart, "click", e => {
-                    const { targetID } = e
-                    //targetID looks like "slice#0"
-                    const slice = +targetID.replace("slice#", '')
-                    console.warn("Clicked", series[slice + 1]);
-                });
-                google.visualization.events.addListener(chart, "onmouseover", e => {
-                    const { row } = e;
-                    console.warn("MOUSE OVER ", series[row + 1]);
-                });
+                // google.visualization.events.addListener(chart, "click", e => {
+                //     const { targetID } = e
+                //     console.log(targetID);
+
+                //     //targetID looks like "slice#0"
+                //     const slice = +targetID.replace("slice#", '');
+                //     console.log(slice);
+                //     if(isNaN(slice)) return;
+                //     const category = series[slice + 1][0];
+                //     setSeriesMaker(() => makeTypesSeries.bind(undefined, shifts[category]))
+                // });
+                // google.visualization.events.addListener(chart, "onmouseover", e => {
+                //     const { row } = e;
+                //     console.warn("MOUSE OVER ", series[row + 1]);
+                // });
             }
         }];
+        console.log(series);
     return (
         <div className="row border shadow rounded my-2 p-4">
             <h2 style={{ textAlign: "left" }}>stats</h2>

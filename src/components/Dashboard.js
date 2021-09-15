@@ -8,6 +8,7 @@ import { DOING_ANYTHING_KEY, timeFrames} from '../config';
 import ShiftsPieChart from './shifts/ShiftsPieChart';
 import { getShiftsByCategory } from '../helpers/tools';
 
+//TODO Draw out Dashboard Refreshing Diagram
 const Dashboard = () => {
     const { width, height } = useWindowDimensions();
     const [size, setSize] = useState((width > height) ? Math.floor((height / 10) * 8) : Math.floor((width / 10) * 6));
@@ -44,7 +45,9 @@ const Dashboard = () => {
                     shiftsByCategory = {...shiftsByCategory};
                     for (let category in updates) {
                         for(let type in updates[category]) {
-                            const timeElapsed = updates[category][type] * (INTERVAL_STEP / 1000 / 60 / 60);  // increment by amount of curr shifts in category type times INTERVAL_STEP(in ms) 1000 ms/s 60 s/m 60 m/hr
+                            const timeElapsed = updates[category][type] * (INTERVAL_STEP / 1000 / 60 / 60);  
+                                // increment by amount of curr shifts in category type times 
+                                //      INTERVAL_STEP(in ms) 1000 ms/s 60 s/m 60 m/hr
                             shiftsByCategory._hours += timeElapsed;
                             if(!shiftsByCategory[category]) shiftsByCategory[category] = {_types:new Set(), _hours: 0}
                             if(!shiftsByCategory[category][type]) {
