@@ -1,12 +1,21 @@
 # The Time Tracker
 ## An app to help you find where your time goes, and (hopefully) be able to plan better in the future.
 
+[CLICK HERE TO SEE THE DEMO](sams-time-tracker.herokuapp.com)
 
 ## Getting Started
 To run this app as is on your local machine, simply... 
 1. Install the dependencies with `npm i` while in the project dir
 2. Run `npm build` to compile the Production React App
 3. Run `npm run production-start` to start the server!
+
+## App Overview
+This App uses... 
+1. React to power it's UI, 
+2. Redux to manage it's state, 
+3. Express to host it's API (as well as the production react app),
+4. PostgreSQL to store it's data,
+5. and Heroku to host the demo.
 
 
 ## Developing
