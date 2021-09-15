@@ -253,7 +253,7 @@ class ShiftCollection {
     }
 
     filter(field, query) {
-        const matched = this.shifts.filter(shift => shift[field] == query);
+        const matched = this.shifts.filter(shift => shift[field] === query);
         return new ShiftCollection(...matched);
     }
 
@@ -322,7 +322,7 @@ function timeFormat(ms, specificity) {
         i++;
         ms = ms - (y * MSINYEAR);
         result += y + ' years ';
-        if (i == specificity) {
+        if (i === specificity) {
             return result;
         }
     }
@@ -333,7 +333,7 @@ function timeFormat(ms, specificity) {
         i++;
         ms = ms - (mth * MSINMONTH);
         result += mth + ' Months ';
-        if (i == specificity) {
+        if (i === specificity) {
             return result;
         }
     }
@@ -343,7 +343,7 @@ function timeFormat(ms, specificity) {
         i++;
         ms = ms - (d * MSINDAY);
         result += d + ' Days ';
-        if (i == specificity) {
+        if (i === specificity) {
             return result;
         }
     }
@@ -353,7 +353,7 @@ function timeFormat(ms, specificity) {
         i++;
         ms = ms - (h * MSINHOUR);
         result += h + ' Hours ';
-        if (i == specificity) {
+        if (i === specificity) {
             return result;
         }
     }
@@ -363,7 +363,7 @@ function timeFormat(ms, specificity) {
         i++;
         ms = ms - (min * MSINMINUTE);
         result += min + ' mins ';
-        if (i == specificity) {
+        if (i === specificity) {
             return result;
         }
     }
@@ -372,7 +372,7 @@ function timeFormat(ms, specificity) {
         i++;
         ms = ms - (s * MSINSEC);
         result += s + ' seconds ';
-        if (i == specificity) {
+        if (i === specificity) {
             return result;
         }
     }
@@ -396,4 +396,4 @@ function timeFormatFromHours(hrs, specificity) {
 //testing purposes #cleanUp
 // const deli = new ShiftCollection(...JSON.parse(localStorage.records));
 
-export { ShiftCollection, Shift, minsFrom, hoursFrom, daysFrom }
+export { ShiftCollection, Shift, minsFrom, hoursFrom, daysFrom, timeFormatFromHours }

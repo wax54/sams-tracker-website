@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import NewGoal from './components/goals/NewGoal';
 import { useDispatch, useSelector } from 'react-redux';
 import GoalList from './components/goals/GoalList';

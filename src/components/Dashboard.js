@@ -1,10 +1,9 @@
-import React, {useState, useEffect, useCallback} from 'react'; 
+import React, {useState, useEffect} from 'react'; 
 import { shallowEqual, useSelector } from 'react-redux';
 // import { Chart, Pies, Transform } from 'rumble-charts';
 import {useWindowDimensions} from '../helpers/hooks';
-import { daysFrom, Shift, ShiftCollection } from '../models/ShiftCollection';
 import GoalStats from './goals/GoalStats';
-import { DOING_ANYTHING_KEY, timeFrames} from '../config';
+import {timeFrames} from '../config';
 import ShiftsPieChart from './shifts/ShiftsPieChart';
 import { getShiftsByCategory } from '../helpers/tools';
 
@@ -67,7 +66,7 @@ const Dashboard = () => {
             //if no current shifts, then just set shiftsby category to the new shifts
             setShiftsByCategory(shiftsByCategory);
         }
-    }, [getShiftsByCategory, setShiftsByCategory, shifts, timeFrame]);
+    }, [setShiftsByCategory, shifts, timeFrame]);
 
 // old way, maybe we'll bring it back
     // const allShifts = useSelector(({ shifts }) => shifts);

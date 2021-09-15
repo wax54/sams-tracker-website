@@ -37,7 +37,7 @@
     "start-server": "nodemon server/server.js",
     "production-start": "NODE_ENV=production node server/server.js",
     "test": "react-scripts test",
-    "build": "react-scripts build",
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": [

@@ -1,25 +1,8 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import { Chart } from 'react-google-charts';
 import { round } from '../../helpers/tools';
-import { setTimeFrame } from '../../models/actionCreators';
 
 const ShiftsPieChart = ({ shifts, size }) => {
-
-    const makeCategorySeries = useCallback((shifts) => {
-        const series = [['Category', 'Hours'],
-            ...makeSeries(shifts._categories.values(), shifts)
-        ];
-        return series;
-        
-    });
-
-    const makeTypesSeries = useCallback((categoryObj) => {
-        const series = [['Type', 'Hours'],
-            ...makeSeries(categoryObj._types.values(), categoryObj)
-        ];
-        return series;
-
-    });
 
     const makeSeries = useCallback((keys, obj) => {
         const series = [];
@@ -28,15 +11,31 @@ const ShiftsPieChart = ({ shifts, size }) => {
             series.push([key, round(hours, 2)]);
         }
         return series;
-    })
+    }, []);
+
+    const makeCategorySeries = useCallback((shifts) => {
+        const series = [['Category', 'Hours'],
+            ...makeSeries(shifts._categories.values(), shifts)
+        ];
+        return series;
+    }, [makeSeries]);
+
+    // const makeTypesSeries = useCallback((categoryObj) => {
+    //     const series = [['Type', 'Hours'],
+    //         ...makeSeries(categoryObj._types.values(), categoryObj)
+    //     ];
+    //     return series;
+
+    // },[makeSeries]);
 
 
-    const [seriesMaker, setSeriesMaker] = useState(() => makeCategorySeries.bind(undefined, shifts));
-    const [series, setSeries] = useState(() => seriesMaker());
+
+    // const [seriesMaker, setSeriesMaker] = useState(() => makeCategorySeries.bind(undefined, shifts));
+    const [series, setSeries] = useState(() => makeCategorySeries(shifts));
 
     useEffect(() => {
-        setSeries(seriesMaker());
-    }, [shifts, seriesMaker]);
+        setSeries(makeCategorySeries(shifts));
+    }, [shifts, setSeries, makeCategorySeries]);
 
 
     let options = {
@@ -83,7 +82,7 @@ const ShiftsPieChart = ({ shifts, size }) => {
         {
             eventName: "ready",
             callback: ({ chartWrapper, google }) => {
-                const chart = chartWrapper.getChart();
+                // const chart = chartWrapper.getChart();
                 // google.visualization.events.addListener(chart, "click", e => {
                 //     const { targetID } = e
                 //     console.log(targetID);
@@ -101,7 +100,6 @@ const ShiftsPieChart = ({ shifts, size }) => {
                 // });
             }
         }];
-        console.log(series);
     return (
         <div className="row border shadow rounded my-2 p-4">
             <h2 style={{ textAlign: "left" }}>stats</h2>
