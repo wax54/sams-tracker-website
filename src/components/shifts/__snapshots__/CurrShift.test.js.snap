@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matchesSnapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="row p-3 align-items-start justify-content-center"
+    id="0"
+  >
+    <div
+      class="col-7 text-center h2"
+    >
+      <span
+        class="type"
+      >
+        testtype 
+      </span>
+       for
+      <span
+        class="category"
+      >
+         testcategory
+      </span>
+      <div
+        class="shift-length"
+      >
+        10 mins 
+      </div>
+    </div>
+    <div
+      class="col-12 col-md-5"
+    >
+      <div
+        class="dropdown clockout row align-items-start justify-content-center shadow border rounded"
+      >
+        <button
+          class="btn btn-primary col-10 text-center"
+          data-reference="NOW"
+          style="border-top-right-radius: 0; border-bottom-right-radius: 0;"
+        >
+          Clock Out
+        </button>
+        <button
+          class="btn btn-primary col-2 dropdown-toggle text-center"
+          data-bs-toggle="dropdown"
+          style="border-top-left-radius: 0; border-bottom-left-radius: 0;"
+        />
+        <div
+          class="dropdown-menu bg-primary clock-out p-0 shadow"
+          style="border-top-left-radius: 0; border-top-right-radius: 0;"
+        >
+          <button
+            class="btn btn-block btn-danger text-light m-0"
+          >
+            CANCEL SHIFT
+          </button>
+        </div>
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;

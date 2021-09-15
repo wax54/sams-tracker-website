@@ -42,7 +42,7 @@ export const MockApi = {
     },
 
     //SHIFTS
-    getShifts: async function() {
+    async getShifts() {
         // if (!this.token) return { status: false, errors: ["USER NOT LOGGED IN"] };
         const shifts = [];
         return { status: true, shifts };
@@ -74,11 +74,6 @@ export const MockApi = {
 
     },
     async deleteShift(id) {
-        const resp = await this.request({
-            method: "delete",
-            url: this.API_URL + `/shifts/${id}`
-        });
-        if (resp.status === false) return resp;
         return { status: true };
     },
 

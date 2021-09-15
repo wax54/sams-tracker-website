@@ -7,10 +7,15 @@ const FIFTEEN_AGO = "-15";
 
 const ClockOutButton = ({ shiftId }) => {
     const dispatch = useDispatch();
-    const minsAgo = useSelector(({ shifts }) =>  (new Date() - new Date(shifts[shiftId].start)) / 1000 / 60); // 6000000ms / 1000 ms/s / 60 s/m = 100 minsAgo
+    const shift = useSelector(({ shifts }) => shifts[shiftId]); 
+    if(!shift) return null;
+    const minsAgo = (new Date() - new Date(shift.start)) / 1000 / 60 ;
+            // 6000000ms / 1000 ms/s / 60 s/m = 100 minsAgo
+    
     function remove() {
         dispatch(deleteShift(shiftId));
     }
+    
     function clockOut(evt) {
         const clockoutDuration = evt.target.dataset.reference;
 
@@ -46,7 +51,7 @@ const ClockOutButton = ({ shiftId }) => {
                         borderTopLeftRadius: 0,
                         borderTopRightRadius: 0
                     }} >
-                    {minsAgo > 2 ? 
+                    {minsAgo > 15 ? 
                         <button className="btn btn-block m-0 btn-primary text-light" data-reference={FIFTEEN_AGO} onClick={clockOut}>
                             15 MINUTES AGO
                         </button>
