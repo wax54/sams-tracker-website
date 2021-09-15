@@ -5,7 +5,6 @@ import { useDispatch} from 'react-redux';
 import { registerUser } from "../../models/actionCreators";
 
 import React, { useState } from "react";
-import SimpleForm from "./SimpleForm";
 import { useHistory } from 'react-router-dom';
 import { useFormFields } from '../../helpers/hooks';
 import { Link } from 'react-router-dom';

@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import {useDispatch} from 'react-redux';
 // import { useHistory } from "react-router";
 // import UserContext from "../UserContext";
-import { authorizeUser, TESTING} from "../../models/actionCreators";
+import { authorizeUser} from "../../models/actionCreators";
 import { useHistory } from 'react-router-dom';
 import { useFormFields } from '../../helpers/hooks';
 import { Link } from 'react-router-dom';
