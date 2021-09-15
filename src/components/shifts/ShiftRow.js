@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { deleteShift, updateAShift } from "../../models/actionCreators";
 import ClockOutButton from "./ClockOutButton";
-import MultiTextBox from "../forms/MultiTextBox";
+import MultiTextBox from "../MultiTextBox";
 import DateTimeInput from 'react-datetime-picker';
 import { useState } from "react";
 import { makeColor, round } from "../../helpers/tools";

@@ -2,11 +2,23 @@ import UserApi from "./Api";
 import {v4 as uuid} from "uuid";
 import UploadQueue from "./UploadQueue";
 import { store } from "./store";
-import { SET_TIMEFRAME } from "./actionTypes";
+import {RESET_TIMEFRAME, SET_TIMEFRAME } from "./actionTypes";
+
+export function resetAll() {
+    return function(dispatch) {
+        dispatch(resetShifts());
+        dispatch(resetGoals());
+        dispatch(resetUser());
+        dispatch(resetTimeFrame());
+    }
+}
 
 /** Timeframes */
 export function setTimeFrame(timeframeKey) {
     return { type: SET_TIMEFRAME, payload: timeframeKey };
+}
+export function resetTimeFrame() {
+    return { type: RESET_TIMEFRAME };
 }
 
 /** SHIFTS */
@@ -93,22 +105,22 @@ export function resetUser() {
 export function authorizeUser({ username, password }) {
     return async function (dispatch) {
         const resp = await UserApi.login({username, password});
-        if(resp.status === true)
+        if(resp.status === true){
             dispatch(setUser(resp.user));
             await dispatch(refreshShifts());
             await dispatch(refreshGoals());
-
+        }
         return resp;
     }
 }
-
 export function registerUser({ username, password }) {
     return async function (dispatch) {
         const resp = await UserApi.register({ username, password });
-        if (resp.status === true)
+        if (resp.status === true){
             dispatch(setUser(resp.user));
             dispatch(resetShifts());
             dispatch(resetGoals());
+        }
         return resp;
     }
 }

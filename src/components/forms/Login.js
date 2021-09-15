@@ -4,14 +4,12 @@ import React, {useState} from "react";
 import {useDispatch} from 'react-redux';
 // import { useHistory } from "react-router";
 // import UserContext from "../UserContext";
-import { authorizeUser} from "../../models/actionCreators";
-import SimpleForm from "./SimpleForm";
-import { useHistory } from 'react-router';
+import { authorizeUser, TESTING} from "../../models/actionCreators";
+import { useHistory } from 'react-router-dom';
 import { useFormFields } from '../../helpers/hooks';
 import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
-
     const loginInputs = {
         username: "",
         password: ""
@@ -45,7 +43,7 @@ const LoginForm = () => {
             <div className="input-group input-group-lg my-3">
 
                 <label
-                    htmlFor="login-password"
+                    htmlFor="login-username"
                     className="input-group-text">  Username: </label>
                 <input
                     type="text"
@@ -68,7 +66,6 @@ const LoginForm = () => {
                 <input
                     type={passwordVisible ? "text" : "password"}
                     className="form-control"
-
                     name="password"
                     id="login-password"
                     value={password}

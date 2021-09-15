@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matchesSnapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="App"
+  >
+    <div
+      class="navbar navbar-expand-sm navbar-dark bg-primary"
+    >
+      <a
+        class="nav-item nav-link navbar-brand px-4"
+        href="/"
+      >
+        Time Traker 
+        <i
+          class="fas fa-chart-line fa-md"
+        />
+      </a>
+      <button
+        class="navbar-toggler"
+        data-bs-target="#navLinks"
+        data-bs-toggle="collapse"
+        type="button"
+      >
+        <span
+          class="navbar-toggler-icon"
+        />
+      </button>
+      <div
+        class="collapse navbar-collapse navbar-nav text-center justify-content-start mx-3"
+        id="navLinks"
+      >
+        <a
+          aria-current="page"
+          class="nav-item nav-link  btn active"
+          href="/login"
+        >
+          Login
+        </a>
+        <a
+          class="nav-item nav-link  btn"
+          href="/signup"
+        >
+          Sign Up
+        </a>
+      </div>
+    </div>
+     
+    <form
+      class="Login container-fluid"
+    >
+      <div
+        class="input-group input-group-lg my-3"
+      >
+        <label
+          class="input-group-text"
+          for="login-username"
+        >
+            Username: 
+        </label>
+        <input
+          class="form-control"
+          id="login-username"
+          name="username"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="input-group input-group-lg my-3"
+      >
+        <label
+          class="input-group-text"
+          for="login-password"
+        >
+          Password:
+        </label>
+        <input
+          class="form-control"
+          id="login-password"
+          name="password"
+          type="password"
+          value=""
+        />
+        <label
+          class="input-group-text btn btn-secondary"
+          for="signup-password"
+        >
+          View
+        </label>
+      </div>
+      <input
+        class="btn btn-lg btn-block btn-primary"
+        type="submit"
+        value="Login!"
+      />
+      <a
+        class="btn btn-block btn-secondary"
+        href="/signup"
+      >
+        Need to Sign Up?
+      </a>
+    </form>
+     
+  </div>
+</DocumentFragment>
+`;

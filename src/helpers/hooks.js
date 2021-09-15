@@ -26,9 +26,11 @@ export function useWindowDimensions() {
 
 export function useFormFields(init={}) {
     const [formData, setFormData] = useState(init);
-    const handleChange = evt => setFormData(data => {
-        return { ...data, [evt.target.name]: evt.target.value }
-    });
+    
+    const handleChange = evt => {
+        const {name, value} = evt.target;
+        setFormData(data => ({ ...data, [name]: value }));
+    };
     const resetForm = () => setFormData(init);
     return [formData, handleChange, resetForm];
 }
