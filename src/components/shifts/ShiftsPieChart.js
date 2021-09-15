@@ -78,10 +78,10 @@ const ShiftsPieChart = ({ shifts, size }) => {
         options.legend.textStyle.fontSize = 10;
 
     }
-    const chartEvents = [
-        {
-            eventName: "ready",
-            callback: ({ chartWrapper, google }) => {
+    // const chartEvents = [
+    //     {
+    //         eventName: "ready",
+    //         callback: ({ chartWrapper, google }) => {
                 // const chart = chartWrapper.getChart();
                 // google.visualization.events.addListener(chart, "click", e => {
                 //     const { targetID } = e
@@ -98,8 +98,8 @@ const ShiftsPieChart = ({ shifts, size }) => {
                 //     const { row } = e;
                 //     console.warn("MOUSE OVER ", series[row + 1]);
                 // });
-            }
-        }];
+    //         }
+    //     }];
     return (
         <div className="row border shadow rounded my-2 p-4">
             <h2 style={{ textAlign: "left" }}>stats</h2>
@@ -114,7 +114,7 @@ const ShiftsPieChart = ({ shifts, size }) => {
                     data={series}
                     options={options}
                     rootProps={{ 'data-testid': 'stats-pie' }}
-                    chartEvents={chartEvents}
+                    // chartEvents={chartEvents}
                 />
             </div>
         </div>
