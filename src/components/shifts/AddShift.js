@@ -37,10 +37,9 @@ const AddShift = () => {
 
     function handleSubmit(evt) {
         evt.preventDefault();
-        const type = formData.type.toLowerCase();
-        const category = formData.category.toLowerCase();
-        
-        if(type  && category) {
+        const type = formData.type.toLowerCase().trim();
+        const category = formData.category.toLowerCase().trim();
+        if(type && category) {
             if (currShifts.some(shift => shift.type===type && shift.category === category)) {
                 addAlert('both', `Already clocked in to ${type} for ${category}`); 
                 return;

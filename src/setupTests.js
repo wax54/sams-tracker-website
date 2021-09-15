@@ -3,6 +3,7 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+import { v4 as uuid } from "uuid";
 
 
 export const MockApi = {
@@ -49,13 +50,8 @@ export const MockApi = {
 
 
     async addShift(shift) {
-        const resp = await this.request({
-            method: "post",
-            url: this.API_URL + "/shifts/",
-            data: { shift }
-        });
-        if (resp.status === false) return resp;
-        else return { status: true, shift: resp.data.shift };
+        shift.id = uuid();
+        return { status: true, shift };
     },
     async updateShift(id, shift) {
         const resp = await this.request({
