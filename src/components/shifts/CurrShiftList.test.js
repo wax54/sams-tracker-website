@@ -1,11 +1,7 @@
 import { renderWithRedux, renderAndWaitFor } from '../../helpers/testHelpers';
 import CurrShiftList from './CurrShiftList';
-import { createStore } from 'redux';
-import userEvent from '@testing-library/user-event';
-import { MockApi } from '../../setupTests';
 import { store } from '../../models/store';
-import { getByText, waitFor } from '@testing-library/react';
-import { resetAll, startShift } from '../../models/actionCreators';
+import { resetAll } from '../../models/actionCreators';
 
 beforeEach(() => store.dispatch(resetAll()));
 const TEST_SHIFT = {id:0, type:"testtype", category:"testcategory"};

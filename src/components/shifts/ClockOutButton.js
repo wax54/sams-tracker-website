@@ -6,12 +6,13 @@ const NOW = "NOW";
 const FIFTEEN_AGO = "-15";
 
 const ClockOutButton = ({ shiftId }) => {
+    console.log("HELLO", shiftId);
     const dispatch = useDispatch();
     const shift = useSelector(({ shifts }) => shifts[shiftId]); 
+
     if(!shift) return null;
     const minsAgo = (new Date() - new Date(shift.start)) / 1000 / 60 ;
             // 6000000ms / 1000 ms/s / 60 s/m = 100 minsAgo
-    
     function remove() {
         dispatch(deleteShift(shiftId));
     }
