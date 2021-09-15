@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Home from './Home';
-import Login from './components/forms/Login';
+import Login from './components/users/Login';
 
-import Signup from './components/forms/Signup';
+import Signup from './components/users/Signup';
 import Profile from "./Profile";
 import SetGoals from "./SetGoals";
 import EditShifts from "./EditShifts";
