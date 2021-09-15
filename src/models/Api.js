@@ -20,7 +20,6 @@ const userPersist = {
 
 class UserApi {
     static token = userPersist.get();
-    
     static async request({ method="get", url, data }) {
         try {
             const headers = this.token ?

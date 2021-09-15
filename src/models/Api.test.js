@@ -23,7 +23,77 @@ describe("#request", () => {
             });
             const result = await Api.request({ method:"get", url:"hello", data:"GOODBYE" });
             expect(result).toEqual({status:true, data: someData});
-        });
+    }); 
+    it("should return {status: false, errors:e.response.data.error.message} on throw",
+        async () => {
+            const testErrorMessage = "TEST_ERROR";
+            axios.mockImplementationOnce((request) => {
+                const e =  new Error(testErrorMessage);
+                e.response = {data:{error:{ message: testErrorMessage}}};
+                throw e;
+            });
+            const result = await Api.request({ method: "get", url: "hello", data: "GOODBYE" });
+            expect(result).toEqual({ status: false, errors: [testErrorMessage] });
+    });
+    
+});
+
+
+describe("#login", () => {
+    const valid_resp = {
+        user: {
+            name: 'Bauer-Gallagher'
+        },
+        token: "A GOOD TOKEN"
+    };
+    const valid_user = {username: "testUser", password:"testPassword"}
+
+    it("should return {status: true, user: resp.data.user}",
+        async () => {
+            axios.mockImplementationOnce((request) => {
+                if(request.data.username === valid_user.username &&
+                    request.data.password === valid_user.password)
+                    return Promise.resolve({ data: valid_resp });
+            });
+
+            const result = await Api.login(valid_user);
+            expect(result).toEqual({ status: true, user: valid_resp.user });
+    });
+
+    it("should update Api.token to the new token",
+        async () => {
+            axios.mockImplementationOnce((request) => {
+                if (request.data.username === valid_user.username &&
+                    request.data.password === valid_user.password)
+                    return Promise.resolve({ data: valid_resp });
+            });
+
+            await Api.login(valid_user);
+            expect(Api.token).toEqual(valid_resp.token);
+    });
+
+    it("should update local storage",
+        async () => {
+            axios.mockImplementationOnce((request) => {
+                if (request.data.username === valid_user.username &&
+                    request.data.password === valid_user.password)
+                    return Promise.resolve({ data: valid_resp });
+            });
+
+            await Api.login(valid_user);
+            expect(localStorage.USERTOKEN).toEqual(valid_resp.token);
+    });
+    it("should return {status: false, errors:e.response.data.error.message} on throw",
+        async () => {
+            const testErrorMessage = "TEST_ERROR";
+            axios.mockImplementationOnce((request) => {
+                const e = new Error(testErrorMessage);
+                e.response = { data: { error: { message: testErrorMessage } } };
+                throw e;
+            });
+            const resp = await Api.login(valid_user);
+            expect(resp).toEqual({ status: false, errors: [testErrorMessage] });
+    });
 });
 
 // describe("#getDrinks", () => {
