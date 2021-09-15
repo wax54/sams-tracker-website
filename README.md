@@ -1,7 +1,7 @@
 # The Time Tracker
 ## An app to help you find where your time goes, and (hopefully) be able to plan better in the future.
 
-[CLICK HERE TO SEE THE DEMO](sams-time-tracker.herokuapp.com)
+[CLICK HERE TO SEE THE DEMO](https://sams-time-tracker.herokuapp.com)
 
 ## Getting Started
 To run this app as is on your local machine, simply... 
