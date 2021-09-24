@@ -49,7 +49,7 @@ const MultiTextBox = ({
                     {...inputOptions}
                 />
                 <input className="btn btn-success" type="submit" value="Change"/>
-                <button className="btn btn-warning" onClick={reset}>Reset</button>
+                <button className="btn btn-warning" onClick={reset}>Cancel</button>
             </form>
         );
     } else {
