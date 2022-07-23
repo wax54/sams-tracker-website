@@ -1,9 +1,4 @@
 service: sams-tracker-website
-package:
-  exclude:
-    - ./**
-  include:
-    - BasicAuth.js
 provider:
   name: aws
   runtime: nodejs14.x
@@ -24,7 +19,6 @@ custom:
     other: ${self:custom.stage}-time.sam-the-dev.com
   domain: ${self:custom.domains.${self:custom.stage}, self:custom.domains.other}
 resources:
-  - ${file(./Config.js):lambdaVersion}
   - Resources:
       LambdaRole:
         Type: 'AWS::IAM::Role'
@@ -108,7 +102,6 @@ resources:
               ForwardedValues:
                 QueryString: 'false'
               ViewerProtocolPolicy: redirect-to-https
-              LambdaFunctionAssociations: ${file(./Config.js):lambdaAssociations}
             CustomErrorResponses:
               - ErrorCode: 404
                 ResponseCode: 200

@@ -1,14 +1,6 @@
 import axios from "axios";
 
-let API_URL;
-if(process.env.NODE_ENV !== "production") {
-    //set the API to call port 5000 if not in productions
-    API_URL = "http://localhost:5000/api";
-} else {
-    //if in production, call the api endpoint of itself
-    API_URL = "/api";
-}
-
+const API_URL = process.env.REACT_APP_API_URL
 const userPersist = {
     get: function () {
         return localStorage.USERTOKEN || "";
@@ -78,7 +70,7 @@ class UserApi {
         do {
             resp = await this.request({
                 method: 'get',
-                url: API_URL + "/users/shifts", 
+                url: API_URL + "/shifts", 
                 data: { page } 
             });
             if(resp.status === false) return resp;
@@ -130,6 +122,7 @@ class UserApi {
 
     //GOALS
     static async getGoals() {
+        console.log("LOGGING IN - ",API_URL)
         const resp = await this.request({
             method: "get",
             url: API_URL + `/users/goals`});

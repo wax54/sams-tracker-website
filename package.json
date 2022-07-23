@@ -33,17 +33,22 @@
     "node": "14.16.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start-server": "nodemon server/server.js",
-    "production-start": "NODE_ENV=production node server/server.js",
+    "start": "npm run start:dev",
     "test": "react-scripts test",
-    "build": "react-scripts build",
+    "start:dev": "npx env-cmd -f .env.dev react-scripts start",
+    "start:prod": "npx env-cmd -f .env.prod react-scripts start",
+    "start-server": "nodemon server/server.js",
+    "init:stage": "sls deploy --stage $STAGE",
+    "deploy:dev": "npm run build && npm run sync:dev && npm run flush:dev",
+    "deploy:prod": "npm run build:prod && npm run sync:prod && npm run flush:prod",
+    "teardown:stage": "sls remove --stage $STAGE",
+    "build": "npm run build:dev",
+    "build:dev": "env-cmd -f .env.dev react-scripts build",
+    "build:prod": "env-cmd -f .env.prod react-scripts build",
     "sync:prod": "aws s3 sync build/ s3://time.sam-the-dev.com",
     "sync:dev": "aws s3 sync build/ s3://dev-time.sam-the-dev.com",
-    "flush:prod": "aws cloudfront create-invalidation --distribution-id EJBOZIML1YBOX --paths \"/*\"",
-    "flush:dev": "aws cloudfront create-invalidation --distribution-id E2LPXDDTN0UI8C --paths \"/*\"",
-    "deploy:dev": "npm run build && npm run sync:dev && npm run flush:dev",
-    "deploy:prod": "npm run build && npm run sync:prod && npm run flush:prod"
+    "flush:prod": "aws cloudfront create-invalidation --distribution-id E189JF5GF8TC21 --paths \"/*\"",
+    "flush:dev": "aws cloudfront create-invalidation --distribution-id E2LPXDDTN0UI8C --paths \"/*\""
   },
   "eslintConfig": {
     "extends": [
