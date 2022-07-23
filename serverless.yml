@@ -1,0 +1,137 @@
+service: time-tracker-website
+package:
+  exclude:
+    - ./**
+  include:
+    - BasicAuth.js
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ${self:custom.regions.${self:custom.stage}, "us-east-1"}
+  versionFunctions: false
+functions:
+  Auth:
+    handler: BasicAuth.default
+    memorySize: 128
+    timeout: 5
+    role: LambdaRole
+custom:
+  regions:
+    prod: us-east-1
+  stage: ${opt:stage, self:provider.stage}
+  domains:
+    prod: time.sam-the-dev.com
+    other: ${self:custom.stage}-time.sam-the-dev.com
+  domain: ${self:custom.domains.${self:custom.stage}, self:custom.domains.other}
+resources:
+  - ${file(./Config.js):lambdaVersion}
+  - Resources:
+      LambdaRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+          RoleName: DashboardEdgeLambdaRole-${self:custom.stage}
+          AssumeRolePolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Principal:
+                  Service:
+                    - lambda.amazonaws.com
+                    - edgelambda.amazonaws.com
+                Action:
+                  - sts:AssumeRole
+          Policies:
+            - PolicyName: 'LambdaRole-Policy'
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                  - Effect: 'Allow'
+                    Action:
+                      - logs:*
+                    Resource: arn:aws:logs:*:*:*
+      Bucket:
+        Type: AWS::S3::Bucket
+        Properties:
+          BucketName: ${self:custom.domain}
+          AccessControl: PublicRead
+          PublicAccessBlockConfiguration:
+            BlockPublicAcls: 'true'
+            BlockPublicPolicy: 'false'
+            IgnorePublicAcls: 'true'
+            RestrictPublicBuckets: 'false'
+          WebsiteConfiguration:
+            IndexDocument: index.html
+            ErrorDocument: index.html
+      BucketPolicy:
+        Type: AWS::S3::BucketPolicy
+        Properties:
+          Bucket:
+            Ref: Bucket
+          PolicyDocument:
+            Statement:
+              - Sid: PublicReadGetObject
+                Effect: Allow
+                Principal: '*'
+                Action:
+                  - s3:GetObject
+                Resource:
+                  Fn::Join: ['', ['arn:aws:s3:::', { 'Ref': 'Bucket' }, '/*']]
+      OriginAccessIdentity:
+        Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+        Properties:
+          CloudFrontOriginAccessIdentityConfig:
+            Comment: ${self:custom.domain}-access-id
+      CloudFront:
+        Type: AWS::CloudFront::Distribution
+        Properties:
+          DistributionConfig:
+            Origins:
+              - DomainName:
+                  Fn::GetAtt: [Bucket, DomainName]
+                Id: S3-${self:custom.domain}
+                S3OriginConfig:
+                  OriginAccessIdentity:
+                    Fn::Join:
+                      [
+                        '',
+                        [
+                          'origin-access-identity/cloudfront/',
+                          { 'Ref': 'OriginAccessIdentity' },
+                        ],
+                      ]
+            Enabled: 'true'
+            DefaultRootObject: index.html
+            Aliases:
+              - ${self:custom.domain}
+            DefaultCacheBehavior:
+              TargetOriginId: S3-${self:custom.domain}
+              ForwardedValues:
+                QueryString: 'false'
+              ViewerProtocolPolicy: redirect-to-https
+              LambdaFunctionAssociations: ${file(./Config.js):lambdaAssociations}
+            CustomErrorResponses:
+              - ErrorCode: 404
+                ResponseCode: 200
+                ResponsePagePath: /index.html
+              - ErrorCode: 403
+                ResponseCode: 200
+                ResponsePagePath: /index.html
+            ViewerCertificate:
+              AcmCertificateArn: arn:aws:acm:us-east-1:454636868453:certificate/d0cadba5-27c3-4821-9194-0355c1e30840
+              SslSupportMethod: sni-only
+      CNAMERecord:
+        Type: AWS::Route53::RecordSet
+        Properties:
+          HostedZoneName: sam-the-dev.com.
+          Name: ${self:custom.domain}
+          Type: CNAME
+          TTL: 300
+          ResourceRecords:
+            - !GetAtt CloudFront.DomainName
+  - Outputs:
+      BucketName:
+        Value:
+          Ref: Bucket
+      CloudfrontDistribution:
+        Value:
+          Ref: CloudFront
