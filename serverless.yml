@@ -1,4 +1,4 @@
-service: time-tracker-website
+service: sams-tracker-website
 package:
   exclude:
     - ./**
