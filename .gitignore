@@ -3,6 +3,11 @@ helper_functions.js
 countdown.js
 time.js
 01-17-21
+
+#serverless
+.serverless/
+.serverless
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
