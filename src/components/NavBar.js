@@ -20,24 +20,24 @@ const NavBar = () => {
             <div className="collapse navbar-collapse navbar-nav text-center justify-content-start mx-3" id="navLinks">
                 {user.id ?
                 <>
-                        <NavLink exact to="/" className="nav-item nav-link mx-3 btn btn-primary border border-dark ">Home</NavLink>
-                        <NavLink exact to="/edit-shifts" className="nav-item nav-link mx-3 btn btn-primary border border-dark">Shifts</NavLink>
-                        <NavLink exact to="/set-goals" className="nav-item nav-link mx-3 btn btn-primary border border-dark">Goals</NavLink>
-                        <NavLink exact to="/profile" className="nav-item nav-link mx-3 btn btn-primary border border-dark ">{user.username}</NavLink>
-                        <div className="input-group">
-                            <label className="input-group-text">Time Frame</label>
-                            <select
-                                className="form-control"
-                                id="nav-timeframe-selector"
-                                name='timeFrame'
-                                onChange={handleTimeFrameChange}
-                                value={timeFrameKey}
-                            >
-                                {Object.keys(timeFrames).map(key =>
-                                    <option key={key} value={key}>{timeFrames[key].title}</option>
-                                )}
-                            </select>
-                        </div>
+                    <NavLink exact to="/" className="nav-item nav-link mx-3 btn btn-primary border border-dark ">Home</NavLink>
+                    <NavLink exact to="/edit-shifts" className="nav-item nav-link mx-3 btn btn-primary border border-dark">Shifts</NavLink>
+                    <NavLink exact to="/set-goals" className="nav-item nav-link mx-3 btn btn-primary border border-dark">Goals</NavLink>
+                    <NavLink exact to="/profile" className="nav-item nav-link mx-3 btn btn-primary border border-dark ">{user.username}</NavLink>
+                    <div className="input-group">
+                        <label className="input-group-text">Time Frame</label>
+                        <select
+                            className="form-control"
+                            id="nav-timeframe-selector"
+                            name='timeFrame'
+                            onChange={handleTimeFrameChange}
+                            value={timeFrameKey}
+                        >
+                            {Object.keys(timeFrames).map(key =>
+                                <option key={key} value={key}>{timeFrames[key].title}</option>
+                            )}
+                        </select>
+                    </div>
 
                 </> : <>
                         <NavLink exact to="/login" className="nav-item nav-link  btn">Login</NavLink>

@@ -4,8 +4,8 @@ import CurrShiftList from './shifts/CurrShiftList';
 const Header = () => {
     return (
         <>
-                <CurrShiftList />
-                <AddShift />
+            <CurrShiftList />
+            <AddShift />
         </>
     );
 };
